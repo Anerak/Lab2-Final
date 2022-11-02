@@ -259,7 +259,7 @@ int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos
 
 ///////////////////////////////////////////////////MOSTRAR///////////////////////////////////////////////////////////////////
 
-void mostarCliente(stCliente cliente)
+void mostrarCliente(stCliente cliente)
 {
     printf("\n\n\t\t---------------------CLIENTE-----------------------\n");
     printf("\t\t    ID de Cliente:     %i \n", cliente.idCliente);
@@ -304,7 +304,7 @@ void mostrarArchivoClientes()
     {
         while (fread(&aux, sizeof(stCliente), 1, archi) > 0)
         {
-            mostarCliente(aux);
+            mostrarCliente(aux);
         }
         fclose(archi);
     }
@@ -320,7 +320,7 @@ void mostrarArregloDeClientes(stCliente arrClientes[], int validos)
 
     while (i < validos)
     {
-        mostarCliente(arrClientes[i]);
+        mostrarCliente(arrClientes[i]);
         i++;
     }
 }
@@ -385,7 +385,7 @@ int buscarClientePorApellido(char apellido[]) // retorno la poscion en el archiv
             while (u < i)
             {
                 printf("\n\n\t\t------------------- Cliente %u -------------------\n\n", u);
-                mostarCliente(arrClientes[u]);
+                mostrarCliente(arrClientes[u]);
                 u++;
             }
             printf("\n\n\t\tSeleccione el numero de cliente que desea modificar\n\n\t\t");
@@ -976,7 +976,7 @@ stCliente peorCliente() // Retorna el peor cliente
             {
                 menorCompra = auxC.totalCompras;
                 PCliente = auxC;
-                mostarCliente(PCliente);
+                mostrarCliente(PCliente);
             }
         }
         fclose(buff);

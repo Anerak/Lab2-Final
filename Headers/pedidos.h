@@ -14,6 +14,7 @@ typedef struct
     int cantidadProductos;
     int estadoDelPedido;
     char detalleEstado;
+    long int dniCliente;
 } stPedido;
 
 ///////////////////////////////////////////FUNCIONES PEDIDOS////////////////////////////////////////////////////////////////////

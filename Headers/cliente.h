@@ -30,7 +30,7 @@ int cargarClientes(stCliente clientes[], int dimension);
 void cargarTotalGastadoYcompra(float costoPedido, int idCliente, int compra); // funcion para sumar el costo pedido al total gastado cliente
 
 ///////////// MOSTRAR :
-void mostarCliente(stCliente cliente);
+void mostrarCliente(stCliente cliente);
 void mostrarArchivoClientes();
 void mostrarArregloDeClientes(stCliente arrClientes[], int validos);
 
