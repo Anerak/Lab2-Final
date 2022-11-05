@@ -17,6 +17,18 @@ typedef struct
     long int dniCliente;
 } stPedido;
 
+typedef struct
+{
+    int idPedido;
+    int idCliente;
+    stFecha fecha;
+    stProducto arregloDePedidos[10];
+    int costoPedido;
+    int cantidadProductos;
+    int estadoDelPedido;
+    char detalleEstado;
+} stPedidoAux;
+
 ///////////////////////////////////////////FUNCIONES PEDIDOS////////////////////////////////////////////////////////////////////
 
 ///////////// CARGAR :
