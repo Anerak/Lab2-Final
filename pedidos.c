@@ -265,7 +265,7 @@ void mostrarDetalleProducto(stProducto A)
 {
     printf("\n\n\t\t     Descripcion del pedido:\n");
     printf("\t\t             Producto: %s \n", A.Producto);
-    printf("t\t              Modelo:   %s \n", A.Modelo);
+    printf("\t\t              Modelo:   %s \n", A.Modelo);
     printf("\t\t             Cantidad: %i \n", A.cantidad);
     printf("\t\t             Precio: $ %.2f \n", A.precio);
 }
@@ -282,9 +282,13 @@ void mostrarArregloProducto(stProducto A[], int validos)
 }
 void mostrarUnPedido(stPedido A)
 {
+    printf("ID: %i | DNI: %i\n", A.idPedido, A.dniCliente);
+    mostrarFecha(A.fecha);
+    return;
     printf("\n\n\t\t--------------------------------------------\n");
     printf("\n\t\t    ID de Pedido:     %i ", A.idPedido);
     printf("\n\t\t    ID de Cliente:    %i ", A.idCliente);
+    printf("\n\t\t    DNI de Cliente:   %i ", A.dniCliente);
     printf("\n\t\t    Fecha del pedido: ");
     mostrarFecha(A.fecha);
     mostrarArregloProducto(A.arregloDePedidos, A.cantidadProductos);

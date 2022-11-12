@@ -11,6 +11,7 @@ nodoArbolCliente *inicArbol()
 nodoArbolCliente *crearNodoArbol(stCliente dato)
 {
     nodoArbolCliente *n = (nodoArbolCliente *)malloc(sizeof(nodoArbolCliente));
+    n->pedidos = inicLista();
     n->dato = dato;
     n->izq = NULL;
     n->der = NULL;
@@ -64,6 +65,7 @@ void preOrden(nodoArbolCliente *t)
     if (t)
     {
         mostrarCliente(t->dato);
+        printf("\n- - - - - - - - Pedidos para el cliente %s %s - - - - - - - -\n", t->dato.Nombre, t->dato.Apellido);
         mostrarLista(t->pedidos);
         preOrden(t->izq);
         preOrden(t->der);
@@ -156,22 +158,15 @@ nodoArbolCliente *buscarNodoArbolPorNombre(nodoArbolCliente *t, char n[])
     return arbol;
 }
 
-nodoArbolCliente *buscarNodoArbolPorIdTrucho(nodoArbolCliente *t, int id)
+void altaClienteArbol(nodoArbolCliente *t)
 {
-    nodoArbolCliente *arbol = NULL;
-
-    if (t->dato.idCliente == id)
+    stCliente c;
+    printf("Ingrese DNI: ");
+    scanf("%i", &c.dni);
+    nodoArbolCliente *busqueda = buscarNodoArbolPorDni(t, c.dni);
+    if (busqueda)
     {
-        arbol = t;
+        printf("Cliente ya existe!\n");
+        return;
     }
-    else
-    {
-        arbol = buscarNodoArbolPorIdTrucho(t->der, id);
-        if (arbol == NULL)
-        {
-            arbol = buscarNodoArbolPorIdTrucho(t->izq, id);
-        }
-    }
-
-    return arbol;
 }

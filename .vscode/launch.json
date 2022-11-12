@@ -8,7 +8,8 @@
             "name": "Launch debugging",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            //"program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "program": "${fileDirname}/main.exe",
             "cwd": "${fileDirname}",
             "externalConsole": true,
             "preLaunchTask": "Build"

@@ -261,6 +261,8 @@ int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos
 
 void mostrarCliente(stCliente cliente)
 {
+    printf("%s %s | ID: %i | DNI: %i\n", cliente.Nombre, cliente.Apellido, cliente.idCliente, cliente.dni);
+    return;
     printf("\n\n\t\t---------------------CLIENTE-----------------------\n");
     printf("\t\t    ID de Cliente:     %i \n", cliente.idCliente);
     printf("\t\t    DNI:               %i \n", cliente.dni);
@@ -988,3 +990,7 @@ stCliente peorCliente() // Retorna el peor cliente
 
     return PCliente;
 }
+
+//////////////////////////////////////////////////////////////////////////////////
+/////////////                        Arboles                        //////////////
+//////////////////////////////////////////////////////////////////////////////////

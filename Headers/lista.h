@@ -21,5 +21,6 @@ nodoPedido *agregarFinal(nodoPedido *l, nodoPedido *n);
 nodoPedido *leerDatos(nodoPedido *l);
 nodoPedido *buscarUltimo(nodoPedido *l);
 int buscarElemento(nodoPedido *l, stPedido dato);
+nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n);
 
 #endif

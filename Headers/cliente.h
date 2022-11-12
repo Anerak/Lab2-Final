@@ -1,7 +1,7 @@
 #ifndef CLIENTE_H_INCLUDED
 #define CLIENTE_H_INCLUDED
-#include "./utils.h"
-#include "./domicilio.h"
+#include "utils.h"
+#include "domicilio.h"
 
 typedef struct
 {

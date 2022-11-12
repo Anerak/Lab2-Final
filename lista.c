@@ -130,3 +130,25 @@ int buscarElemento(nodoPedido *l, stPedido dato)
 
     return resultado;
 }
+
+nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n)
+{
+    if (l == NULL)
+    {
+        l = n;
+    }
+    else
+    {
+        if (compararFecha(l->dato.fecha, n->dato.fecha) > 0)
+        {
+            n->siguiente = l;
+            l = n;
+        }
+        else
+        {
+            l->siguiente = insertarPedido(l->siguiente, n);
+        }
+    }
+
+    return l;
+}

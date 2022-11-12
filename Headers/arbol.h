@@ -22,6 +22,4 @@ void postOrden(nodoArbolCliente *);
 nodoArbolCliente *buscarNodoArbol(nodoArbolCliente *, int);
 nodoArbolCliente *buscarNodoArbolPorDni(nodoArbolCliente *, int);
 nodoArbolCliente *buscarNodoArbolPorNombre(nodoArbolCliente *t, char n[]);
-
-nodoArbolCliente *buscarNodoArbolPorIdTrucho(nodoArbolCliente *t, int id);
 #endif

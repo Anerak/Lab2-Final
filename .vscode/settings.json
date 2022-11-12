@@ -5,6 +5,11 @@
         "windows.h": "c",
         "cliente.h": "c",
         "alumno.h": "c",
-        "nodoalumno.h": "c"
-    }
+        "nodoalumno.h": "c",
+        "lista.h": "c",
+        "pedidos.h": "c",
+        "utils.h": "c",
+        "fecha.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }

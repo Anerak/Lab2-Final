@@ -142,3 +142,43 @@ int cantidadDeDatosEnArchivo(char nombreArchivo[], int tamanioArchivo) // retorn
 
     return cant;
 }
+
+int compararFecha(stFecha a, stFecha b)
+{
+    int x = 0;
+
+    // I'm definitely not proud of this spaghetti
+
+    if (a.anio > b.anio)
+    {
+        x = 1;
+    }
+    else if (a.anio < b.anio)
+    {
+        x = -1;
+    }
+    else
+    {
+        if (a.Mes > b.Mes)
+        {
+            x = 1;
+        }
+        else if (a.Mes < b.Mes)
+        {
+            x = -1;
+        }
+        else
+        {
+            if (a.dia > b.dia)
+            {
+                x = 1;
+            }
+            else if (a.dia < b.dia)
+            {
+                x = -1;
+            }
+        }
+    }
+
+    return x;
+}
