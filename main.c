@@ -9,15 +9,29 @@
 #include "./Headers/pedidos.h"
 #include "./Headers/cliente.h"
 
-nodoArbolCliente *leerArchivoClientes(nodoArbolCliente *arbol);
+int leerArchivoClientes(stCliente array [], int dimension);
 void leerArchivoPedidos(nodoArbolCliente *arbol);
+
+/////////////
+void insertarCliente (stCliente array[], int u, stCliente c);
+void ordenarArray (stCliente array[], int validos);
+nodoArbolCliente * array2arbol (stCliente array [], int base, int tope);
+
 
 int main()
 {
 
 	nodoArbolCliente *arbolito = inicArbol();
 
-	arbolito = leerArchivoClientes(arbolito);
+	stCliente arregloClientes [500];
+	int validos=0;
+
+	validos = leerArchivoClientes(arregloClientes,500);
+	ordenarArray(arregloClientes,validos);
+
+	arbolito= array2arbol(arregloClientes,1,validos-1);
+	/// ver que pasa si los datos son impares.
+
 
 	leerArchivoPedidos(arbolito);
 
@@ -28,20 +42,70 @@ int main()
 	return 0;
 }
 
-nodoArbolCliente *leerArchivoClientes(nodoArbolCliente *arbol)
+void insertarCliente (stCliente array[], int u, stCliente c)
+{
+
+	int i =0;
+
+    while( u>=0 && c.dni < array[i].dni)
+    {
+        array[u+1]=array[u];
+        u--;
+    }
+
+    array[u+1]=c;
+}
+
+void ordenarArray (stCliente array[], int validos)
+{
+    int i = 0;
+    while (i<validos-1)
+    {
+        insertarCliente(array,i,array[i+1]);
+        i++;
+    }
+}
+
+
+nodoArbolCliente * array2arbol (stCliente array [], int base, int tope)
+{
+    int medio;
+
+    nodoArbolCliente * arbol= NULL;
+
+    if(!(base>tope))
+    {
+        medio= (base+tope) /2;
+
+        arbol= agregarNodo(arbol,array[medio]);
+
+        arbol->izq= array2arbol (array,base,medio-1);
+        arbol->der= array2arbol (array,medio+1,tope);
+    }
+
+    return arbol;
+}
+
+int leerArchivoClientes (stCliente array [], int dimension)
 {
 	FILE *a = fopen(ArchivoClientes, "r+b");
 	stCliente c;
+	int i=0;
+
 	if (a)
 	{
 		while (fread(&c, sizeof(stCliente), 1, a) > 0)
 		{
-			arbol = agregarNodoPorDni(arbol, c);
+		    while (i<dimension)
+            {
+                array[i]=c;
+                i++;
+            }
 		}
 		fclose(a);
 	}
 
-	return arbol;
+	return i;
 }
 
 void leerArchivoPedidos(nodoArbolCliente *arbol)
