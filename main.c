@@ -9,98 +9,108 @@
 #include "./Headers/pedidos.h"
 #include "./Headers/cliente.h"
 
-int leerArchivoClientes(stCliente array [], int dimension);
+int leerArchivoClientes(stCliente array[], int dimension);
 void leerArchivoPedidos(nodoArbolCliente *arbol);
 
 /////////////
-void insertarCliente (stCliente array[], int u, stCliente c);
-void ordenarArray (stCliente array[], int validos);
-nodoArbolCliente * array2arbol (stCliente array [], int base, int tope);
-
+void insertarCliente(stCliente array[], int u, stCliente c);
+void ordenarArray(stCliente array[], int validos);
+nodoArbolCliente *array2arbol(stCliente array[], int base, int tope);
 
 int main()
 {
 
 	nodoArbolCliente *arbolito = inicArbol();
 
-	stCliente arregloClientes [500];
-	int validos=0;
+	stCliente arregloClientes[500];
+	int validos = 0;
 
-	validos = leerArchivoClientes(arregloClientes,500);
-	ordenarArray(arregloClientes,validos);
+	validos = leerArchivoClientes(arregloClientes, 500);
+	// ordenarArray(arregloClientes, validos);
 
-	arbolito= array2arbol(arregloClientes,1,validos-1);
+	for (int i = 0; i < validos; i++)
+	{
+		printf("ID: %d | DNI: %d | %s %s\n", arregloClientes[i].idCliente, arregloClientes[i].dni, arregloClientes[i].Nombre, arregloClientes[i].Apellido);
+	}
+
+	arbolito = array2arbol(arregloClientes, 0, validos - 1);
 	/// ver que pasa si los datos son impares.
-
 
 	leerArchivoPedidos(arbolito);
 
-	preOrden(arbolito);
+	inOrden(arbolito);
 
 	system("pause");
 
 	return 0;
 }
 
-void insertarCliente (stCliente array[], int u, stCliente c)
+void insertarCliente(stCliente array[], int u, stCliente c)
 {
 
-	int i =0;
+	int i = 0;
 
-    while( u>=0 && c.dni < array[i].dni)
-    {
-        array[u+1]=array[u];
-        u--;
-    }
+	while (u >= 0 && c.dni < array[i].dni)
+	{
+		array[u + 1] = array[u];
+		u--;
+	}
 
-    array[u+1]=c;
+	array[u + 1] = c;
 }
 
-void ordenarArray (stCliente array[], int validos)
+void ordenarArray(stCliente array[], int validos)
 {
-    int i = 0;
-    while (i<validos-1)
-    {
-        insertarCliente(array,i,array[i+1]);
-        i++;
-    }
+	int i = 0;
+	while (i < validos - 1)
+	{
+		insertarCliente(array, i, array[i + 1]);
+		i++;
+	}
 }
 
-
-nodoArbolCliente * array2arbol (stCliente array [], int base, int tope)
+nodoArbolCliente *array2arbol(stCliente array[], int base, int tope)
 {
-    int medio;
+	int medio;
 
-    nodoArbolCliente * arbol= NULL;
+	nodoArbolCliente *arbol = NULL;
 
-    if(!(base>tope))
-    {
-        medio= (base+tope) /2;
+	if (!(base > tope))
+	{
+		medio = (base + tope) / 2;
 
-        arbol= agregarNodo(arbol,array[medio]);
+		arbol = agregarNodo(arbol, array[medio]);
 
-        arbol->izq= array2arbol (array,base,medio-1);
-        arbol->der= array2arbol (array,medio+1,tope);
-    }
+		arbol->izq = array2arbol(array, base, medio - 1);
+		arbol->der = array2arbol(array, medio + 1, tope);
+	}
 
-    return arbol;
+	return arbol;
 }
 
-int leerArchivoClientes (stCliente array [], int dimension)
+int leerArchivoClientes(stCliente array[], int dimension)
 {
 	FILE *a = fopen(ArchivoClientes, "r+b");
 	stCliente c;
-	int i=0;
+	int i = 0;
 
 	if (a)
 	{
 		while (fread(&c, sizeof(stCliente), 1, a) > 0)
 		{
-		    while (i<dimension)
-            {
-                array[i]=c;
-                i++;
-            }
+			if (i < dimension)
+			{
+				if (i == 0)
+				{
+					array[i] = c;
+				}
+				else
+				{
+					insertarCliente(array, i - 1, c);
+				}
+
+				i++;
+			}
 		}
 		fclose(a);
 	}
@@ -118,11 +128,14 @@ void leerArchivoPedidos(nodoArbolCliente *arbol)
 		while (fread(&p, sizeof(stPedido), 1, a) > 0)
 		{
 			nodoArbol = buscarNodoArbolPorDni(arbol, p.dniCliente);
-			if (!nodoArbol->pedidos)
+			if (nodoArbol)
 			{
-				nodoArbol->pedidos = inicLista();
+				if (!nodoArbol->pedidos)
+				{
+					nodoArbol->pedidos = inicLista();
+				}
+				nodoArbol->pedidos = insertarPedido(nodoArbol->pedidos, crearNodo(p));
 			}
-			nodoArbol->pedidos = insertarPedido(nodoArbol->pedidos, crearNodo(p));
 		}
 		fclose(a);
 	}

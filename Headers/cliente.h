@@ -23,7 +23,7 @@ typedef struct
 
 ///////////// CARGAR :
 int validacionDeAlta(long int dni);
-int ultimoIdCliente();
+int ultimoIDCliente();
 stDomicilio cargarDomicilio(stDomicilio domicilio);
 int altaDeCliente(stCliente clientenuevo);
 int cargarClientes(stCliente clientes[], int dimension);

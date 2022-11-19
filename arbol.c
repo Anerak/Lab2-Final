@@ -119,19 +119,22 @@ nodoArbolCliente *buscarNodoArbolPorDni(nodoArbolCliente *t, int dni)
 {
     nodoArbolCliente *n = NULL;
 
-    if (t->dato.dni == dni)
+    if (t)
     {
-        n = t;
-    }
-    else
-    {
-        if (dni > t->dato.dni)
+        if (t->dato.dni == dni)
         {
-            n = buscarNodoArbolPorDni(t->der, dni);
+            n = t;
         }
         else
         {
-            n = buscarNodoArbolPorDni(t->izq, dni);
+            if (dni > t->dato.dni)
+            {
+                n = buscarNodoArbolPorDni(t->der, dni);
+            }
+            else
+            {
+                n = buscarNodoArbolPorDni(t->izq, dni);
+            }
         }
     }
 
@@ -169,4 +172,86 @@ void altaClienteArbol(nodoArbolCliente *t)
         printf("Cliente ya existe!\n");
         return;
     }
+    else
+    {
+    }
+}
+
+int altaDeCliente2(stCliente clientenuevo) //
+{
+    stDomicilio domicilio;
+    int flag = -1, id = 0;
+    long int DniAux = 0;
+
+    char validarNum[dim];
+    char validarString[dim];
+
+    FILE *archi = fopen(ArchivoClientes, "ab");
+
+    if (archi != NULL)
+    {
+        printf("\n\n\t\tIngrese el DNI:\n\t\t");
+        fflush(stdin);
+        scanf("%li", &DniAux);
+
+        flag = validacionDeAlta(DniAux);
+
+        if (flag == 0)
+        {
+            clientenuevo.dni = DniAux;
+
+            id = ultimoIDCliente();
+            clientenuevo.idCliente = id + 1;
+            printf("\n\n\t\tID Cliente: 0000%i \n\n", clientenuevo.idCliente);
+
+            do
+            {
+                printf("\n\n\t\tIngrese el nombre  del cliente:\n\t\t");
+                fflush(stdin);
+                gets(validarString);
+            } while ((validarPalabra(validarString)) != 0);
+            strcpy(clientenuevo.Nombre, validarString);
+
+            do
+            {
+                printf("\n\n\t\tIngrese el apellido del cliente:\n\t\t");
+                fflush(stdin);
+                gets(validarString);
+            } while ((validarPalabra(validarString)) != 0);
+            strcpy(clientenuevo.Apellido, validarString);
+
+            domicilio = cargarDomicilio(domicilio);
+            clientenuevo.domicilio = domicilio;
+
+            do
+            {
+                printf("\n\n\t\tIngrese el numero de telefono del cliente:\n\t\t");
+                fflush(stdin);
+                scanf("%s", validarNum);
+            } while ((validarNumero(validarNum)) != 0);
+            clientenuevo.telefono = (atoi(validarNum));
+
+            do
+            {
+                printf("\n\n\t\tIngrese el mail del cliente:\n\t\t"); // se puede usar el @?
+                fflush(stdin);
+                gets(validarString);
+            } while ((escribeMailCorrecto(validarString)) != 2);
+            strcpy(clientenuevo.Mail, validarString);
+
+            clientenuevo.bajaCliente = 'a';
+            clientenuevo.totalGastado = 0;
+            clientenuevo.totalCompras = 0;
+
+            fwrite(&clientenuevo, sizeof(stCliente), 1, archi);
+
+            fclose(archi);
+        }
+    }
+    else
+    {
+        printf("\n\n\t\tEl archivo no se pudo abrir.\n\n\t\t");
+    }
+
+    return flag; // si el cliente ya existe retorna 1
 }

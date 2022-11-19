@@ -35,7 +35,7 @@ int validacionDeAlta(long int dni) // recorriendo el archivo y verifica si exist
     return flag;
 }
 
-int ultimoIdcliente()
+int ultimoIDCliente()
 {
     stCliente Aux;
     int IDcliente = 0;
@@ -46,9 +46,11 @@ int ultimoIdcliente()
     {
         fseek(buffer, sizeof(stCliente) * (-1), 2);
         if ((fread(&Aux, sizeof(stCliente), 1, buffer)) > 0)
-
         {
-            IDcliente = Aux.idCliente;
+            if (Aux.idCliente > IDcliente)
+            {
+                IDcliente = Aux.idCliente;
+            }
         }
         fclose(buffer);
     }
@@ -150,7 +152,7 @@ int altaDeCliente(stCliente clientenuevo) //
         {
             clientenuevo.dni = DniAux;
 
-            id = ultimoIdcliente();
+            id = ultimoIDCliente();
             clientenuevo.idCliente = id + 1;
             printf("\n\n\t\tID Cliente: 0000%i \n\n", clientenuevo.idCliente);
 
