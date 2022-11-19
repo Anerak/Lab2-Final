@@ -3,11 +3,13 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "./Headers/arbol.h"
-#include "./Headers/lista.h"
+#include ".\Headers\arbol.h"
+#include ".\Headers\lista.h"
 
 #include "./Headers/pedidos.h"
 #include "./Headers/cliente.h"
+void ordenarSeleccion(stCliente array[], int validos);
+int buscarPosMenor(stCliente array[], int pos, int validos);
 
 int leerArchivoClientes(stCliente array[], int dimension);
 void leerArchivoPedidos(nodoArbolCliente *arbol);
@@ -26,6 +28,7 @@ int main()
 	int validos = 0;
 
 	validos = leerArchivoClientes(arregloClientes, 500);
+	ordenarSeleccion(arregloClientes, validos);
 	// ordenarArray(arregloClientes, validos);
 
 	for (int i = 0; i < validos; i++)
@@ -45,26 +48,40 @@ int main()
 	return 0;
 }
 
-void insertarCliente(stCliente array[], int u, stCliente c)
+int buscarPosMenor(stCliente array[], int pos, int validos)
 {
+	stCliente menor;
+	menor = array[pos];
 
-	int i = 0;
+	int posMenor = pos;
 
-	while (u >= 0 && c.dni < array[i].dni)
+	int i = pos + 1;
+
+	while (i < validos)
 	{
-		array[u + 1] = array[u];
-		u--;
+		if (menor.dni > array[i].dni)
+		{
+			menor = array[i];
+			posMenor = i;
+		}
+		i++;
 	}
-
-	array[u + 1] = c;
+	return posMenor;
 }
 
-void ordenarArray(stCliente array[], int validos)
+void ordenarSeleccion(stCliente array[], int validos)
 {
 	int i = 0;
-	while (i < validos - 1)
+	int posMenor;
+
+	stCliente aux;
+
+	while (i < validos)
 	{
-		insertarCliente(array, i, array[i + 1]);
+		posMenor = buscarPosMenor(array, i, validos);
+		aux = array[posMenor];
+		array[posMenor] = array[i];
+		array[i] = aux;
 		i++;
 	}
 }
@@ -100,15 +117,7 @@ int leerArchivoClientes(stCliente array[], int dimension)
 		{
 			if (i < dimension)
 			{
-				if (i == 0)
-				{
-					array[i] = c;
-				}
-				else
-				{
-					insertarCliente(array, i - 1, c);
-				}
-
+				array[i] = c;
 				i++;
 			}
 		}

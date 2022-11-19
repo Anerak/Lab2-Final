@@ -1,0 +1,70 @@
+# depslib dependency file v1.0
+1668890754 source:c:\users\tobia\source\repos\lab2-final\lab2-final\main.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<string.h>
+	".\Headers\arbol.h"
+	".\Headers\lista.h"
+	"./Headers/pedidos.h"
+	"./Headers/cliente.h"
+
+1668209287 c:\users\tobia\source\repos\lab2-final\lab2-final\headers\arbol.h
+	"./cliente.h"
+	"./lista.h"
+
+1668214181 c:\users\tobia\source\repos\lab2-final\lab2-final\headers\cliente.h
+	"utils.h"
+	"domicilio.h"
+
+1668032170 c:\users\tobia\source\repos\lab2-final\lab2-final\headers\utils.h
+	"fecha.h"
+
+1665792523 c:\users\tobia\source\repos\lab2-final\lab2-final\headers\fecha.h
+
+1665792551 c:\users\tobia\source\repos\lab2-final\lab2-final\headers\domicilio.h
+
+1668042334 c:\users\tobia\source\repos\lab2-final\lab2-final\headers\lista.h
+	<stdio.h>
+	<stdlib.h>
+	".\pedidos.h"
+
+1668032149 c:\users\tobia\source\repos\lab2-final\lab2-final\headers\pedidos.h
+	"fecha.h"
+	"producto.h"
+	"cliente.h"
+
+1665671887 c:\users\tobia\source\repos\lab2-final\lab2-final\headers\producto.h
+
+1668888248 source:c:\users\tobia\source\repos\lab2-final\lab2-final\arbol.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"./Headers/arbol.h"
+
+1668214214 source:c:\users\tobia\source\repos\lab2-final\lab2-final\cliente.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<string.h>
+	"./Headers/cliente.h"
+
+1668211423 source:c:\users\tobia\source\repos\lab2-final\lab2-final\lista.c
+	".\Headers\lista.h"
+	".\Headers\pedidos.h"
+
+1668047804 source:c:\users\tobia\source\repos\lab2-final\lab2-final\pedidos.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"./Headers/fecha.h"
+	"./Headers/pedidos.h"
+
+1668050742 source:c:\users\tobia\source\repos\lab2-final\lab2-final\utils.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	"./Headers/utils.h"
+	"./Headers/pedidos.h"
+
