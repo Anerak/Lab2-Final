@@ -5,7 +5,6 @@
 
 typedef struct
 {
-
     long int dni;
     int idCliente;
     char Nombre[30];
@@ -13,15 +12,20 @@ typedef struct
     stDomicilio domicilio;
     unsigned long telefono;
     char Mail[40];
-    char bajaCliente;
+    int bajaCliente;
     int totalCompras;
     float totalGastado;
 
 } stCliente;
 
 ///////////////////////////////////////////FUNCIONES CLIENTES////////////////////////////////////////////////////////////////
+stCliente crearCliente(int id);
+void mostrarCliente(stCliente cliente);
+void modificarCliente(stCliente *c);
+int bajaCliente(stCliente *c);
 
 ///////////// CARGAR :
+
 int validacionDeAlta(long int dni);
 int ultimoIDCliente();
 stDomicilio cargarDomicilio(stDomicilio domicilio);
@@ -30,7 +34,6 @@ int cargarClientes(stCliente clientes[], int dimension);
 void cargarTotalGastadoYcompra(float costoPedido, int idCliente, int compra); // funcion para sumar el costo pedido al total gastado cliente
 
 ///////////// MOSTRAR :
-void mostrarCliente(stCliente cliente);
 void mostrarArchivoClientes();
 void mostrarArregloDeClientes(stCliente arrClientes[], int validos);
 
@@ -70,7 +73,6 @@ void insertarClientesPorMonto(stCliente arrClientes[], int pos, stCliente auxCli
 void insertarClientesPorCompras(stCliente arrClientes[], int pos, stCliente auxCliente);
 int topTenMejoresClientes(stCliente clientes[]);
 stCliente peorCliente();
-
 
 ///////////////////////////////////////////////
 

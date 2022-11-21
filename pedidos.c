@@ -87,66 +87,66 @@ stPedido generarPedido() // carga un pedido, llama a las funciones anteriores
     stCliente C;
     stProducto arregloProd[30];
 
-    int i = 0, idPedido = 0, validarIDcliente = 0, opcionCliente=1;
+    int i = 0, idPedido = 0, validarIDcliente = 0, opcionCliente = 1;
     float costo = 0;
     char opcion = 's';
     char validarNumero[dim];
 
-     idPedido = ultimoIdPedido();
-     A.idPedido = idPedido + 1;
-     printf("\n\n\t\tID Pedido: 0000%i \n\n", A.idPedido);
+    idPedido = 0; // ultimoIdPedido();
+    A.idPedido = idPedido + 1;
+    printf("\n\n\t\tID Pedido: 0000%i \n\n", A.idPedido);
 
-        do
+    do
+    {
+        opcionCliente = 0;
+        printf("\n\n\t\tIngrese el ID del Cliente:\n\t\t");
+        fflush(stdin);
+        scanf("%i", &validarIDcliente);
+
+        if ((validarCliente(validarIDcliente)) != -1)
         {
-            opcionCliente = 0;
-            printf("\n\n\t\tIngrese el ID del Cliente:\n\t\t");
-            fflush(stdin);
-            scanf("%i", &validarIDcliente);
-
-            if ((validarCliente(validarIDcliente)) != -1)
-            {
-                A.idCliente = validarIDcliente;
-            }
-            else
-            {
-                printf("\n\n\t\tEl numero ingresado no corresponde a un cliente guardado.");
-                printf("\n\t\tSi desea volver a ingresar el numero ingrese 1.");
-                printf("\n\t\tPara cargar un nuevo cliente ingrese 2.\n\n\t\t");
-                scanf("%i", &opcionCliente);
-            }
-        } while (opcionCliente == 1);
-
-        if (opcionCliente == 2)
-        {
-            altaDeCliente(C);
-            A.idCliente = C.idCliente;
+            A.idCliente = validarIDcliente;
         }
-
-        printf("\n\n\t\t Fecha del pedido:\n\t\t");
-        F = cargarFecha(F);
-        A.fecha = F;
-
-        printf("\n\n\t\tDescripcion del pedido:\n\t\t");
-        while (opcion == 's' && i < 10)
+        else
         {
-            P = cargarDetalleProducto(P);
-            A.arregloDePedidos[i] = P;
-            i++;
-            costo += P.precioFinal;
-            printf("\n\n\t\tDesea agregar otro producto al pedido? \n\t\t(s para adicionar otro producto, n para salir)\n\t\t");
-            fflush(stdin);
-            scanf("%c", &opcion);
+            printf("\n\n\t\tEl numero ingresado no corresponde a un cliente guardado.");
+            printf("\n\t\tSi desea volver a ingresar el numero ingrese 1.");
+            printf("\n\t\tPara cargar un nuevo cliente ingrese 2.\n\n\t\t");
+            scanf("%i", &opcionCliente);
         }
+    } while (opcionCliente == 1);
 
-        A.cantidadProductos = i;
+    if (opcionCliente == 2)
+    {
+        altaDeCliente(C);
+        A.idCliente = C.idCliente;
+    }
 
-        printf("\n\n\t\tEl costo final del pedido es: $%.2f\n\t\t", costo);
-        A.costoPedido = costo;
+    printf("\n\n\t\t Fecha del pedido:\n\t\t");
+    F = cargarFecha(F);
+    A.fecha = F;
 
-        A.estadoDelPedido = 1;
-        A.detalleEstado = 's';
+    printf("\n\n\t\tDescripcion del pedido:\n\t\t");
+    while (opcion == 's' && i < 10)
+    {
+        P = cargarDetalleProducto(P);
+        A.arregloDePedidos[i] = P;
+        i++;
+        costo += P.precioFinal;
+        printf("\n\n\t\tDesea agregar otro producto al pedido? \n\t\t(s para adicionar otro producto, n para salir)\n\t\t");
+        fflush(stdin);
+        scanf("%c", &opcion);
+    }
 
-        cargarTotalGastadoYcompra(costo, validarIDcliente, 1);
+    A.cantidadProductos = i;
+
+    printf("\n\n\t\tEl costo final del pedido es: $%.2f\n\t\t", costo);
+    A.costoPedido = costo;
+
+    A.estadoDelPedido = 1;
+    A.detalleEstado = 's';
+
+    cargarTotalGastadoYcompra(costo, validarIDcliente, 1);
 
     return A;
 }
@@ -221,7 +221,6 @@ void mostrarDetalleProducto(stProducto A)
     printf("\t\t             Precio:  $ %.2f \n", A.precio);
 }
 
-
 void mostrarUnPedido(stPedido A)
 {
     printf("-----------ID: %i | DNI: -----------%i\n", A.idPedido, A.dniCliente);
@@ -233,7 +232,7 @@ void mostrarUnPedido(stPedido A)
     printf("\n\t\t    DNI de Cliente:   %i ", A.dniCliente);
     printf("\n\t\t    Fecha del pedido: ");
     mostrarFecha(A.fecha);
-    mostrarArregloProducto(A.arregloDePedidos, A.cantidadProductos);
+    // mostrarArregloProducto(A.arregloDePedidos, A.cantidadProductos);
     printf("\n\t\t    Costo de pedido: $ %i \n", A.costoPedido);
     if (A.estadoDelPedido == 1)
     {
@@ -260,88 +259,90 @@ void mostrarUnPedido(stPedido A)
     printf("\t\t--------------------------------------------\n");
 }
 
-
 ///////////////////////////////////////LISTADOS Y ESTADISTICAS////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////MODIFICAR PEDIDOS////////////////////////////////////////////////////////////////////
 
-void modificarPedidoPorId(nodoArbolCliente * arbolito, int idpedido) // Modificar pedido por ID
-{
-    stPedido auxPedido;
-    nodoPedido* modificado=NULL;
-    char opcion = 's';
+// void modificarPedidoPorId(nodoArbolCliente * arbolito, int idpedido) // Modificar pedido por ID
+// {
+//     stPedido auxPedido;
+//     nodoPedido* modificado=NULL;
+//     char opcion = 's';
 
-    if (arbolito)
-    {
-        modificado = buscarPedidoSinDni(arbolito,idpedido);
+//     if (arbolito)
+//     {
+//         modificado = buscarPedidoSinDni(arbolito,idpedido);
 
-        if (modificado)
-        {
-            if (modificado.estadoDelPedido == 1)
-            {
-                modificarUnpedido(auxPedido); // retorna el pedido leido, ya modificado por la funcion
-            }
-            else
-            {
+//         if (modificado)
+//         {
+//             if (modificado.estadoDelPedido == 1)
+//             {
+//                 modificarUnpedido(auxPedido); // retorna el pedido leido, ya modificado por la funcion
+//             }
+//             else
+//             {
 
-                printf("\n\n\t\t El pedido se encuentra en estado anulado\n");
-            }
-    }
-}
+//                 printf("\n\n\t\t El pedido se encuentra en estado anulado\n");
+//             }
+//     }
+// }
 
-stFecha modificarFechaPedido(nodoPedido * pedido) // Auxiliar - Modifica fecha
-{
-    char seguir = 's';
-    int opcion=0;
-    char auxNumero[10];
+// stFecha modificarFechaPedido(stPedido pedido) // Auxiliar - Modifica fecha
+// {
+//     char seguir = 's';
+//     int opcion = 0;
+//     char auxNumero[10];
 
-    do{
+//     do
+//     {
 
-        printf("\n\n              Modificar Fecha  \n\n");
-        printf("\t\tIngrese:");
-        printf("\n\t\t\t1 - Para modificar el dia");
-        printf("\n\t\t\t2 - Para modificar el mes");
-        printf("\n\t\t\t3 - Para modificar el anio");
-        scanf("%i",&opcion);
+//         printf("\n\n              Modificar Fecha  \n\n");
+//         printf("\t\tIngrese:");
+//         printf("\n\t\t\t1 - Para modificar el dia");
+//         printf("\n\t\t\t2 - Para modificar el mes");
+//         printf("\n\t\t\t3 - Para modificar el anio");
+//         scanf("%i", &opcion);
 
-        if(opcion ==1)
-        {
-            do
-            {
-                printf("\n\n\t\tIngrese el dia:\n\t\t");
-                fflush(stdin);
-                gets(auxNumero);
-            } while ((validarNumero(auxNumero)) != 0);
-            pedido.fecha.dia = atoi(auxNumero);
+//         if (opcion == 1)
+//         {
+//             do
+//             {
+//                 printf("\n\n\t\tIngrese el dia:\n\t\t");
+//                 fflush(stdin);
+//                 gets(auxNumero);
+//             } while ((validarNumero(auxNumero)) != 0);
+//             pedido.fecha.dia = atoi(auxNumero);
+//         }
+//         else if (opcion == 2)
+//         {
 
-        }else if (opcion==2){
+//             do
+//             {
+//                 printf("\n\n\t\tIngrese mes:\n\t\t");
+//                 fflush(stdin);
+//                 gets(auxNumero);
+//             } while ((validarNumero(auxNumero)) != 0);
+//             pedido.fecha.Mes = atoi(auxNumero);
+//         }
+//         else if (opcion == 3)
+//         {
 
-            do
-            {
-                printf("\n\n\t\tIngrese mes:\n\t\t");
-                fflush(stdin);
-                gets(auxNumero);
-            } while ((validarNumero(auxNumero)) != 0);
-            pedido.fecha.Mes = atoi(auxNumero);
+//             do
+//             {
+//                 printf("\n\n\t\tIngrese el anio:\n\t\t");
+//                 fflush(stdin);
+//                 gets(auxNumero);
+//             } while ((validarNumero(auxNumero)) != 0);
+//             pedido.fecha.anio = atoi(auxNumero);
+//         }
 
-        }else if(opcion ==3){
+//         printf("Si desea modificar otro dato de la fecha ingrese s o cualquier tecla para finalizar la modificacion:\n\t\t");
+//         fflush(stdin);
+//         gets(seguir);
+//     } while (seguir == 's');
 
-            do
-            {
-                printf("\n\n\t\tIngrese el anio:\n\t\t");
-                fflush(stdin);
-                gets(auxNumero);
-            } while ((validarNumero(auxNumero)) != 0);
-            pedido.fecha.anio = atoi(auxNumero);
-        }
-
-        printf("Si desea modificar otro dato de la fecha ingrese s o cualquier tecla para finalizar la modificacion:\n\t\t");
-        fflush(stdin);
-        gets(seguir);
-    }while (seguir=='s');
-
-        return pedido.fecha;
-}
+//     return pedido.fecha;
+// }
 
 float modificarArregloProductos(stProducto arrProductos[], int validos) // Auxiliar - recorre y modifica arreglo de productos
 {
@@ -426,7 +427,7 @@ stProducto modificarUnProducto(stProducto auxProducto) // Modicia un Producto ex
     return auxProducto;
 }
 
-nodoPedido* modificarUnpedido(nodoPedido* pedido)
+stPedido modificarUnpedido(stPedido pedido)
 {
     int auxIdcliente = pedido.idCliente, i = 0;
     float costo = 0;
@@ -522,7 +523,7 @@ nodoPedido* modificarUnpedido(nodoPedido* pedido)
         {
             printf("\n\n\t\tIngrese detalle de estado:\n\t\t");
             fflush(stdin);
-            scanf("%c", &auxPedido.detalleEstado);
+            scanf("%c", &pedido.detalleEstado);
         }
     }
 
@@ -532,10 +533,10 @@ nodoPedido* modificarUnpedido(nodoPedido* pedido)
 
     if (seguir == 's' || seguir == 'S')
     {
-        auxPedido.fecha = modificarFechaPedido(auxPedido);
+        // pedido.fecha = modificarFechaPedido(pedido);
     }
 
-    return auxPedido;
+    return pedido;
 }
 
 void mostrarPedidosPorCliente(int idAuxCliente)
@@ -543,7 +544,7 @@ void mostrarPedidosPorCliente(int idAuxCliente)
     stPedido arregloPedidos[dim];
     int validos = 0, i = 0;
 
-    validos = cargarArregloDePedidos(arregloPedidos);
+    validos = 0; // cargarArregloDePedidos(arregloPedidos);
 
     while (i < validos)
     {
@@ -614,7 +615,7 @@ int listarPedidosPorFecha(stPedido nomArreglo[dim])
 {
     int validos = 0;
 
-    validos = cargarArregloDePedidos(nomArreglo);
+    validos = 0; // cargarArregloDePedidos(nomArreglo);
     ordenamientoFechaInsercion(nomArreglo, validos);
 
     return validos;

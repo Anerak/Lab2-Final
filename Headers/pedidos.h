@@ -3,8 +3,6 @@
 #include "fecha.h"
 #include "producto.h"
 #include "cliente.h"
-#include "arbol.h"
-#include "lista.h"
 
 typedef struct _stPedido
 {

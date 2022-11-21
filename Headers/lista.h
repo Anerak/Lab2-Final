@@ -24,7 +24,6 @@ int buscarElemento(nodoPedido *l, stPedido dato);
 nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n);
 
 ///////////// ANULAR :
-void anularPedido(nodoPedido* pedido);
-
+void anularPedido(nodoPedido *pedido);
 
 #endif

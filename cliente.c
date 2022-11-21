@@ -261,44 +261,6 @@ int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos
 
 ///////////////////////////////////////////////////MOSTRAR///////////////////////////////////////////////////////////////////
 
-void mostrarCliente(stCliente cliente)
-{
-    printf("%s %s | ID: %i | DNI: %i\n", cliente.Nombre, cliente.Apellido, cliente.idCliente, cliente.dni);
-    return;
-    printf("\n\n\t\t---------------------CLIENTE-----------------------\n");
-    printf("\t\t    ID de Cliente:     %i \n", cliente.idCliente);
-    printf("\t\t    DNI:               %i \n", cliente.dni);
-    printf("\t\t    Nombre:            %s \n", cliente.Nombre);
-    printf("\t\t    Apellido:          %s \n", cliente.Apellido);
-    printf("\n\t\t DATOS DEL DOMICILIO:\n");
-    printf("\t\t    Provincia:         %s \n", cliente.domicilio.provincia);
-    printf("\t\t    Localidad:         %s \n", cliente.domicilio.localidad);
-    printf("\t\t    Calle:             %s \n", cliente.domicilio.Calle);
-    printf("\t\t    Altura:            %i \n", cliente.domicilio.altura);
-    printf("\t\t      Piso:            %i \n", cliente.domicilio.piso);
-    printf("\t\t      Dpto:            %c \n", cliente.domicilio.dpto);
-    printf("\n\t\t DATOS DE CONTACTO:\n");
-    printf("\t\t    Telefono:          %lu \n", cliente.telefono);
-    printf("\t\t    Mail:              %s \n", cliente.Mail);
-    printf("\n\t\t ESTADO DEL CLIENTE:  \n");
-    if (cliente.bajaCliente == 'a')
-    {
-        printf("\t\t                      Activo \n");
-        printf("\t\t     Total gastado:    $ %.2f \n", cliente.totalGastado);
-        printf("\t\tCompras efectuadas:    %i  \n", cliente.totalCompras);
-    }
-    else if (cliente.bajaCliente == 'i')
-    {
-        printf("\t\t                      Inactivo \n");
-    }
-    else
-    {
-        printf("\t\t                      -  \n");
-    }
-
-    printf("\n\n\t\t--------------------------------------------\n");
-}
-
 void mostrarArchivoClientes()
 {
     FILE *archi = fopen(ArchivoClientes, "rb");
@@ -464,7 +426,7 @@ stCliente retornaClientePorPos(int pos)
 
 stCliente pasaraInactivo(stCliente clientebaja)
 {
-    clientebaja.bajaCliente = 'i';
+    clientebaja.bajaCliente = 1;
 
     return clientebaja;
 }
@@ -576,15 +538,15 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
     char seguir = 's';
     char auxPalabra[40], auxNumero[10];
 
-    if (modificarCliente.bajaCliente == 'i')
+    if (modificarCliente.bajaCliente == 1)
     {
-        printf("\n\n\t\tEl cliente se encuentra INACTVIO desea activarlo nuevamente? \n\t\tIngrese S para confirmar, otra para cancelar.\n\t\t");
+        printf("\n\n\t\tEl cliente se encuentra INACTIVO desea activarlo nuevamente? \n\t\tIngrese S para confirmar, otra para cancelar.\n\t\t");
         fflush(stdin);
         scanf("%c", &seguir);
 
         if (seguir == 's' || seguir == 'S')
         {
-            modificarCliente.bajaCliente = 'a';
+            modificarCliente.bajaCliente = 0;
         }
     }
 
@@ -689,15 +651,15 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
         strcpy(modificarCliente.Mail, auxPalabra);
     }
 
-    printf("\n\n\t\tIngrese S para editar el total gastado, u otra letra para cancelar.\n\t\t");
-    fflush(stdin);
-    scanf("%c", &seguir);
+    // printf("\n\n\t\tIngrese S para editar el total gastado, u otra letra para cancelar.\n\t\t");
+    // fflush(stdin);
+    // scanf("%c", &seguir);
 
-    if (seguir == 's' || seguir == 'S')
-    {
-        printf("\n\n\t\tCorrija el saldo:\n\t\t");
-        scanf("%f", &modificarCliente.totalGastado);
-    }
+    // if (seguir == 's' || seguir == 'S')
+    // {
+    //     printf("\n\n\t\tCorrija el saldo:\n\t\t");
+    //     scanf("%f", &modificarCliente.totalGastado);
+    // }
 
     return modificarCliente;
 }
@@ -808,7 +770,7 @@ int pasarActivosArreglo(stCliente clientes[]) // pasar los clientes activos
     {
         while (fread(&aux, sizeof(stCliente), 1, archi) > 0 && i < dim)
         {
-            if (aux.bajaCliente == 'a')
+            if (aux.bajaCliente == 0)
             {
                 clientes[i] = aux;
                 i++;
@@ -998,42 +960,146 @@ stCliente peorCliente() // Retorna el peor cliente
 
 int buscarPosMenor(stCliente array[], int pos, int validos)
 {
-	stCliente menor;
-	menor = array[pos];
+    stCliente menor;
+    menor = array[pos];
 
-	int posMenor = pos;
+    int posMenor = pos;
 
-	int i = pos + 1;
+    int i = pos + 1;
 
-	while (i < validos)
-	{
-		if (menor.dni > array[i].dni)
-		{
-			menor = array[i];
-			posMenor = i;
-		}
-		i++;
-	}
-	return posMenor;
+    while (i < validos)
+    {
+        if (menor.dni > array[i].dni)
+        {
+            menor = array[i];
+            posMenor = i;
+        }
+        i++;
+    }
+    return posMenor;
 }
 
 void ordenarSeleccion(stCliente array[], int validos)
 {
-	int i = 0;
-	int posMenor;
+    int i = 0;
+    int posMenor;
 
-	stCliente aux;
+    stCliente aux;
 
-	while (i < validos)
-	{
-		posMenor = buscarPosMenor(array, i, validos);
-		aux = array[posMenor];
-		array[posMenor] = array[i];
-		array[i] = aux;
-		i++;
-	}
+    while (i < validos)
+    {
+        posMenor = buscarPosMenor(array, i, validos);
+        aux = array[posMenor];
+        array[posMenor] = array[i];
+        array[i] = aux;
+        i++;
+    }
 }
-
 
 /////////////                        Arboles                        //////////////
 //////////////////////////////////////////////////////////////////////////////////
+stCliente crearCliente(int id)
+{
+    stCliente c;
+
+    c.idCliente = id + 1;
+    printf("DNI: ");
+    scanf("%d", &c.dni);
+    fflush(stdin);
+
+    printf("Nombre: ");
+    gets(c.Nombre);
+    fflush(stdin);
+
+    printf("Apellido: ");
+    gets(c.Apellido);
+    fflush(stdin);
+
+    printf("Telefono: ");
+    scanf("%d", &c.telefono);
+    fflush(stdin);
+
+    c.domicilio = cargarDomicilio(c.domicilio);
+
+    fflush(stdin);
+
+    printf("Email: ");
+    gets(c.Mail);
+    fflush(stdin);
+
+    c.bajaCliente = 0;
+    c.totalCompras = 0;
+    c.totalGastado = 0;
+
+    return c;
+}
+
+void mostrarCliente(stCliente cliente)
+{
+    printf("%s %s | ID: %i | DNI: %i\n", cliente.Nombre, cliente.Apellido, cliente.idCliente, cliente.dni);
+    return;
+    printf("\n\n\t\t---------------------CLIENTE-----------------------\n");
+    printf("\t\t    ID de Cliente:     %i \n", cliente.idCliente);
+    printf("\t\t    DNI:               %i \n", cliente.dni);
+    printf("\t\t    Nombre:            %s \n", cliente.Nombre);
+    printf("\t\t    Apellido:          %s \n", cliente.Apellido);
+    printf("\n\t\t DATOS DEL DOMICILIO:\n");
+    printf("\t\t    Provincia:         %s \n", cliente.domicilio.provincia);
+    printf("\t\t    Localidad:         %s \n", cliente.domicilio.localidad);
+    printf("\t\t    Calle:             %s \n", cliente.domicilio.Calle);
+    printf("\t\t    Altura:            %i \n", cliente.domicilio.altura);
+    printf("\t\t      Piso:            %i \n", cliente.domicilio.piso);
+    printf("\t\t      Dpto:            %c \n", cliente.domicilio.dpto);
+    printf("\n\t\t DATOS DE CONTACTO:\n");
+    printf("\t\t    Telefono:          %lu \n", cliente.telefono);
+    printf("\t\t    Mail:              %s \n", cliente.Mail);
+    printf("\n\t\t ESTADO DEL CLIENTE:  \n");
+    if (cliente.bajaCliente == 0)
+    {
+        printf("\t\t                      Activo \n");
+        printf("\t\t     Total gastado:    $ %.2f \n", cliente.totalGastado);
+        printf("\t\tCompras efectuadas:    %i  \n", cliente.totalCompras);
+    }
+    else if (cliente.bajaCliente == 1)
+    {
+        printf("\t\t                      Inactivo \n");
+    }
+    else
+    {
+        printf("\t\t                      -  \n");
+    }
+
+    printf("\n\n\t\t--------------------------------------------\n");
+}
+
+void modificarCliente(stCliente *c)
+{
+    modificarCamposDeCliente(*c);
+    modificarCamposDomicilio(*c);
+}
+
+int bajaCliente(stCliente *c)
+{
+
+    FILE *a = fopen(ArchivoClientes, "w+b");
+
+    stCliente aux;
+
+    int r = 0;
+
+    if (a)
+    {
+        while (fread(&aux, sizeof(stCliente), 1, a) > 0)
+        {
+            if (aux.dni == c->dni)
+            {
+                fseek(a, sizeof(stCliente) * (-1), SEEK_CUR);
+                c->bajaCliente = 1;
+                fwrite(c, sizeof(stCliente), 1, a);
+                r = 1;
+            }
+        }
+    }
+
+    return r;
+}
