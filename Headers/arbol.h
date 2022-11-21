@@ -3,13 +3,13 @@
 #include "./cliente.h"
 #include "./lista.h"
 
-typedef struct _nodoArbol
+typedef struct _nodoArbolCliente
 {
     stCliente dato;
     struct _nodoArbol *izq;
     struct _nodoArbol *der;
     int modificado;
-    struct nodoPedido *pedidos;
+    nodoPedido *pedidos;
 } nodoArbolCliente;
 
 nodoArbolCliente *inicArbol();
@@ -23,9 +23,4 @@ nodoArbolCliente *buscarNodoArbol(nodoArbolCliente *, int);
 nodoArbolCliente *buscarNodoArbolPorDni(nodoArbolCliente *, int);
 nodoArbolCliente *buscarNodoArbolPorNombre(nodoArbolCliente *t, char n[]);
 
-///////////// BUSCAR PEDIDOSS//////////////////////
-nodoPedido* buscarIdPedidoConDni ( nodoArbolCliente * arbolito, int dni, int nroPedido); // retorno la poscion en el archivo o -1 si no esta
-nodoPedido* buscarPedidoSinDni (nodoArbolCliente *t, int idPedido);
-
-void modificarPedidoPorId(nodoArbolCliente * arbolito, int idpedido); // Modificar pedido por ID
 #endif

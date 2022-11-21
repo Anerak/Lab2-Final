@@ -19,17 +19,6 @@ nodoPedido *agregarPrincipio(nodoPedido *l, nodoPedido *n)
 {
     n->siguiente = l;
     return n;
-    // if (l == NULL)
-    // {
-    //     l = n;
-    // }
-    // else
-    // {
-    //     n->siguiente = l;
-    //     l = n;
-    // }
-
-    // return l;
 }
 
 nodoPedido *agregarFinal(nodoPedido *l, nodoPedido *n)
@@ -52,7 +41,7 @@ nodoPedido *agregarFinal(nodoPedido *l, nodoPedido *n)
     return l;
 }
 
-nodoPedido * final(nodoPedido *l, nodoPedido *n)
+nodoPedido * nodoFinal(nodoPedido *l, nodoPedido *n)
 {
     if (l == NULL)
     {
@@ -61,7 +50,7 @@ nodoPedido * final(nodoPedido *l, nodoPedido *n)
 
     if (l->siguiente != NULL)
     {
-        l->siguiente = final(l->siguiente, n);
+        l->siguiente = nodoFinal(l->siguiente, n);
     }
     else
     {
@@ -82,22 +71,6 @@ void mostrarLista(nodoPedido *l)
     }
 }
 
-nodoPedido *leerDatos(nodoPedido *l)
-{
-    FILE *a = fopen("./datos.dat", "r+b");
-    stPedido p;
-    if (a == NULL)
-        return l;
-
-    while (fread(&p, sizeof(stPedido), 1, a) > 0)
-    {
-        l = agregarFinal(l, crearNodo(p));
-    }
-
-    fclose(a);
-    return l;
-}
-
 nodoPedido *buscarUltimo(nodoPedido *l)
 {
     nodoPedido *seg = l;
@@ -109,14 +82,14 @@ nodoPedido *buscarUltimo(nodoPedido *l)
     return seg;
 }
 
-int buscarElemento(nodoPedido *l, stPedido dato)
+int verificarIDpedido (nodoPedido *l, stPedido dato)
 {
     int resultado = 0;
     if (l != NULL)
     {
         nodoPedido *seg = l;
 
-        while (seg->siguiente != NULL && resultado ==0)
+        while (seg && resultado ==0)
         {
             if (seg->dato.idPedido == dato.idPedido)
             {
@@ -129,6 +102,50 @@ int buscarElemento(nodoPedido *l, stPedido dato)
 
     return resultado;
 }
+
+nodoPedido* buscarPedidoID (nodoPedido *lista, int idPedido)
+{
+    nodoPedido*buscado = NULL;
+
+    if (lista)
+    {
+        nodoPedido *seg = lista;
+
+        while (seg && buscado==NULL)
+        {
+            if (seg->dato.idPedido == idPedido)
+            {
+                buscado=seg;
+            }
+            seg = seg->siguiente;
+        }
+    }
+
+    return buscado;
+}
+
+nodoPedido * borrarNodoPedido (nodoPedido *lista, int idPedido)
+{
+   nodoPedido * aBorrar = NULL;
+
+    if (lista)
+    {
+        if (lista->dato.idPedido == idPedido)
+        {
+            aBorrar = lista;
+            lista = lista->siguiente;
+            free(aBorrar);
+        }
+        else
+        {
+            lista->siguiente = borrarNodoPedido(lista->siguiente, idPedido);
+        }
+    }
+
+    return lista;
+
+}
+
 
 nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n)
 {
@@ -158,18 +175,39 @@ nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n)
 void anularPedido(nodoPedido* pedido) // devuelve  la posicion del pedido o -1 si no encontro el pedido
 {
     stPedido A;
-    int costoP = 0;
 
     if (pedido)
     {
             if (pedido->dato.estadoDelPedido == 1)
             {
                 pedido->dato.estadoDelPedido =0;
-                costoP = pedido->dato.costoPedido;
                 pedido->dato.costoPedido = 0;
-
-                cargarTotalGastadoYcompra((costoP * -1), pedido->dato.idCliente, -1); // realiza el descuetento de la compra anulada al totalgastado por el cliente
+                pedido->modificado=1;
             }
     }
 }
 
+
+////////////////////// MODIFICAR
+
+void modificarNodoPedido (nodoPedido * lista, int idPedido)
+{
+    nodoPedido * modificado = buscarPedidoID(lista,idPedido);
+
+    if(modificado)
+    {
+         if (modificado->dato.estadoDelPedido == 1)
+            {
+                modificado->dato=modificarUnpedido(modificado->dato); // retorna el pedido leido, ya modificado por la funcion
+                modificado->modificado= 1;
+                printf("\n\n\t\tEl pedido fue modificado\n\n");
+            }
+            else
+            {
+
+                printf("\n\n\t\t El pedido se encuentra en estado anulado\n");
+            }
+    }
+
+
+}

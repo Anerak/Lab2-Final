@@ -16,15 +16,19 @@ nodoPedido *inicLista();
 nodoPedido *crearNodo(stPedido dato);
 nodoPedido *agregarPrincipio(nodoPedido *l, nodoPedido *n);
 void mostrarLista(nodoPedido *n);
-nodoPedido * final(nodoPedido *l, nodoPedido *n);
+nodoPedido * nodoFinal(nodoPedido *l, nodoPedido *n);
 nodoPedido *agregarFinal(nodoPedido *l, nodoPedido *n);
-nodoPedido *leerDatos(nodoPedido *l);
 nodoPedido *buscarUltimo(nodoPedido *l);
-int buscarElemento(nodoPedido *l, stPedido dato);
+int verificarIDpedido (nodoPedido *l, stPedido dato);
+nodoPedido* buscarPedidoID (nodoPedido *lista, int idPedido);
+nodoPedido * borrarNodoPedido (nodoPedido *lista, int idPedido);
 nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n);
 
 ///////////// ANULAR :
 void anularPedido(nodoPedido* pedido);
+
+////////// MODIFICAR:
+void modificarNodoPedido (nodoPedido * lista, int idPedido);
 
 
 #endif

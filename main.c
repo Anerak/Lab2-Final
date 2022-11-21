@@ -28,21 +28,29 @@ int main()
 
 	validos = leerArchivoClientes(arregloClientes, 500);
 	ordenarSeleccion(arregloClientes, validos);
-	// ordenarArray(arregloClientes, validos);
 
-	for (int i = 0; i < validos; i++)
-	{
-		printf("ID: %d | DNI: %d | %s %s\n", arregloClientes[i].idCliente, arregloClientes[i].dni, arregloClientes[i].Nombre, arregloClientes[i].Apellido);
-	}
 
 	arbolito = array2arbol(arregloClientes, 0, validos - 1);
-	/// ver que pasa si los datos son impares.
+
 
 	leerArchivoPedidos(arbolito);
 
-	inOrden(arbolito);
+//	inOrden(arbolito);
 
 	system("pause");
+	system("cls");
+
+	nodoArbolCliente*buscado=NULL;
+	int idPedido;
+	printf("\n\nLos pedidos de Oriana son:\n");
+	buscado=buscarNodoArbolPorDni(arbolito,38441203);
+	mostrarLista(buscado->pedidos);
+
+	printf("\nIngrese el nro de ID del pedido a modificar:\n");
+	scanf("%i",&idPedido);
+	anularPedido(buscado->pedidos);
+
+	mostrarUnPedido(buscado->pedidos->dato);
 
 	return 0;
 }

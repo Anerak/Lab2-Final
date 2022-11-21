@@ -208,36 +208,6 @@ int altaDeCliente(stCliente clientenuevo) //
     return flag; // si el cliente ya existe retorna 1
 }
 
-void cargarTotalGastadoYcompra(float costoPedido, int idCliente, int compra) // funcion para sumar el costo pedido al total gastado cliente
-{
-    stCliente auxCliente;
-    int pos = -1;
-
-    FILE *buffer = fopen(ArchivoClientes, "r+b");
-
-    if (buffer != NULL)
-    {
-        pos = buscarClientePorID(idCliente);
-
-        if (pos > -1)
-        {
-            fseek(buffer, sizeof(stCliente) * (pos), SEEK_SET);
-            fread(&auxCliente, sizeof(stCliente), 1, buffer);
-
-            auxCliente.totalGastado += costoPedido;
-            auxCliente.totalCompras += compra;
-
-            fseek(buffer, sizeof(stCliente) * (pos), SEEK_SET);
-            fwrite(&auxCliente, sizeof(stCliente), 1, buffer);
-        }
-
-        fclose(buffer);
-    }
-    else
-    {
-        printf("\n\n\t\tNo pudo abrirse el archivo.\n\n\t\t");
-    }
-}
 
 int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos cargados al arreglo
 {
@@ -263,40 +233,38 @@ int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos
 
 void mostrarCliente(stCliente cliente)
 {
-    printf("%s %s | ID: %i | DNI: %i\n", cliente.Nombre, cliente.Apellido, cliente.idCliente, cliente.dni);
-    return;
-    printf("\n\n\t\t---------------------CLIENTE-----------------------\n");
-    printf("\t\t    ID de Cliente:     %i \n", cliente.idCliente);
-    printf("\t\t    DNI:               %i \n", cliente.dni);
-    printf("\t\t    Nombre:            %s \n", cliente.Nombre);
-    printf("\t\t    Apellido:          %s \n", cliente.Apellido);
-    printf("\n\t\t DATOS DEL DOMICILIO:\n");
-    printf("\t\t    Provincia:         %s \n", cliente.domicilio.provincia);
-    printf("\t\t    Localidad:         %s \n", cliente.domicilio.localidad);
-    printf("\t\t    Calle:             %s \n", cliente.domicilio.Calle);
-    printf("\t\t    Altura:            %i \n", cliente.domicilio.altura);
-    printf("\t\t      Piso:            %i \n", cliente.domicilio.piso);
-    printf("\t\t      Dpto:            %c \n", cliente.domicilio.dpto);
-    printf("\n\t\t DATOS DE CONTACTO:\n");
-    printf("\t\t    Telefono:          %lu \n", cliente.telefono);
-    printf("\t\t    Mail:              %s \n", cliente.Mail);
-    printf("\n\t\t ESTADO DEL CLIENTE:  \n");
+    printf("\n\n\t\t----------------------CLIENTE----------------------\n");
+    printf("\t\t\t    ID de Cliente:     %i \n", cliente.idCliente);
+    printf("\t\t\t    DNI:               %i \n", cliente.dni);
+    printf("\t\t\t    Nombre:            %s \n", cliente.Nombre);
+    printf("\t\t\t    Apellido:          %s \n", cliente.Apellido);
+    printf("\n\t\t\t DATOS DEL DOMICILIO:\n");
+    printf("\t\t\t    Provincia:         %s \n", cliente.domicilio.provincia);
+    printf("\t\t\t    Localidad:         %s \n", cliente.domicilio.localidad);
+    printf("\t\t\t    Calle:             %s \n", cliente.domicilio.Calle);
+    printf("\t\t\t    Altura:            %i \n", cliente.domicilio.altura);
+    printf("\t\t\t      Piso:            %i \n", cliente.domicilio.piso);
+    printf("\t\t\t      Dpto:            %c \n", cliente.domicilio.dpto);
+    printf("\n\t\t\t DATOS DE CONTACTO:\n");
+    printf("\t\t\t    Telefono:          %lu \n", cliente.telefono);
+    printf("\t\t\t    Mail:              %s \n", cliente.Mail);
+    printf("\n\t\t\t ESTADO DEL CLIENTE:  \n");
     if (cliente.bajaCliente == 'a')
     {
-        printf("\t\t                      Activo \n");
-        printf("\t\t     Total gastado:    $ %.2f \n", cliente.totalGastado);
-        printf("\t\tCompras efectuadas:    %i  \n", cliente.totalCompras);
+        printf("\t\t\t                      Activo \n");
+        printf("\t\t\t     Total gastado:    $ %.2f \n", cliente.totalGastado);
+        printf("\t\t\tCompras efectuadas:    %i  \n", cliente.totalCompras);
     }
     else if (cliente.bajaCliente == 'i')
     {
-        printf("\t\t                      Inactivo \n");
+        printf("\t\t\t                      Inactivo \n");
     }
     else
     {
-        printf("\t\t                      -  \n");
+        printf("\t\t\t                      -  \n");
     }
 
-    printf("\n\n\t\t--------------------------------------------\n");
+    printf("\n\n\t\t--------------------------------------------------------------------------\n");
 }
 
 void mostrarArchivoClientes()
