@@ -28,5 +28,6 @@ nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni);
 
 nodoArbolCliente *altaClienteArbol(nodoArbolCliente *t, int id);
 
+void agregarPedido(nodoArbolCliente *arbol, int dni, int idPedido);
 
 #endif

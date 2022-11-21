@@ -264,3 +264,21 @@ nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
 
     return t;
 }
+
+void agregarPedido(nodoArbolCliente *arbol, int dni, int idPedido)
+{
+    nodoArbolCliente *cliente = buscarNodoArbolPorDni(arbol, dni);
+    nodoPedido *pedido = NULL;
+
+    if (cliente)
+    {
+        pedido = crearNodo(generarPedido());
+        pedido->dato.idPedido = idPedido + 1;
+        pedido->dato.dniCliente = dni;
+        pedido->dato.idCliente = cliente->dato.idCliente;
+        cliente->pedidos = insertarPedido(cliente->pedidos, pedido);
+        cliente->modificado = 1;
+
+        printf("\n\n\t\tEl pedido se adiciono al cliente.\n\n");
+    }
+}
