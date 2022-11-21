@@ -180,7 +180,6 @@ nodoArbolCliente *altaClienteArbol(nodoArbolCliente *t, int id)
         scanf("%d", &c.dni);
     }
 
-
     t = agregarNodoPorDni(t, c);
 
     return t;

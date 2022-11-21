@@ -248,13 +248,13 @@ void mostrarCliente(stCliente cliente)
     printf("\t\t\t    Telefono:          %lu \n", cliente.telefono);
     printf("\t\t\t    Mail:              %s \n", cliente.Mail);
     printf("\n\t\t\t ESTADO DEL CLIENTE:  \n");
-    if (cliente.bajaCliente == 'a')
+    if (cliente.bajaCliente == 0)
     {
         printf("\t\t\t                      Activo \n");
         printf("\t\t\t     Total gastado:    $ %.2f \n", cliente.totalGastado);
         printf("\t\t\tCompras efectuadas:    %i  \n", cliente.totalCompras);
     }
-    else if (cliente.bajaCliente == 'i')
+    else if (cliente.bajaCliente == 1)
     {
         printf("\t\t\t                      Inactivo \n");
     }
@@ -1037,42 +1037,6 @@ stCliente crearCliente(int id)
     c.totalGastado = 0;
 
     return c;
-}
-
-void mostrarCliente(stCliente cliente)
-{
-    printf("\n\n\t\t----------------------CLIENTE----------------------\n");
-    printf("\t\t\t    ID de Cliente:     %i \n", cliente.idCliente);
-    printf("\t\t\t    DNI:               %i \n", cliente.dni);
-    printf("\t\t\t    Nombre:            %s \n", cliente.Nombre);
-    printf("\t\t\t    Apellido:          %s \n", cliente.Apellido);
-    printf("\n\t\t\t DATOS DEL DOMICILIO:\n");
-    printf("\t\t\t    Provincia:         %s \n", cliente.domicilio.provincia);
-    printf("\t\t\t    Localidad:         %s \n", cliente.domicilio.localidad);
-    printf("\t\t\t    Calle:             %s \n", cliente.domicilio.Calle);
-    printf("\t\t\t    Altura:            %i \n", cliente.domicilio.altura);
-    printf("\t\t\t      Piso:            %i \n", cliente.domicilio.piso);
-    printf("\t\t\t      Dpto:            %c \n", cliente.domicilio.dpto);
-    printf("\n\t\t\t DATOS DE CONTACTO:\n");
-    printf("\t\t\t    Telefono:          %lu \n", cliente.telefono);
-    printf("\t\t\t    Mail:              %s \n", cliente.Mail);
-    printf("\n\t\t\t ESTADO DEL CLIENTE:  \n");
-    if (cliente.bajaCliente == 0)
-    {
-        printf("\t\t\t                      Activo \n");
-        printf("\t\t\t     Total gastado:    $ %.2f \n", cliente.totalGastado);
-        printf("\t\t\tCompras efectuadas:    %i  \n", cliente.totalCompras);
-    }
-    else if (cliente.bajaCliente == 1)
-    {
-        printf("\t\t\t                      Inactivo \n");
-    }
-    else
-    {
-        printf("\t\t\t                      -  \n");
-    }
-
-    printf("\n\n\t\t--------------------------------------------------------------------------\n");
 }
 
 void modificarCliente(stCliente *c)

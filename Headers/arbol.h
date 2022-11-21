@@ -6,8 +6,8 @@
 typedef struct _nodoArbolCliente
 {
     stCliente dato;
-    struct _nodoArbol *izq;
-    struct _nodoArbol *der;
+    struct _nodoArbolCliente *izq;
+    struct _nodoArbolCliente *der;
     int modificado;
     nodoPedido *pedidos;
 } nodoArbolCliente;

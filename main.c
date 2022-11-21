@@ -17,10 +17,9 @@ void insertarCliente(stCliente array[], int u, stCliente c);
 void ordenarArray(stCliente array[], int validos);
 nodoArbolCliente *array2arbol(stCliente array[], int base, int tope);
 
-int ID_CLIENTE = 0;
-
 int main()
 {
+
 	nodoArbolCliente *arbolito = inicArbol();
 
 	stCliente arregloClientes[500];
@@ -29,40 +28,23 @@ int main()
 	validos = leerArchivoClientes(arregloClientes, 500);
 	ordenarSeleccion(arregloClientes, validos);
 
-
-	system("pause");
-	system("cls");
-
 	arbolito = array2arbol(arregloClientes, 0, validos - 1);
+
 	leerArchivoPedidos(arbolito);
 
-//	inOrden(arbolito);
+	//	inOrden(arbolito);
 
-	system("pause");
-	system("cls");
-
-
-	// arbolito = altaClienteArbol(arbolito, ID_CLIENTE);
-
-	// inOrden(arbolito);
-
-	mostrarCliente(NMI(arbolito)->dato);
-	mostrarCliente(NMD(arbolito)->dato);
-
-	system("pause");
-
-	nodoArbolCliente*buscado=NULL;
+	nodoArbolCliente *buscado = NULL;
 	int idPedido;
 	printf("\n\nLos pedidos de Oriana son:\n");
-	buscado=buscarNodoArbolPorDni(arbolito,38441203);
+	buscado = buscarNodoArbolPorDni(arbolito, 38441203);
 	mostrarLista(buscado->pedidos);
 
 	printf("\nIngrese el nro de ID del pedido a modificar:\n");
-	scanf("%i",&idPedido);
+	scanf("%i", &idPedido);
 	anularPedido(buscado->pedidos);
 
 	mostrarUnPedido(buscado->pedidos->dato);
-
 
 	return 0;
 }
@@ -96,13 +78,8 @@ int leerArchivoClientes(stCliente array[], int dimension)
 	{
 		while (fread(&c, sizeof(stCliente), 1, a) > 0)
 		{
-			if (i < dimension && c.bajaCliente == 0)
+			if (i < dimension)
 			{
-				if (c.idCliente > ID_CLIENTE)
-				{
-					ID_CLIENTE = c.idCliente;
-				}
-
 				array[i] = c;
 				i++;
 			}
