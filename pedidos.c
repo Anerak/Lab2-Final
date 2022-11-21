@@ -86,10 +86,12 @@ stPedido generarPedido() // carga un pedido, llama a las funciones anteriores
     stPedido A;
     stProducto arregloProd[30];
 
-    int i = 0, idPedido = 0, validarIDcliente = 0, opcionCliente=1;
+    int i = 0, idPedido = 0, validarIDcliente = 0, opcionCliente = 1;
     float costo = 0;
     char opcion = 's';
     char validarNumero[dim];
+
+
 
 //   idPedido = ultimoIdPedido();
 //   A.idPedido = idPedido + 1;
@@ -107,15 +109,39 @@ stPedido generarPedido() // carga un pedido, llama a las funciones anteriores
             printf("\n\n\t\tDesea agregar otro producto al pedido? \n\t\t(s para adicionar otro producto, n para salir)\n\t\t");
             fflush(stdin);
             scanf("%c", &opcion);
+
         }
+    } while (opcionCliente == 1);
 
-        A.cantidadProductos = i;
+    if (opcionCliente == 2)
+    {
+        altaDeCliente(C);
+        A.idCliente = C.idCliente;
+    }
 
-        printf("\n\n\t\tEl costo final del pedido es: $%.2f\n\t\t", costo);
-        A.costoPedido = costo;
+    printf("\n\n\t\t Fecha del pedido:\n\t\t");
+    F = cargarFecha(F);
+    A.fecha = F;
 
-        A.estadoDelPedido = 1;
-        A.detalleEstado = 's';
+    printf("\n\n\t\tDescripcion del pedido:\n\t\t");
+    while (opcion == 's' && i < 10)
+    {
+        P = cargarDetalleProducto(P);
+        A.arregloDePedidos[i] = P;
+        i++;
+        costo += P.precioFinal;
+        printf("\n\n\t\tDesea agregar otro producto al pedido? \n\t\t(s para adicionar otro producto, n para salir)\n\t\t");
+        fflush(stdin);
+        scanf("%c", &opcion);
+    }
+
+    A.cantidadProductos = i;
+
+    printf("\n\n\t\tEl costo final del pedido es: $%.2f\n\t\t", costo);
+    A.costoPedido = costo;
+
+    A.estadoDelPedido = 1;
+    A.detalleEstado = 's';
 
     return A;
 }
@@ -200,8 +226,6 @@ void mostrarArregloProducto (stProducto arreglo [],int validos)
         i++;
     }
 }
-
-
 void mostrarUnPedido(stPedido A)
 {
     printf("\n\t\t    ID de Pedido:     %i ", A.idPedido);
@@ -209,7 +233,7 @@ void mostrarUnPedido(stPedido A)
     printf("\n\t\t    DNI de Cliente:   %i ", A.dniCliente);
     printf("\n\t\t    Fecha del pedido: ");
     mostrarFecha(A.fecha);
-    mostrarArregloProducto(A.arregloDePedidos, A.cantidadProductos);
+    // mostrarArregloProducto(A.arregloDePedidos, A.cantidadProductos);
     printf("\n\t\t    Costo de pedido: $ %i \n", A.costoPedido);
     if (A.estadoDelPedido ==  1)
     {
@@ -236,10 +260,11 @@ void mostrarUnPedido(stPedido A)
     printf("\t\t..........................................................\n");
 }
 
-
 ///////////////////////////////////////LISTADOS Y ESTADISTICAS////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////MODIFICAR PEDIDOS////////////////////////////////////////////////////////////////////
+
+
 
 stFecha modificarFechaPedido(stPedido pedido) // Auxiliar - Modifica fecha
 {
@@ -382,8 +407,6 @@ stProducto modificarUnProducto(stProducto producto) // Modifica un Producto exis
     return producto;
 }
 
-
-
 stPedido modificarUnpedido(stPedido pedido)
 {
     int i = 0;
@@ -421,6 +444,34 @@ stPedido modificarUnpedido(stPedido pedido)
             printf("\n\n\t\tIngrese detalle de estado:\n\t\t");
             fflush(stdin);
             scanf("%c", &pedido.detalleEstado);
+
+        }
+    }
+
+    printf("\n\n\t\tIngrese S para editar fecha, u otra letra para cancelar.\n\t\t");
+    fflush(stdin);
+    scanf("%c", &seguir);
+
+    if (seguir == 's' || seguir == 'S')
+    {
+        // pedido.fecha = modificarFechaPedido(pedido);
+    }
+
+    return pedido;
+}
+
+void mostrarPedidosPorCliente(int idAuxCliente)
+{
+    stPedido arregloPedidos[dim];
+    int validos = 0, i = 0;
+
+    validos = 0; // cargarArregloDePedidos(arregloPedidos);
+
+    while (i < validos)
+    {
+        if (arregloPedidos[i].idCliente == idAuxCliente)
+        {
+            mostrarUnPedido(arregloPedidos[i]);
         }
     return pedido;
 }

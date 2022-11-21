@@ -96,6 +96,11 @@ void postOrden(nodoArbolCliente *t)
     }
 }
 
+int esHoja(nodoArbolCliente *t)
+{
+    return t && !(t->der) && !(t->izq);
+}
+
 nodoArbolCliente *buscarNodoArbol(nodoArbolCliente *t, int id)
 {
     nodoArbolCliente *n = NULL;
@@ -118,7 +123,6 @@ nodoArbolCliente *buscarNodoArbol(nodoArbolCliente *t, int id)
 
     return n;
 }
-
 
 nodoArbolCliente *buscarNodoArbolPorDni(nodoArbolCliente *t, int dni)
 {
@@ -166,98 +170,61 @@ nodoArbolCliente *buscarNodoArbolPorNombre(nodoArbolCliente *t, char n[])
     return arbol;
 }
 
-void altaClienteArbol(nodoArbolCliente *t)
+nodoArbolCliente *altaClienteArbol(nodoArbolCliente *t, int id)
 {
-    stCliente c;
-    printf("Ingrese DNI: ");
-    scanf("%i", &c.dni);
-    nodoArbolCliente *busqueda = buscarNodoArbolPorDni(t, c.dni);
-    if (busqueda)
+    stCliente c = crearCliente(id);
+    while (buscarNodoArbolPorDni(t, c.dni))
     {
-        printf("Cliente ya existe!\n");
-        return;
+        printf("DNI ya existe. Ingrese un nuevo valor: \n");
+        fflush(stdin);
+        scanf("%d", &c.dni);
     }
-    else
-    {
-    }
+
+
+    t = agregarNodoPorDni(t, c);
+
+    return t;
 }
 
-int altaDeCliente2(stCliente clientenuevo) //
+nodoArbolCliente *NMD(nodoArbolCliente *t)
 {
-    stDomicilio domicilio;
-    int flag = -1, id = 0;
-    long int DniAux = 0;
-
-    char validarNum[dim];
-    char validarString[dim];
-
-    FILE *archi = fopen(ArchivoClientes, "ab");
-
-    if (archi != NULL)
+    nodoArbolCliente *mostRight = NULL;
+    if (t)
     {
-        printf("\n\n\t\tIngrese el DNI:\n\t\t");
-        fflush(stdin);
-        scanf("%li", &DniAux);
-
-        flag = validacionDeAlta(DniAux);
-
-        if (flag == 0)
+        if (t->der)
         {
-            clientenuevo.dni = DniAux;
-
-            id = ultimoIDCliente();
-            clientenuevo.idCliente = id + 1;
-            printf("\n\n\t\tID Cliente: 0000%i \n\n", clientenuevo.idCliente);
-
-            do
-            {
-                printf("\n\n\t\tIngrese el nombre  del cliente:\n\t\t");
-                fflush(stdin);
-                gets(validarString);
-            } while ((validarPalabra(validarString)) != 0);
-            strcpy(clientenuevo.Nombre, validarString);
-
-            do
-            {
-                printf("\n\n\t\tIngrese el apellido del cliente:\n\t\t");
-                fflush(stdin);
-                gets(validarString);
-            } while ((validarPalabra(validarString)) != 0);
-            strcpy(clientenuevo.Apellido, validarString);
-
-            domicilio = cargarDomicilio(domicilio);
-            clientenuevo.domicilio = domicilio;
-
-            do
-            {
-                printf("\n\n\t\tIngrese el numero de telefono del cliente:\n\t\t");
-                fflush(stdin);
-                scanf("%s", validarNum);
-            } while ((validarNumero(validarNum)) != 0);
-            clientenuevo.telefono = (atoi(validarNum));
-
-            do
-            {
-                printf("\n\n\t\tIngrese el mail del cliente:\n\t\t"); // se puede usar el @?
-                fflush(stdin);
-                gets(validarString);
-            } while ((escribeMailCorrecto(validarString)) != 2);
-            strcpy(clientenuevo.Mail, validarString);
-
-            clientenuevo.bajaCliente = 'a';
-            clientenuevo.totalGastado = 0;
-            clientenuevo.totalCompras = 0;
-
-            fwrite(&clientenuevo, sizeof(stCliente), 1, archi);
-
-            fclose(archi);
+            mostRight = NMD(t->der);
+        }
+        else
+        {
+            mostRight = t;
         }
     }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir.\n\n\t\t");
-    }
 
-    return flag; // si el cliente ya existe retorna 1
+    return mostRight;
 }
 
+nodoArbolCliente *NMI(nodoArbolCliente *t)
+{
+    nodoArbolCliente *mostLeft = NULL;
+    if (t)
+    {
+        if (t->izq)
+        {
+            mostLeft = NMI(t->izq);
+        }
+        else
+        {
+            mostLeft = t;
+        }
+    }
+
+    return mostLeft;
+}
+
+nodoArbolCliente *borrarNodo(nodoArbolCliente *t)
+{
+    if (t)
+    {
+    }
+}

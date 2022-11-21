@@ -25,6 +25,7 @@ nodoPedido * borrarNodoPedido (nodoPedido *lista, int idPedido);
 nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n);
 
 ///////////// ANULAR :
+
 void anularPedido(nodoPedido* pedido);
 
 ////////// MODIFICAR:
