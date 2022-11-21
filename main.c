@@ -9,6 +9,8 @@
 #include "./Headers/pedidos.h"
 #include "./Headers/cliente.h"
 
+int IDPEDIDO=0;
+
 int leerArchivoClientes(stCliente array[], int dimension);
 void leerArchivoPedidos(nodoArbolCliente *arbol);
 
@@ -42,9 +44,9 @@ int main()
 
 	printf("\nIngrese el nro de ID del pedido a modificar:\n");
 	scanf("%i", &idPedido);
-	anularPedido(buscado->pedidos);
+	agregarPedido (arbolito,38441203,27);
 
-	mostrarUnPedido(buscado->pedidos->dato);
+	mostrarLista(buscado->pedidos);
 
 	return 0;
 }

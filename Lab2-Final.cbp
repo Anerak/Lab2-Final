@@ -39,6 +39,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="clientes.dat" />
+		<Unit filename="fecha.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="lista.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -51,6 +54,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="pedidos.dat" />
+		<Unit filename="producto.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="utils.c">
 			<Option compilerVar="CC" />
 		</Unit>

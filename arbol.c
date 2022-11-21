@@ -3,6 +3,8 @@
 #include <string.h>
 #include "./Headers/arbol.h"
 
+
+
 nodoArbolCliente *inicArbol()
 {
     return NULL;
@@ -227,3 +229,6 @@ nodoArbolCliente *borrarNodo(nodoArbolCliente *t)
     {
     }
 }
+
+
+
