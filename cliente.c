@@ -994,5 +994,46 @@ stCliente peorCliente() // Retorna el peor cliente
 }
 
 //////////////////////////////////////////////////////////////////////////////////
+//////// Arreglos Clientes
+
+int buscarPosMenor(stCliente array[], int pos, int validos)
+{
+	stCliente menor;
+	menor = array[pos];
+
+	int posMenor = pos;
+
+	int i = pos + 1;
+
+	while (i < validos)
+	{
+		if (menor.dni > array[i].dni)
+		{
+			menor = array[i];
+			posMenor = i;
+		}
+		i++;
+	}
+	return posMenor;
+}
+
+void ordenarSeleccion(stCliente array[], int validos)
+{
+	int i = 0;
+	int posMenor;
+
+	stCliente aux;
+
+	while (i < validos)
+	{
+		posMenor = buscarPosMenor(array, i, validos);
+		aux = array[posMenor];
+		array[posMenor] = array[i];
+		array[i] = aux;
+		i++;
+	}
+}
+
+
 /////////////                        Arboles                        //////////////
 //////////////////////////////////////////////////////////////////////////////////

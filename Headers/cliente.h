@@ -71,4 +71,12 @@ void insertarClientesPorCompras(stCliente arrClientes[], int pos, stCliente auxC
 int topTenMejoresClientes(stCliente clientes[]);
 stCliente peorCliente();
 
+
+///////////////////////////////////////////////
+
+// Arreglo Clientes:
+
+void ordenarSeleccion(stCliente array[], int validos);
+int buscarPosMenor(stCliente array[], int pos, int validos);
+
 #endif

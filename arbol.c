@@ -78,6 +78,8 @@ void inOrden(nodoArbolCliente *t)
     {
         inOrden(t->izq);
         mostrarCliente(t->dato);
+        printf("\n- - - - - - - - Pedidos para el cliente %s %s - - - - - - - -\n", t->dato.Nombre, t->dato.Apellido);
+        mostrarLista(t->pedidos);
         inOrden(t->der);
     }
 }
@@ -89,6 +91,8 @@ void postOrden(nodoArbolCliente *t)
         postOrden(t->izq);
         postOrden(t->der);
         mostrarCliente(t->dato);
+        printf("\n- - - - - - - - Pedidos para el cliente %s %s - - - - - - - -\n", t->dato.Nombre, t->dato.Apellido);
+        mostrarLista(t->pedidos);
     }
 }
 
@@ -114,6 +118,7 @@ nodoArbolCliente *buscarNodoArbol(nodoArbolCliente *t, int id)
 
     return n;
 }
+
 
 nodoArbolCliente *buscarNodoArbolPorDni(nodoArbolCliente *t, int dni)
 {
@@ -254,4 +259,94 @@ int altaDeCliente2(stCliente clientenuevo) //
     }
 
     return flag; // si el cliente ya existe retorna 1
+}
+
+
+
+/////////////////////////////////////////// BUSCAR PEDIDOS /////////////////////////////////////////////////////////////////////
+
+nodoPedido* buscarIdPedidoConDni ( nodoArbolCliente * arbolito, int dni, int nroPedido) // retorna el pedido
+{
+    nodoArbolCliente * c= NULL;
+    nodoPedido* seg=NULL;
+    nodoPedido* buscado=NULL;
+
+    if (arbolito)
+    {
+        c= buscarNodoArbolPorDni(arbolito,dni);
+
+        seg = c->pedidos;
+        while (seg && buscado==NULL)
+        {
+            if ( seg->dato.idPedido == nroPedido)
+            {
+                buscado=seg;
+            }
+            seg=seg->siguiente;
+        }
+    }
+    return buscado;
+}
+
+nodoPedido* buscarPedidoSinDni (nodoArbolCliente *t, int idPedido)
+{
+    nodoPedido *buscado = NULL;
+    nodoPedido * seg= NULL;
+
+    if(t){
+        if (t->pedidos->dato.idPedido == idPedido)
+        {
+            buscado = t->pedidos;
+        }else{
+
+            seg = t->pedidos;
+            while(seg && buscado==NULL)
+            {
+                if (t->pedidos->dato.idPedido == idPedido)
+                    {
+                        buscado = t->pedidos;
+                    }
+                seg=seg->siguiente;
+            }
+        }
+
+        if(!buscado)
+        {
+               buscado=buscarPedidoSinDni(t->izq,idPedido);
+
+                if(!buscado)
+                {
+                    buscado=buscarPedidoSinDni(t->der,idPedido);
+                }
+            }
+    }
+
+    return buscado;
+}
+
+////////////////////////////////////////// MODIFICAR PEDIDO
+
+void modificarPedidoPorId(nodoArbolCliente * arbolito, int idpedido) // Modificar pedido por ID
+{
+    stPedido auxPedido;
+    nodoPedido* auxiliar=NULL;
+    char opcion = 's';
+
+    if (arbolito)
+    {
+        auxiliar = buscarPedidoSinDni(arbolito,idpedido);
+
+        if (auxiliar)
+        {
+            if (auxiliar->modificado == 1)
+            {
+                modificarUnpedido(auxPedido); // retorna el pedido leido, ya modificado por la funcion
+            }
+            else
+            {
+
+                printf("\n\n\t\t El pedido se encuentra en estado anulado\n");
+            }
+        }
+    }
 }

@@ -3,8 +3,10 @@
 #include "fecha.h"
 #include "producto.h"
 #include "cliente.h"
+#include "arbol.h"
+#include "lista.h"
 
-typedef struct
+typedef struct _stPedido
 {
     int idPedido;
     int idCliente;
@@ -21,30 +23,17 @@ typedef struct
 ///////////// CARGAR :
 stFecha cargarFecha(stFecha);
 stProducto cargarDetalleProducto(stProducto);
-int ultimoIdPedido();
-stPedido cargarPedido();
-int cargarArregloDePedidos(stPedido nombreArreglo[]);
+stPedido generarPedido();
 
 ///////////// MOSTRAR :
 void mostrarMes(stFecha A);
 void mostrarFecha(stFecha A);
 void mostrarDetalleProducto(stProducto A);
-void mostrarArregloProducto(stProducto A[], int validos);
+
 void mostrarUnPedido(stPedido A);
-void mostrarArchivoPedidos();
-void mostrarArregloPedidos(stPedido nomArreglo[], int validos);
-
-///////////// BUSCAR :
-int buscarIdPedido(int); // retorno la poscion en el archivo o -1 si no esta
-stPedido retornaPedidoPorPos(int pos);
-
-///////////// ANULAR :
-int anularPedido(int nroPedido);
-stPedido verificarPedidoAnulado(stPedido auxPedido, int *estadoPedido);
 
 //// PEDIDOS :
 
-void modificarPedidoPorId(int idpedido);                                 // Modifica pedido por ID
 stFecha modificarFechaPedido(stPedido auxPedido);                        // Modifica fecha
 float modificarArregloProductos(stProducto arrProductos[], int validos); // recorre y modifica arreglo de productos
 stProducto modificarUnProducto(stProducto auxProducto);                  // Modifica un Producto existente

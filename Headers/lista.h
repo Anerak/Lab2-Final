@@ -3,11 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include ".\pedidos.h"
+#include "pedidos.h"
 
-typedef struct nodoPedido
+typedef struct _nodoPedido
 {
-    struct nodoPedido *siguiente;
+    struct _nodoPedido *siguiente;
     stPedido dato;
     int modificado;
 } nodoPedido;
@@ -22,5 +22,9 @@ nodoPedido *leerDatos(nodoPedido *l);
 nodoPedido *buscarUltimo(nodoPedido *l);
 int buscarElemento(nodoPedido *l, stPedido dato);
 nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n);
+
+///////////// ANULAR :
+void anularPedido(nodoPedido* pedido);
+
 
 #endif

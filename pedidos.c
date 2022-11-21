@@ -3,6 +3,8 @@
 #include <string.h>
 #include "./Headers/fecha.h"
 #include "./Headers/pedidos.h"
+#include "./Headers/arbol.h"
+
 ///////////////////////////////////////////FUNCIONES DE PEDIDOS////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////CARGA///////////////////////////////////////////////////////////////////
@@ -31,7 +33,7 @@ stFecha cargarFecha(stFecha A) // cargar estructura fecha
 
     do
     {
-        printf("\n\n\t\t          Ingrese el a�o:\n\t\t\t\t");
+        printf("\n\n\t\t          Ingrese el anio:\n\t\t\t\t");
         fflush(stdin);
         scanf("%s", validarNum);
     } while ((validarNumero(validarNum)) != 0 && atoi(validarNum) < 2000 && atoi(validarNum) > 2050);
@@ -77,27 +79,7 @@ stProducto cargarDetalleProducto(stProducto A) // cargar detalle de pedido
     return A;
 }
 
-int ultimoIdPedido() // Abre el archivo y busca el ID del ultimo pedido y lo retorna
-{
-    stPedido A;
-    int IDpedido = 0;
-
-    FILE *buffer = fopen(ArchivoPedidos, "rb");
-
-    if (buffer != NULL)
-    {
-        fseek(buffer, sizeof(stPedido) * (-1), 2);
-        if ((fread(&A, sizeof(stPedido), 1, buffer)) > 0)
-        {
-            IDpedido = A.idPedido;
-        }
-        fclose(buffer);
-    }
-
-    return IDpedido;
-}
-
-stPedido cargarPedido() // carga un pedido, llama a las funciones anteriores
+stPedido generarPedido() // carga un pedido, llama a las funciones anteriores
 {
     stPedido A;
     stProducto P;
@@ -105,18 +87,14 @@ stPedido cargarPedido() // carga un pedido, llama a las funciones anteriores
     stCliente C;
     stProducto arregloProd[30];
 
-    int i = 0, idPedido = 0, validarIDcliente = 0, opcionCliente;
+    int i = 0, idPedido = 0, validarIDcliente = 0, opcionCliente=1;
     float costo = 0;
     char opcion = 's';
     char validarNumero[dim];
 
-    FILE *buffer = fopen(ArchivoPedidos, "ab");
-
-    if (buffer != NULL)
-    {
-        idPedido = ultimoIdPedido();
-        A.idPedido = idPedido + 1;
-        printf("\n\n\t\tID Pedido: 0000%i \n\n", A.idPedido);
+     idPedido = ultimoIdPedido();
+     A.idPedido = idPedido + 1;
+     printf("\n\n\t\tID Pedido: 0000%i \n\n", A.idPedido);
 
         do
         {
@@ -131,7 +109,9 @@ stPedido cargarPedido() // carga un pedido, llama a las funciones anteriores
             }
             else
             {
-                printf("\n\n\t\tEl numero ingresado no corresponde a un cliente guardado.\n\t\tSi desea volver a ingresar el numero ingrese 1.\n\t\tPara cargar un nuevo cliente ingrese 2.\n\n\t\t");
+                printf("\n\n\t\tEl numero ingresado no corresponde a un cliente guardado.");
+                printf("\n\t\tSi desea volver a ingresar el numero ingrese 1.");
+                printf("\n\t\tPara cargar un nuevo cliente ingrese 2.\n\n\t\t");
                 scanf("%i", &opcionCliente);
             }
         } while (opcionCliente == 1);
@@ -168,36 +148,7 @@ stPedido cargarPedido() // carga un pedido, llama a las funciones anteriores
 
         cargarTotalGastadoYcompra(costo, validarIDcliente, 1);
 
-        fwrite(&A, sizeof(stPedido), 1, buffer);
-        fclose(buffer);
-    }
-    else
-    {
-        printf("\n\n\t\tNo pudo abrirse el archivo de pedidos, vuelva a intentarlo.\n\t\t");
-    }
-
     return A;
-}
-
-int cargarArregloDePedidos(stPedido nombreArreglo[dim]) // retorna los validos cargados al arreglo
-{
-
-    FILE *buffer = fopen(ArchivoPedidos, "rb");
-
-    stPedido A;
-    int i = 0;
-
-    if (buffer != NULL)
-    {
-        while (((fread(&A, sizeof(stPedido), 1, buffer)) > 0) && i < dim)
-        {
-            nombreArreglo[i] = A;
-            i++;
-        }
-        fclose(buffer);
-    }
-
-    return i;
 }
 
 ///////////////////////////////////////////////////MOSTRAR///////////////////////////////////////////////////////////////////
@@ -264,25 +215,16 @@ void mostrarFecha(stFecha A)
 void mostrarDetalleProducto(stProducto A)
 {
     printf("\n\n\t\t     Descripcion del pedido:\n");
-    printf("\t\t             Producto: %s \n", A.Producto);
-    printf("\t\t              Modelo:   %s \n", A.Modelo);
-    printf("\t\t             Cantidad: %i \n", A.cantidad);
-    printf("\t\t             Precio: $ %.2f \n", A.precio);
+    printf("\t\t             Producto:  %s \n", A.Producto);
+    printf("\t\t             Modelo:    %s \n", A.Modelo);
+    printf("\t\t             Cantidad:  %i \n", A.cantidad);
+    printf("\t\t             Precio:  $ %.2f \n", A.precio);
 }
 
-void mostrarArregloProducto(stProducto A[], int validos)
-{
-    int i = 0;
 
-    while (i < validos)
-    {
-        mostrarDetalleProducto(A[i]);
-        i++;
-    }
-}
 void mostrarUnPedido(stPedido A)
 {
-    printf("ID: %i | DNI: %i\n", A.idPedido, A.dniCliente);
+    printf("-----------ID: %i | DNI: -----------%i\n", A.idPedido, A.dniCliente);
     mostrarFecha(A.fecha);
     return;
     printf("\n\n\t\t--------------------------------------------\n");
@@ -292,7 +234,7 @@ void mostrarUnPedido(stPedido A)
     printf("\n\t\t    Fecha del pedido: ");
     mostrarFecha(A.fecha);
     mostrarArregloProducto(A.arregloDePedidos, A.cantidadProductos);
-    printf("\t\t    Costo de pedido: $ %i \n", A.costoPedido);
+    printf("\n\t\t    Costo de pedido: $ %i \n", A.costoPedido);
     if (A.estadoDelPedido == 1)
     {
         printf("\t\t   ESTADO DEL PEDIDO:     ACTIVO\n");
@@ -318,261 +260,87 @@ void mostrarUnPedido(stPedido A)
     printf("\t\t--------------------------------------------\n");
 }
 
-void mostrarArchivoPedidos()
-{
-    FILE *buffer = fopen(ArchivoPedidos, "rb");
-    stPedido A;
-
-    if (buffer != NULL)
-    {
-        while ((fread(&A, sizeof(stPedido), 1, buffer)) > 0)
-        {
-            mostrarUnPedido(A);
-        }
-    }
-    else
-    {
-
-        printf("\n\n\t\tEl archivo no pudo ser abierto, vuelve a intentarlo o consulte con su adiministrador.\n\n\t\t");
-    }
-
-    fclose(buffer);
-}
-
-void mostrarArregloPedidos(stPedido nomArreglo[], int validos)
-{
-    int i = 0;
-
-    while (i < validos)
-    {
-        mostrarUnPedido(nomArreglo[i]);
-        i++;
-    }
-}
-
-///////////////////////////////////////////////////BUSCAR///////////////////////////////////////////////////////////////////
-
-int buscarIdPedido(int nroPedido) // retorno la poscion en el archivo o -1 si no esta
-{
-    int flag = -1;
-    stPedido A;
-
-    FILE *buffer = fopen(ArchivoPedidos, "rb");
-
-    if (buffer != NULL)
-    {
-        while (flag == -1 && fread(&A, sizeof(stPedido), 1, buffer) > 0)
-        {
-            if (A.idPedido == nroPedido)
-            {
-                flag = (ftell(buffer)) / (sizeof(stPedido)); // da la posicion.
-                flag = flag - 1;
-            }
-        }
-        fclose(buffer);
-    }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir.\n\n\t\t");
-    }
-
-    return flag;
-}
-
-stPedido retornaPedidoPorPos(int pos)
-{
-    FILE *buffer = fopen(ArchivoPedidos, "rb");
-    stPedido A;
-    stPedido Aux;
-
-    if (buffer != NULL)
-    {
-        fseek(buffer, ((sizeof(stPedido)) * (pos)), 0);
-        fread(&A, sizeof(stPedido), 1, buffer);
-        Aux = A;
-        fclose(buffer);
-    }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir\n\n\t\t");
-    }
-
-    return Aux;
-}
-
-///////////////////////////////////////////////////ANULAR//////////////////////////////////////////////////////////////////
-
-int anularPedido(int nroPedido) // devuelve  la posicion del pedido o -1 si no encontro el pedido
-{
-    FILE *buffer = fopen(ArchivoPedidos, "r+b");
-    stPedido A;
-    int flag = -1, costoP = 0;
-
-    if (buffer != NULL)
-    {
-        flag = buscarIdPedido(nroPedido); // nos da la posicion del cliente en el archivo
-        if (flag != -1)
-        {
-            fseek(buffer, (sizeof(stPedido) * flag), 0); // ubicar en la pocision del cliente
-            fread(&A, sizeof(stPedido), 1, buffer);      // lee el cliente
-
-            if (A.estadoDelPedido == 1)
-            {
-                A.estadoDelPedido = 0;
-                costoP = A.costoPedido;
-                A.costoPedido = 0;
-
-                cargarTotalGastadoYcompra((costoP * -1), A.idCliente, -1); // realiza el descuetento de la compra anulada al totalgastado por el cliente
-                fseek(buffer, (sizeof(stPedido) * flag), 0);
-                fwrite(&A, sizeof(stPedido), 1, buffer);
-            }
-        }
-        fclose(buffer);
-    }
-    else
-    {
-        printf("\n\n\t\tNo pudo abrirse el archivo de pedidos. Vuelva a intentarlo.\n\n\t\t");
-    }
-    return flag;
-}
-
-stPedido verificarPedidoAnulado(stPedido auxPedido, int *estadoPedido) // verifica si el pedido esta anulado
-{
-    int opcion = 0;
-
-    // estado en 0 estaba inactivo y no cambio ---> no entra en modificaciones
-    // estdo en 1 ya estaba activo ---> no se modifica la compra
-    // estado en 2 estaba inactivo y se activo ---> se realiza la activacion de la compra y puede acceder a modificaciones si lo desa
-
-    if (auxPedido.estadoDelPedido == 0)
-    {
-        printf("\a\n\n\t\tEl pedido se encuentra inactivo.\n\n\t\tPara modificarlo debe activarlo\n\n\t\t");
-        printf("\n\n\t\tDesea activar o salir?\nIngrese 1 para confirmar u otro numero para cancelar y salir\n\n\t\t");
-        scanf("%i", &opcion);
-        if (opcion == 1)
-        {
-            *estadoPedido += 2;
-            auxPedido.estadoDelPedido = 1;
-            cargarTotalGastadoYcompra(auxPedido.costoPedido, auxPedido.idCliente, 1);
-
-        } // si entro al if por estar en 0 y no lo activa el estado estara en 0 inactivo y no entrara a modifcaciones
-    }
-    else if (auxPedido.estadoDelPedido == 1) // si estaba activo entra aca puede entrar a modificaciones
-    {
-        *estadoPedido += 1;
-    }
-
-    return auxPedido;
-}
 
 ///////////////////////////////////////LISTADOS Y ESTADISTICAS////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////MODIFICAR PEDIDOS////////////////////////////////////////////////////////////////////
 
-void modificarPedidoPorId(int idpedido) // Modificar pedido por ID
+void modificarPedidoPorId(nodoArbolCliente * arbolito, int idpedido) // Modificar pedido por ID
 {
     stPedido auxPedido;
-    int pos = -1;
-    int estado = 0;
+    nodoPedido* modificado=NULL;
     char opcion = 's';
 
-    FILE *buff = fopen(ArchivoPedidos, "r+b");
-
-    if (buff != NULL)
+    if (arbolito)
     {
-        pos = buscarIdPedido(idpedido);
+        modificado = buscarPedidoSinDni(arbolito,idpedido);
 
-        if (pos >= 0)
+        if (modificado)
         {
-            fseek(buff, sizeof(stPedido) * (pos), SEEK_SET);
-            fread(&auxPedido, sizeof(stPedido), 1, buff);
-            auxPedido = verificarPedidoAnulado(auxPedido, &estado); // retorna el pedido si lo modifica a activo o no
-
-            if (estado == 1)
+            if (modificado.estadoDelPedido == 1)
             {
-                auxPedido = modificarUnpedido(auxPedido); // retorna el pedido leido, ya modificado por la funcion
-                fseek(buff, sizeof(stPedido) * (-1), SEEK_CUR);
-                fwrite(&auxPedido, sizeof(stPedido), 1, buff); // sobreescre el pedido en el archivo
+                modificarUnpedido(auxPedido); // retorna el pedido leido, ya modificado por la funcion
             }
-            else if (estado == 2)
+            else
             {
 
-                printf("\n\n\t\tEl pedido ahora esta activo desea realizar modificaciones?\nIngrese s para confirmar, otra letra para cancelar\n\n\t\t");
-                fflush(stdin);
-                scanf("%c", &opcion);
-
-                if (opcion == 's')
-                {
-                    auxPedido = modificarUnpedido(auxPedido);
-                }
-
-                fseek(buff, sizeof(stPedido) * (-1), SEEK_CUR);
-                fwrite(&auxPedido, sizeof(stPedido), 1, buff); // sobreescre el pedido en el archivo
+                printf("\n\n\t\t El pedido se encuentra en estado anulado\n");
             }
-            fclose(buff);
-        }
-        else
-        {
-            printf("\n\n\t\tEl pedido que desea modificar no existe, ingrese otro id o verifique el mismo.\n\t\t");
-        }
-    }
-    else
-    {
-        printf("\n\n\t\tNo pudo abrirse el archivo \n\n\t\t");
     }
 }
 
-stFecha modificarFechaPedido(stPedido auxPedido) // Auxiliar - Modifica fecha
+stFecha modificarFechaPedido(nodoPedido * pedido) // Auxiliar - Modifica fecha
 {
     char seguir = 's';
+    int opcion=0;
     char auxNumero[10];
 
-    printf("\n\n\t\tIngrese s para editar dia, u otra letra para cancelar.\n\t\t");
-    fflush(stdin);
-    scanf("%c", &seguir);
+    do{
 
-    if (seguir == 's' || seguir == 'S')
-    {
-        do
+        printf("\n\n              Modificar Fecha  \n\n");
+        printf("\t\tIngrese:");
+        printf("\n\t\t\t1 - Para modificar el dia");
+        printf("\n\t\t\t2 - Para modificar el mes");
+        printf("\n\t\t\t3 - Para modificar el anio");
+        scanf("%i",&opcion);
+
+        if(opcion ==1)
         {
-            printf("\n\n\t\tIngrese el dia:\n\t\t");
-            fflush(stdin);
-            gets(auxNumero);
-        } while ((validarNumero(auxNumero)) != 0);
-        auxPedido.fecha.dia = atoi(auxNumero);
-    }
+            do
+            {
+                printf("\n\n\t\tIngrese el dia:\n\t\t");
+                fflush(stdin);
+                gets(auxNumero);
+            } while ((validarNumero(auxNumero)) != 0);
+            pedido.fecha.dia = atoi(auxNumero);
 
-    printf("\n\n\t\tIngrese S para editar mes, u otra letra para cancelar.\n\t\t");
-    fflush(stdin);
-    scanf("%c", &seguir);
+        }else if (opcion==2){
 
-    if (seguir == 's' || seguir == 'S')
-    {
-        do
-        {
-            printf("\n\n\t\tIngrese mes:\n\t\t");
-            fflush(stdin);
-            gets(auxNumero);
-        } while ((validarNumero(auxNumero)) != 0);
-        auxPedido.fecha.Mes = atoi(auxNumero);
-    }
+            do
+            {
+                printf("\n\n\t\tIngrese mes:\n\t\t");
+                fflush(stdin);
+                gets(auxNumero);
+            } while ((validarNumero(auxNumero)) != 0);
+            pedido.fecha.Mes = atoi(auxNumero);
 
-    printf("\n\n\t\tIngrese S para editar anio, u otra letra para cancelar.\n\t\t");
-    fflush(stdin);
-    scanf("%c", &seguir);
+        }else if(opcion ==3){
 
-    if (seguir == 's' || seguir == 'S')
-    {
+            do
+            {
+                printf("\n\n\t\tIngrese el anio:\n\t\t");
+                fflush(stdin);
+                gets(auxNumero);
+            } while ((validarNumero(auxNumero)) != 0);
+            pedido.fecha.anio = atoi(auxNumero);
+        }
 
-        do
-        {
-            printf("\n\n\t\tIngrese el anio:\n\t\t");
-            fflush(stdin);
-            gets(auxNumero);
-        } while ((validarNumero(auxNumero)) != 0);
-        auxPedido.fecha.anio = atoi(auxNumero);
-    }
-    return auxPedido.fecha;
+        printf("Si desea modificar otro dato de la fecha ingrese s o cualquier tecla para finalizar la modificacion:\n\t\t");
+        fflush(stdin);
+        gets(seguir);
+    }while (seguir=='s');
+
+        return pedido.fecha;
 }
 
 float modificarArregloProductos(stProducto arrProductos[], int validos) // Auxiliar - recorre y modifica arreglo de productos
@@ -658,9 +426,9 @@ stProducto modificarUnProducto(stProducto auxProducto) // Modicia un Producto ex
     return auxProducto;
 }
 
-stPedido modificarUnpedido(stPedido auxPedido)
+nodoPedido* modificarUnpedido(nodoPedido* pedido)
 {
-    int auxIdcliente = auxPedido.idCliente, i = 0;
+    int auxIdcliente = pedido.idCliente, i = 0;
     float costo = 0;
     char seguir = 's', opcion = 's';
     char auxPalabra[40], auxNumero[10];
@@ -673,9 +441,9 @@ stPedido modificarUnpedido(stPedido auxPedido)
 
     if (seguir == 's' || seguir == 'S')
     {
-        float costoP = auxPedido.costoPedido; // esta funcion descuenta la compra de el id que ya cargo y quiere cambiar
+        float costoP = pedido.costoPedido; // esta funcion descuenta la compra de el id que ya cargo y quiere cambiar
         costoP = costoP * (-1);
-        cargarTotalGastadoYcompra(costoP, auxPedido.idCliente, -1);
+        cargarTotalGastadoYcompra(costoP, pedido.idCliente, -1);
 
         do
         {
@@ -686,7 +454,7 @@ stPedido modificarUnpedido(stPedido auxPedido)
                 gets(auxNumero);
             } while ((validarNumero(auxNumero)) != 0);
         } while ((validarCliente(atoi(auxNumero))) != -1);
-        auxPedido.idCliente = atoi(auxNumero);
+        pedido.idCliente = atoi(auxNumero);
     }
 
     printf("\n\n\t\tPara resetear todos los productos y cargar nuevos ingrese S, u otra letra para cancelar.\n\t\t");
@@ -695,17 +463,17 @@ stPedido modificarUnpedido(stPedido auxPedido)
 
     if (seguir == 's' || seguir == 'S')
     {
-        if (auxIdcliente == auxPedido.idCliente) // mismo cliente mismo idcliente
+        if (auxIdcliente == pedido.idCliente) // mismo cliente mismo idcliente
         {
-            float costoP = auxPedido.costoPedido; // esta funcion descuenta la compra que ahora se quiere modificar
+            float costoP = pedido.costoPedido; // esta funcion descuenta la compra que ahora se quiere modificar
             costoP = costoP * (-1);
-            cargarTotalGastadoYcompra(costoP, auxPedido.idCliente, -1 /* representa e*/);
+            cargarTotalGastadoYcompra(costoP, pedido.idCliente, -1 /* representa e*/);
         }
 
         while (opcion == 's' && i < 30)
         {
             P = cargarDetalleProducto(P);
-            auxPedido.arregloDePedidos[i] = P;
+            pedido.arregloDePedidos[i] = P;
             i++;
             costo += P.precioFinal;
 
@@ -714,11 +482,11 @@ stPedido modificarUnpedido(stPedido auxPedido)
             scanf("%c", &opcion);
         }
 
-        auxPedido.cantidadProductos = i;
-        auxPedido.costoPedido = costo;
-        auxPedido.estadoDelPedido = 1;
-        auxPedido.detalleEstado = 's';
-        cargarTotalGastadoYcompra(costo, auxPedido.idCliente, 1);
+        pedido.cantidadProductos = i;
+        pedido.costoPedido = costo;
+        pedido.estadoDelPedido = 1;
+        pedido.detalleEstado = 's';
+        cargarTotalGastadoYcompra(costo, pedido.idCliente, 1);
     }
     else // si anteriormente modifico reseteo los pedidos no entra en este campo ya fue modificado en el if anterior
     {
@@ -727,22 +495,22 @@ stPedido modificarUnpedido(stPedido auxPedido)
         scanf("%c", &seguir);
         if (seguir == 's' || seguir == 'S')
         {
-            if (auxIdcliente == auxPedido.idCliente) // mismo cliente mismo idcliente
+            if (auxIdcliente == pedido.idCliente) // mismo cliente mismo idcliente
             {
-                float costoP = auxPedido.costoPedido; // esta funcion descuenta la compra que ahora se quiere modificar
+                float costoP = pedido.costoPedido; // esta funcion descuenta la compra que ahora se quiere modificar
                 costoP = costoP * (-1);
-                cargarTotalGastadoYcompra(costoP, auxPedido.idCliente, -1 /* representa e*/);
+                cargarTotalGastadoYcompra(costoP, pedido.idCliente, -1 /* representa e*/);
             }
 
-            float nuevoCosto = modificarArregloProductos(auxPedido.arregloDePedidos, auxPedido.cantidadProductos);
-            auxPedido.costoPedido = nuevoCosto;
-            cargarTotalGastadoYcompra(nuevoCosto, auxPedido.idCliente, 1);
+            float nuevoCosto = modificarArregloProductos(pedido.arregloDePedidos, pedido.cantidadProductos);
+            pedido.costoPedido = nuevoCosto;
+            cargarTotalGastadoYcompra(nuevoCosto, pedido.idCliente, 1);
         }
         else
         {
-            if (auxPedido.idCliente != auxIdcliente)
+            if (pedido.idCliente != auxIdcliente)
             {
-                cargarTotalGastadoYcompra(auxPedido.costoPedido, auxPedido.idCliente, 1);
+                cargarTotalGastadoYcompra(pedido.costoPedido, pedido.idCliente, 1);
             }
         }
 

@@ -1,7 +1,7 @@
 #include ".\Headers\lista.h"
 #include ".\Headers\pedidos.h"
 
-struct nodoPedido *inicLista()
+nodoPedido *inicLista()
 {
     return NULL;
 }
@@ -116,13 +116,12 @@ int buscarElemento(nodoPedido *l, stPedido dato)
     {
         nodoPedido *seg = l;
 
-        while (seg->siguiente != NULL)
+        while (seg->siguiente != NULL && resultado ==0)
         {
             if (seg->dato.idPedido == dato.idPedido)
             {
                 resultado = 1;
                 mostrarUnPedido(seg->dato);
-                break;
             }
             seg = seg->siguiente;
         }
@@ -152,3 +151,25 @@ nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n)
 
     return l;
 }
+
+
+/////////////////////////// ANULAR
+
+void anularPedido(nodoPedido* pedido) // devuelve  la posicion del pedido o -1 si no encontro el pedido
+{
+    stPedido A;
+    int costoP = 0;
+
+    if (pedido)
+    {
+            if (pedido->dato.estadoDelPedido == 1)
+            {
+                pedido->dato.estadoDelPedido =0;
+                costoP = pedido->dato.costoPedido;
+                pedido->dato.costoPedido = 0;
+
+                cargarTotalGastadoYcompra((costoP * -1), pedido->dato.idCliente, -1); // realiza el descuetento de la compra anulada al totalgastado por el cliente
+            }
+    }
+}
+

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
@@ -19,6 +19,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename=".gitignore" />
+		<Unit filename="Archivo de Clientes" />
+		<Unit filename="Archivo de Pedidos" />
 		<Unit filename="Headers/arbol.h" />
 		<Unit filename="Headers/cliente.h" />
 		<Unit filename="Headers/domicilio.h" />
@@ -27,9 +30,34 @@
 		<Unit filename="Headers/pedidos.h" />
 		<Unit filename="Headers/producto.h" />
 		<Unit filename="Headers/utils.h" />
+		<Unit filename="Lab2-Final.cbp" />
+		<Unit filename="README.md" />
+		<Unit filename="arbol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cliente.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="clientes.dat" />
+		<Unit filename="lista.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Extensions />
+		<Unit filename="menu.cold" />
+		<Unit filename="oldpedidos.dat" />
+		<Unit filename="pedidos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pedidos.dat" />
+		<Unit filename="utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
