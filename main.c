@@ -8,8 +8,8 @@
 #include "./Headers/pedidos.h"
 #include "./Headers/cliente.h"
 
-int ID_CLIENTES = 0;
-
+int IDPEDIDO = 0;
+int IDCLIENTES = 0;
 int leerArchivoClientes(stCliente array[], int dimension);
 void leerArchivoPedidos(nodoArbolCliente *arbol);
 
@@ -40,16 +40,6 @@ int main()
 	arbolito = borrarNodoArbol(arbolito, 38441203);
 
 	inOrden(arbolito);
-
-	// nodoArbolCliente *buscado = NULL;
-	// int idPedido;
-	// printf("\n\nLos pedidos de Oriana son:\n");
-	// buscado = buscarNodoArbolPorDni(arbolito, 38441203);
-	// mostrarLista(buscado->pedidos);
-
-	// printf("\nIngrese el nro de ID del pedido a modificar:\n");
-	// scanf("%i", &idPedido);
-	// anularPedido(buscado->pedidos);
 
 	// mostrarUnPedido(buscado->pedidos->dato);
 	system("pause");
@@ -87,9 +77,9 @@ int leerArchivoClientes(stCliente array[], int dimension)
 		{
 			if (i < dimension)
 			{
-				if (ID_CLIENTES < c.idCliente)
+				if (IDCLIENTES < c.idCliente)
 				{
-					ID_CLIENTES = c.idCliente;
+					IDCLIENTES = c.idCliente;
 				}
 
 				array[i] = c;
