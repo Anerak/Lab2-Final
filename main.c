@@ -29,10 +29,6 @@ int main()
 	validos = leerArchivoClientes(arregloClientes, 500);
 	ordenarSeleccion(arregloClientes, validos);
 
-	for (int i = 0; i < validos; i++)
-	{
-		printf("ID: %d | DNI: %d | %s %s\n", arregloClientes[i].idCliente, arregloClientes[i].dni, arregloClientes[i].Nombre, arregloClientes[i].Apellido);
-	}
 
 	system("pause");
 	system("cls");
@@ -40,10 +36,11 @@ int main()
 	arbolito = array2arbol(arregloClientes, 0, validos - 1);
 	leerArchivoPedidos(arbolito);
 
-	inOrden(arbolito);
+//	inOrden(arbolito);
 
 	system("pause");
 	system("cls");
+
 
 	// arbolito = altaClienteArbol(arbolito, ID_CLIENTE);
 
@@ -53,6 +50,19 @@ int main()
 	mostrarCliente(NMD(arbolito)->dato);
 
 	system("pause");
+
+	nodoArbolCliente*buscado=NULL;
+	int idPedido;
+	printf("\n\nLos pedidos de Oriana son:\n");
+	buscado=buscarNodoArbolPorDni(arbolito,38441203);
+	mostrarLista(buscado->pedidos);
+
+	printf("\nIngrese el nro de ID del pedido a modificar:\n");
+	scanf("%i",&idPedido);
+	anularPedido(buscado->pedidos);
+
+	mostrarUnPedido(buscado->pedidos->dato);
+
 
 	return 0;
 }

@@ -31,7 +31,7 @@ int ultimoIDCliente();
 stDomicilio cargarDomicilio(stDomicilio domicilio);
 int altaDeCliente(stCliente clientenuevo);
 int cargarClientes(stCliente clientes[], int dimension);
-void cargarTotalGastadoYcompra(float costoPedido, int idCliente, int compra); // funcion para sumar el costo pedido al total gastado cliente
+
 
 ///////////// MOSTRAR :
 void mostrarArchivoClientes();
