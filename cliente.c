@@ -1003,13 +1003,11 @@ void ordenarSeleccion(stCliente array[], int validos)
 
 /////////////                        Arboles                        //////////////
 //////////////////////////////////////////////////////////////////////////////////
-stCliente crearCliente(int id)
+stCliente crearCliente(int id, int dni)
 {
     stCliente c;
-
     c.idCliente = id + 1;
-    printf("DNI: ");
-    scanf("%d", &c.dni);
+    c.dni = dni;
     fflush(stdin);
 
     printf("Nombre: ");

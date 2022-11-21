@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-
 #include ".\Headers\arbol.h"
 #include ".\Headers\lista.h"
 
 #include "./Headers/pedidos.h"
 #include "./Headers/cliente.h"
+
+int ID_CLIENTES = 0;
 
 int leerArchivoClientes(stCliente array[], int dimension);
 void leerArchivoPedidos(nodoArbolCliente *arbol);
@@ -32,20 +33,26 @@ int main()
 
 	leerArchivoPedidos(arbolito);
 
-	//	inOrden(arbolito);
+	// inOrden(arbolito);
 
-	nodoArbolCliente *buscado = NULL;
-	int idPedido;
-	printf("\n\nLos pedidos de Oriana son:\n");
-	buscado = buscarNodoArbolPorDni(arbolito, 38441203);
-	mostrarLista(buscado->pedidos);
+	// arbolito = altaClienteArbol(arbolito, ID_CLIENTES++);
 
-	printf("\nIngrese el nro de ID del pedido a modificar:\n");
-	scanf("%i", &idPedido);
-	anularPedido(buscado->pedidos);
+	arbolito = borrarNodoArbol(arbolito, 38441203);
 
-	mostrarUnPedido(buscado->pedidos->dato);
+	inOrden(arbolito);
 
+	// nodoArbolCliente *buscado = NULL;
+	// int idPedido;
+	// printf("\n\nLos pedidos de Oriana son:\n");
+	// buscado = buscarNodoArbolPorDni(arbolito, 38441203);
+	// mostrarLista(buscado->pedidos);
+
+	// printf("\nIngrese el nro de ID del pedido a modificar:\n");
+	// scanf("%i", &idPedido);
+	// anularPedido(buscado->pedidos);
+
+	// mostrarUnPedido(buscado->pedidos->dato);
+	system("pause");
 	return 0;
 }
 
@@ -80,6 +87,11 @@ int leerArchivoClientes(stCliente array[], int dimension)
 		{
 			if (i < dimension)
 			{
+				if (ID_CLIENTES < c.idCliente)
+				{
+					ID_CLIENTES = c.idCliente;
+				}
+
 				array[i] = c;
 				i++;
 			}

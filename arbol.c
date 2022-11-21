@@ -172,13 +172,20 @@ nodoArbolCliente *buscarNodoArbolPorNombre(nodoArbolCliente *t, char n[])
 
 nodoArbolCliente *altaClienteArbol(nodoArbolCliente *t, int id)
 {
-    stCliente c = crearCliente(id);
+    stCliente c;
+
+    printf("DNI: ");
+    scanf("%d", &c.dni);
+    fflush(stdin);
+
     while (buscarNodoArbolPorDni(t, c.dni))
     {
         printf("DNI ya existe. Ingrese un nuevo valor: \n");
         fflush(stdin);
         scanf("%d", &c.dni);
     }
+
+    c = crearCliente(id, c.dni);
 
     t = agregarNodoPorDni(t, c);
 
@@ -221,9 +228,39 @@ nodoArbolCliente *NMI(nodoArbolCliente *t)
     return mostLeft;
 }
 
-nodoArbolCliente *borrarNodo(nodoArbolCliente *t)
+nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
 {
     if (t)
     {
+        if (t->dato.dni == dni)
+        {
+            if (t->izq != NULL)
+            {
+                nodoArbolCliente *mostRight = NMD(t->izq);
+                t->dato = mostRight->dato;
+                t->izq = borrarNodoArbol(t->izq, mostRight->dato.dni);
+            }
+            else if (t->der != NULL)
+            {
+                nodoArbolCliente *mostLeft = NMI(t->der);
+                t->dato = mostLeft->dato;
+                t->der = borrarNodoArbol(t->der, mostLeft->dato.dni);
+            }
+            else
+            {
+                free(t);
+                t = NULL;
+            }
+        }
+        else if (dni > t->dato.dni)
+        {
+            t->der = borrarNodoArbol(t->der, dni);
+        }
+        else
+        {
+            t->izq = borrarNodoArbol(t->izq, dni);
+        }
     }
+
+    return t;
 }

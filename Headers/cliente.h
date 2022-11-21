@@ -19,7 +19,7 @@ typedef struct
 } stCliente;
 
 ///////////////////////////////////////////FUNCIONES CLIENTES////////////////////////////////////////////////////////////////
-stCliente crearCliente(int id);
+stCliente crearCliente(int id, int dni);
 void mostrarCliente(stCliente cliente);
 void modificarCliente(stCliente *c);
 int bajaCliente(stCliente *c);
@@ -31,7 +31,6 @@ int ultimoIDCliente();
 stDomicilio cargarDomicilio(stDomicilio domicilio);
 int altaDeCliente(stCliente clientenuevo);
 int cargarClientes(stCliente clientes[], int dimension);
-
 
 ///////////// MOSTRAR :
 void mostrarArchivoClientes();

@@ -24,6 +24,7 @@ nodoArbolCliente *buscarNodoArbolPorDni(nodoArbolCliente *, int);
 nodoArbolCliente *buscarNodoArbolPorNombre(nodoArbolCliente *t, char n[]);
 nodoArbolCliente *NMD(nodoArbolCliente *t);
 nodoArbolCliente *NMI(nodoArbolCliente *t);
+nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni);
 
 nodoArbolCliente *altaClienteArbol(nodoArbolCliente *t, int id);
 
