@@ -172,3 +172,58 @@ void modificarArchivoPedido(stPedido pedido)
         fclose(a);
     }
 }
+
+////////////// LIQUIDAR MENSUAL
+
+float gastoMensual(nodoPedido *l, int mes)
+{
+    nodoPedido *seg = l;
+    float gastoMes = 0;
+
+    while (seg)
+    {
+        if (seg->dato.fecha.Mes == mes)
+        {
+            gastoMes += seg->dato.costoPedido;
+        }
+
+        seg = seg->siguiente;
+    }
+
+    return gastoMes;
+}
+
+int comprasMensual(nodoPedido *l, int mes)
+{
+    nodoPedido *seg = l;
+    int cantCompras = 0;
+
+    while (seg)
+    {
+        if (seg->dato.fecha.Mes == mes)
+        {
+            cantCompras++;
+        }
+
+        seg = seg->siguiente;
+    }
+
+    return cantCompras;
+}
+
+void liquidacionMensual(nodoPedido *l, int mes)
+{
+    nodoPedido *seg = l;
+    int cantCompras = 0, gasto = 0;
+
+    while (seg)
+    {
+        if (seg->dato.fecha.Mes == mes)
+        {
+            mostrarUnPedidoAcotado(seg->dato);
+        }
+        seg = seg->siguiente;
+    }
+    printf("\n\n\tCantidad de compras realizadas el mes %i :     %i", mes, comprasAnual(l, mes));
+    printf("\n\tGasto total del mes %i :                      $%.2f\n\n", mes, gastoAnual(l, mes));
+}

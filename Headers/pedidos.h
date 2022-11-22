@@ -4,7 +4,6 @@
 #include "producto.h"
 #include "cliente.h"
 
-
 typedef struct _stPedido
 {
     int idPedido;
@@ -28,9 +27,11 @@ void mostrarUnPedido(stPedido A);
 void mostrarUnPedidoAcotado(stPedido A);
 
 ///////////// PEDIDOS :
-stPedido modificarUnpedido(stPedido auxPedido);                          // Modifica un pedido completo
-void modificarArchivoPedido (stPedido pedido);
+stPedido modificarUnpedido(stPedido auxPedido); // Modifica un pedido completo
+void modificarArchivoPedido(stPedido pedido);
 
-
+float gastoMensual(nodoPedido *l, int mes);
+int comprasMensual(nodoPedido *l, int mes);
+void liquidacionMensual(nodoPedido *l, int mes);
 
 #endif

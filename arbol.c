@@ -227,14 +227,6 @@ nodoArbolCliente *NMI(nodoArbolCliente *t)
     return mostLeft;
 }
 
-nodoArbolCliente *borrarClienteArbol(nodoArbolCliente *t, int dni)
-{
-    if (t)
-    {
-        t = borrarNodoArbol(t, dni);
-    }
-}
-
 nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
 {
     if (t)
