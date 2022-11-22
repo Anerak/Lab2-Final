@@ -434,22 +434,6 @@ int modificarCliente(stCliente *modificarCliente)
         }
     }
 
-    printf("\n\n\t\tIngrese S para editar el ID del cliente, u otra letra para cancelar.\n\t\t");
-    fflush(stdin);
-    scanf("%c", &seguir);
-
-    if (seguir == 's' || seguir == 'S')
-    {
-        do
-        {
-            printf("\n\n\t\tIngrese el nuevo ID del cliente:\n\t\t");
-            fflush(stdin);
-            gets(auxNumero);
-            cambios++;
-        } while ((validarNumero(auxNumero) != 0));
-        modificarCliente->idCliente = atoi(auxNumero);
-    }
-
     printf("\n\n\t\tIngrese S para editar nombre, u otra letra para cancelar.\n\t\t");
     fflush(stdin);
     scanf("%c", &seguir);
@@ -489,22 +473,6 @@ int modificarCliente(stCliente *modificarCliente)
     if (seguir == 's' || seguir == 'S')
     {
         modificarCamposDomicilio(modificarCliente);
-    }
-
-    printf("\n\n\t\tIngrese S para editar el DNI cliente, u otra letra para cancelar.\n\t\t");
-    fflush(stdin);
-    scanf("%c", &seguir);
-
-    if (seguir == 's' || seguir == 'S')
-    {
-
-        do
-        {
-            printf("\n\n\t\tIngrese el nuevo DNI:\n\t\t");
-            fflush(stdin);
-            gets(auxNumero);
-        } while ((validarNumero(auxNumero)) != 0);
-        modificarCliente->dni = atoi(auxNumero);
     }
 
     printf("\n\n\t\tIngrese S para editar telefono, u otra letra para cancelar.\n\t\t");
@@ -918,7 +886,7 @@ stCliente crearCliente(int id, int dni)
 int bajaCliente(stCliente *c)
 {
 
-    FILE *a = fopen(ArchivoClientes, "w+b");
+    FILE *a = fopen(ArchivoClientes, "r+b");
 
     stCliente aux;
 
@@ -926,7 +894,7 @@ int bajaCliente(stCliente *c)
 
     if (a)
     {
-        while (fread(&aux, sizeof(stCliente), 1, a) > 0)
+        while (fread(&aux, sizeof(stCliente), 1, a) > 0 && !r)
         {
             if (aux.dni == c->dni)
             {

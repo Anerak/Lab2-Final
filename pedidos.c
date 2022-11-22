@@ -6,7 +6,6 @@
 #include "./Headers/arbol.h"
 #include "./Headers/producto.h"
 
-
 ///////////////////////////////////////////FUNCIONES DE PEDIDOS////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////CARGA///////////////////////////////////////////////////////////////////
@@ -84,10 +83,10 @@ void mostrarUnPedido(stPedido A)
 
 void mostrarUnPedidoAcotado(stPedido A)
 {
-    printf("\t\t\tID: %i - Fecha: ",A.idPedido);
+    printf("\t\t\tID: %i - Fecha: ", A.idPedido);
     mostrarFechaAcotada(A.fecha);
-    printf("- Costo: %i - Estado:",A.costoPedido);
-    if(A.estadoDelPedido==1)
+    printf("- Costo: %i - Estado:", A.costoPedido);
+    if (A.estadoDelPedido == 1)
     {
         printf(" Activo -");
         if (A.detalleEstado == 's')
@@ -102,10 +101,11 @@ void mostrarUnPedidoAcotado(stPedido A)
         {
             printf("Enviado\n");
         }
-    }else{
+    }
+    else
+    {
         printf(" Anulado\n");
     }
-
 }
 /////////////////////////////////////////MODIFICAR PEDIDOS////////////////////////////////////////////////////////////////////
 
@@ -149,23 +149,23 @@ stPedido modificarUnpedido(stPedido pedido)
     return pedido;
 }
 
-void modificarArchivoPedido (stPedido pedido)
+void modificarArchivoPedido(stPedido pedido)
 {
     FILE *a = fopen(ArchivoPedidos, "r+b");
-	stPedido p;
-	int flag=0;
-	printf("\nEntra a modificar\n");
+    stPedido p;
+    int flag = 0;
+    printf("\nEntra a modificar\n");
 
-	if(a)
+    if (a)
     {
         printf("\nAbre el archivo\n");
-        while( fread(&p,sizeof(stPedido),1,a) > 0 && flag==0)
+        while (fread(&p, sizeof(stPedido), 1, a) > 0 && flag == 0)
         {
-            if(p.idPedido == pedido.idPedido)
+            if (p.idPedido == pedido.idPedido)
             {
-                fseek(a,(sizeof(stPedido))*(-1),SEEK_CUR);
-                fwrite(&p,sizeof(stPedido),1,a);
-                flag=1;
+                fseek(a, (sizeof(stPedido)) * (-1), SEEK_CUR);
+                fwrite(&pedido, sizeof(stPedido), 1, a);
+                flag = 1;
                 printf("\nCopia el dato\n");
             }
         }
