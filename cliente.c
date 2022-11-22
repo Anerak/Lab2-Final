@@ -917,14 +917,13 @@ int guardarCliente(stCliente c)
     if (a)
     {
         stCliente aux;
-        while (fread(&aux, sizeof(stCliente), 1, a) > 0)
+        while (fread(&aux, sizeof(stCliente), 1, a) > 0 && !r)
         {
             if (aux.dni == c.dni)
             {
                 fseek(a, sizeof(stCliente) * (-1), SEEK_CUR);
                 fwrite(&c, sizeof(stCliente), 1, a);
                 r = 1;
-                break;
             }
         }
 

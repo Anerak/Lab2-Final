@@ -27,8 +27,6 @@ int main()
 
 	reporteCompletoArbol(arbolito);
 	system("pause");
-	listadoClientesArbol(arbolito);
-
 	frontModificarCliente(arbolito);
 
 	arbolito = borrarNodoArbol(arbolito, 38441203);
