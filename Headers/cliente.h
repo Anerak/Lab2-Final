@@ -21,8 +21,9 @@ typedef struct
 ///////////////////////////////////////////FUNCIONES CLIENTES////////////////////////////////////////////////////////////////
 stCliente crearCliente(int id, int dni);
 void mostrarCliente(stCliente cliente);
-void modificarCliente(stCliente *c);
+void mostrarClienteResumido(stCliente c);
 int bajaCliente(stCliente *c);
+int guardarCliente(stCliente c);
 
 ///////////// CARGAR :
 
@@ -37,23 +38,18 @@ void mostrarArchivoClientes();
 void mostrarArregloDeClientes(stCliente arrClientes[], int validos);
 
 ///////////// BUSCAR :
-int buscarClientePorDNI(long int dni);         // retorno la poscion en el archivo o -1 si no lo encontro
-int buscarClientePorApellido(char apellido[]); // retorno la poscion en el archivo
+int buscarClientePorDNI(long int dni); // retorno la poscion en el archivo o -1 si no lo encontro
 int buscarClientePorID(int IDcliente);
 stCliente retornaClientePorPos(int pos);
-
-///////////// ANULAR :
-stCliente pasaraInactivo(stCliente clientebaja);
-int darBajarCliente(long int dniaux); // retorna la posicion del cliente anulado o -1 si no lo encontro
 
 ////////////////////////////////////////////////MODIFACCIONES/////////////////////////////////////////////////////////////////
 
 //// CLIENTES :
 
-stCliente modificacionClientePorDni(long int dniCliente);           // modificacion por DNI cliente
-stCliente modificarClientePorApellido(char apellido[]);             // modificacion por apellido
-stCliente modificarCamposDeCliente(stCliente modificarCliente);     // funcion que recibe cliente para devolverlo modificado
-stDomicilio modificarCamposDomicilio(stCliente stdomicilioCliente); // modifica domicilio
+stCliente modificacionClientePorDni(long int dniCliente);    // modificacion por DNI cliente
+stCliente modificarClientePorApellido(char apellido[]);      // modificacion por apellido
+int modificarCliente(stCliente *modificarCliente);           // funcion que recibe cliente para devolverlo modificado
+int modificarCamposDomicilio(stCliente *stdomicilioCliente); // modifica domicilio
 
 /////////////////////////////////////////LISTADOS Y ESTADISTICAS//////////////////////////////////////////////////////////////
 

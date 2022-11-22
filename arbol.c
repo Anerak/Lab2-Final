@@ -15,6 +15,7 @@ nodoArbolCliente *crearNodoArbol(stCliente dato)
     n->dato = dato;
     n->izq = NULL;
     n->der = NULL;
+    n->modificado = 0;
 }
 
 nodoArbolCliente *agregarNodo(nodoArbolCliente *t, stCliente dato)
@@ -228,6 +229,14 @@ nodoArbolCliente *NMI(nodoArbolCliente *t)
     return mostLeft;
 }
 
+nodoArbolCliente *borrarClienteArbol(nodoArbolCliente *t, int dni)
+{
+    if (t)
+    {
+        t = borrarNodoArbol(t, dni);
+    }
+}
+
 nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
 {
     if (t)
@@ -238,12 +247,16 @@ nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
             {
                 nodoArbolCliente *mostRight = NMD(t->izq);
                 t->dato = mostRight->dato;
+                bajaCliente(&t->dato);
+                t->pedidos = mostRight->pedidos;
                 t->izq = borrarNodoArbol(t->izq, mostRight->dato.dni);
             }
             else if (t->der != NULL)
             {
                 nodoArbolCliente *mostLeft = NMI(t->der);
                 t->dato = mostLeft->dato;
+                bajaCliente(&t->dato);
+                t->pedidos = mostLeft->pedidos;
                 t->der = borrarNodoArbol(t->der, mostLeft->dato.dni);
             }
             else
@@ -265,6 +278,28 @@ nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
     return t;
 }
 
+void listadoClientesArbol(nodoArbolCliente *t)
+{
+    if (t)
+    {
+        listadoClientesArbol(t->izq);
+        mostrarClienteResumido(t->dato);
+        listadoClientesArbol(t->der);
+    }
+}
+
+void reporteCompletoArbol(nodoArbolCliente *t)
+{
+    if (t)
+    {
+        reporteCompletoArbol(t->izq);
+        mostrarClienteResumido(t->dato);
+        printf("\n\t\t...............Pedidos para el cliente %s %s...............\n", t->dato.Nombre, t->dato.Apellido);
+        mostrarLista(t->pedidos);
+        reporteCompletoArbol(t->der);
+    }
+}
+
 void agregarPedido(nodoArbolCliente *arbol, int dni, int idPedido)
 {
     nodoArbolCliente *cliente = buscarNodoArbolPorDni(arbol, dni);
@@ -280,5 +315,21 @@ void agregarPedido(nodoArbolCliente *arbol, int dni, int idPedido)
         cliente->modificado = 1;
 
         printf("\n\n\t\tEl pedido se adiciono al cliente.\n\n");
+    }
+}
+
+void guardarNodosModificadosArbol(nodoArbolCliente *t)
+{
+    if (t)
+    {
+        guardarNodosModificadosArbol(t->izq);
+        if (t->modificado)
+        {
+            if (guardarCliente(t->dato) == 1)
+            {
+                t->modificado = 0;
+            }
+        }
+        guardarNodosModificadosArbol(t->der);
     }
 }

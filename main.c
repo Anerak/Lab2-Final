@@ -3,45 +3,35 @@
 #include <ctype.h>
 #include <string.h>
 #include ".\Headers\arbol.h"
-#include ".\Headers\lista.h"
-
-#include "./Headers/pedidos.h"
-#include "./Headers/cliente.h"
 
 int IDPEDIDO = 0;
 int IDCLIENTES = 0;
+
 int leerArchivoClientes(stCliente array[], int dimension);
 void leerArchivoPedidos(nodoArbolCliente *arbol);
-
-/////////////
-void insertarCliente(stCliente array[], int u, stCliente c);
-void ordenarArray(stCliente array[], int validos);
 nodoArbolCliente *array2arbol(stCliente array[], int base, int tope);
+void frontModificarCliente(nodoArbolCliente *t);
 
 int main()
 {
 
 	nodoArbolCliente *arbolito = inicArbol();
-
 	stCliente arregloClientes[500];
 	int validos = 0;
-
 	validos = leerArchivoClientes(arregloClientes, 500);
 	ordenarSeleccion(arregloClientes, validos);
-
 	arbolito = array2arbol(arregloClientes, 0, validos - 1);
 
 	leerArchivoPedidos(arbolito);
 
-	// inOrden(arbolito);
+	reporteCompletoArbol(arbolito);
+	system("pause");
+	listadoClientesArbol(arbolito);
 
-	// arbolito = altaClienteArbol(arbolito, ID_CLIENTES++);
+	frontModificarCliente(arbolito);
 
-	arbolito = borrarNodoArbol(arbolito, 38441203);
+	guardarNodosModificadosArbol(arbolito);
 
-	inOrden(arbolito);
-
-	// mostrarUnPedido(buscado->pedidos->dato);
 	system("pause");
 	return 0;
 }
@@ -104,6 +94,11 @@ void leerArchivoPedidos(nodoArbolCliente *arbol)
 			nodoArbol = buscarNodoArbolPorDni(arbol, p.dniCliente);
 			if (nodoArbol)
 			{
+				if (IDPEDIDO < p.idPedido)
+				{
+					IDPEDIDO = p.idPedido;
+				}
+
 				if (!nodoArbol->pedidos)
 				{
 					nodoArbol->pedidos = inicLista();
@@ -112,5 +107,41 @@ void leerArchivoPedidos(nodoArbolCliente *arbol)
 			}
 		}
 		fclose(a);
+	}
+}
+
+void frontMenuCliente(nodoArbolCliente *t)
+{
+	printf("1) Mostrar listado resumido de clientes\n");
+	printf("2) Mostrar informe completo de clientes\n");
+	printf("3) Mostrar informacion de un cliente especifico\n");
+	printf("4) Agregar cliente\n");
+	printf("5) Modificar cliente\n");
+	printf("6) Dar de baja a un cliente\n");
+	printf("7) Guardar clientes");
+	printf("8) Mostrar clientes inactivos");
+}
+
+void frontModificarCliente(nodoArbolCliente *t)
+{
+	// system("cls");
+	listadoClientesArbol(t);
+	printf("Introduzca el DNI del cliente que desea modificar: ");
+	int dni = -1;
+	fflush(stdin);
+	scanf("%d", &dni);
+
+	nodoArbolCliente *busqueda = buscarNodoArbolPorDni(t, dni);
+
+	if (busqueda)
+	{
+		if (modificarCliente(&busqueda->dato) > 0)
+		{
+			busqueda->modificado = 1;
+		}
+	}
+	else
+	{
+		printf("Cliente no encontrado.\n");
 	}
 }

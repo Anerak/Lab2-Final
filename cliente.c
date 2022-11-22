@@ -230,6 +230,12 @@ int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos
 
 ///////////////////////////////////////////////////MOSTRAR///////////////////////////////////////////////////////////////////
 
+void mostrarClienteResumido(stCliente c)
+{
+    printf("ID: %i | DNI: %i | %s %s\n", c.idCliente, c.dni, c.Nombre, c.Apellido);
+    return;
+}
+
 void mostrarCliente(stCliente cliente)
 {
     printf("\n\n\t\t----------------------CLIENTE----------------------\n");
@@ -325,61 +331,6 @@ int buscarClientePorDNI(long int dni) // retorna la poscion en el archivo, si no
     return flag;
 }
 
-int buscarClientePorApellido(char apellido[]) // retorno la poscion en el archivo y si no lo encuntra -1
-{
-    int i = 0, opcion = 0, pos = -1, u = 0;
-    stCliente auxCliente;
-    int dimension = cantidadDeDatosEnArchivo(ArchivoClientes, sizeof(stCliente));
-    stCliente *arrClientes = (stCliente *)malloc(sizeof(stCliente) * dimension);
-    int *arrPosiciones = (int *)malloc(sizeof(int) * dimension);
-
-    FILE *archi = fopen(ArchivoClientes, "rb");
-
-    if (archi != NULL)
-    {
-        while (fread(&auxCliente, sizeof(stCliente), 1, archi) > 0)
-        {
-            if (strcmpi(auxCliente.Apellido, apellido) == 0)
-            {
-                // fseek(archi,sizeof(stCliente)(-1),SEEK_CUR);
-                arrClientes[i] = auxCliente;
-                arrPosiciones[i] = (ftell(archi)) / (sizeof(stCliente)); // da la posicion actual
-                                                                         //  la posicion queda lista para buscar en fseek
-
-                i++;
-            }
-        }
-
-        if (i > 1)
-        {
-            printf("\n\n\t\tVarios clientes tinenen el mismo apellido, se enumeran a continuacion:\n\n\t\t");
-            while (u < i)
-            {
-                printf("\n\n\t\t------------------- Cliente %u -------------------\n\n", u);
-                mostrarCliente(arrClientes[u]);
-                u++;
-            }
-            printf("\n\n\t\tSeleccione el numero de cliente que desea modificar\n\n\t\t");
-            scanf("%i", &opcion);
-            pos = arrPosiciones[opcion - 1];
-            pos = pos - 1;
-        }
-        else if (i == 1)
-        {
-            pos = arrPosiciones[0];
-            pos = pos - 1;
-        }
-
-        fclose(archi);
-    }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir\n\n\t\t");
-    }
-
-    return pos;
-}
-
 int buscarClientePorID(int IDcliente) // retorna la posicion si lo encuentra, o -1 si no esta
 {
     int flag = -1;
@@ -427,46 +378,6 @@ stCliente retornaClientePorPos(int pos)
     return Aux;
 }
 
-////////////////////////////////////////////////BAJA DE CLIENTE/////////////////////////////////////////////////////////////
-
-stCliente pasaraInactivo(stCliente clientebaja)
-{
-    clientebaja.bajaCliente = 1;
-
-    return clientebaja;
-}
-
-int darBajarCliente(long int dniaux) // retorna la posicion del cliente anulado o -1 si no lo encontro
-{
-    FILE *archi = fopen(ArchivoClientes, "r+b"); // para leer y escribir en el archivo
-    int flag = -1;
-    stCliente aux;
-
-    if (archi != NULL)
-    {
-        flag = buscarClientePorDNI(dniaux); // nos da la posicion del cliente en el archivo
-        if (flag != -1)
-        {
-            fseek(archi, (sizeof(stCliente) * flag), 0); // ubicar en la pocision del cliente
-            fread(&aux, sizeof(stCliente), 1, archi);    // lee el cliente
-            aux = pasaraInactivo(aux);                   // pasa a estar inactivo
-            fseek(archi, (sizeof(stCliente) * flag), 0);
-            fwrite(&aux, sizeof(stCliente), 1, archi);
-        }
-        else
-        {
-            printf("\n\n\t\tNo se encontro el cliente\n\n\t\t");
-        }
-        fclose(archi);
-    }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir\n\n\t\t");
-    }
-
-    return flag;
-}
-
 ///////////////////////////////////////////MODIFICAR CLIENTES////////////////////////////////////////////////////////////////
 
 stCliente modificacionClientePorDni(long int dniCliente) // modificacion por DNI cliente
@@ -484,7 +395,7 @@ stCliente modificacionClientePorDni(long int dniCliente) // modificacion por DNI
         {
             fseek(buff, sizeof(stCliente) * (pos), SEEK_SET);
             fread(&auxCliente, sizeof(stCliente), 1, buff);
-            auxCliente = modificarCamposDeCliente(auxCliente);
+            modificarCliente(&auxCliente);
             fseek(buff, sizeof(stCliente) * (-1), SEEK_CUR);
 
             fwrite(&auxCliente, sizeof(stCliente), 1, buff);
@@ -502,48 +413,15 @@ stCliente modificacionClientePorDni(long int dniCliente) // modificacion por DNI
 
     return auxCliente;
 }
-
-stCliente modificarClientePorApellido(char apellido[]) // modificacion por apellido - retorna el cliente modificado
-{
-    stCliente auxCliente;
-    int pos = -1;
-
-    FILE *buff = fopen(ArchivoClientes, "r+b");
-
-    if (buff != NULL)
-    {
-        pos = buscarClientePorApellido(apellido);
-
-        if (pos >= 0)
-        {
-            fseek(buff, sizeof(stCliente) * (pos), SEEK_SET);
-            fread(&auxCliente, sizeof(stCliente), 1, buff);
-            auxCliente = modificarCamposDeCliente(auxCliente); // se llama funcion para modificar los campos de el cliente y retornar las modificaciones
-            fseek(buff, sizeof(stCliente) * (-1), SEEK_CUR);
-            fwrite(&auxCliente, sizeof(stCliente), 1, buff); // sobreescribe los datos actualizados en el archivo
-
-            fclose(buff);
-        }
-        else
-        {
-            printf("\n\n\t\tEl cliente que desea modificar no existe, ingrese otro dni o verifique el numero.\n\n\t\t");
-        }
-    }
-    else
-    {
-        printf("\n\n\t\tNo pudo abrirse el archivo.\n\n\t\t");
-    }
-
-    return auxCliente;
-}
-
-stCliente modificarCamposDeCliente(stCliente modificarCliente)
+// TODO: Something
+int modificarCliente(stCliente *modificarCliente)
 {
 
+    int cambios = 0;
     char seguir = 's';
     char auxPalabra[40], auxNumero[10];
 
-    if (modificarCliente.bajaCliente == 1)
+    if (modificarCliente->bajaCliente == 1)
     {
         printf("\n\n\t\tEl cliente se encuentra INACTIVO desea activarlo nuevamente? \n\t\tIngrese S para confirmar, otra para cancelar.\n\t\t");
         fflush(stdin);
@@ -551,7 +429,8 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
 
         if (seguir == 's' || seguir == 'S')
         {
-            modificarCliente.bajaCliente = 0;
+            modificarCliente->bajaCliente = 0;
+            cambios++;
         }
     }
 
@@ -566,8 +445,9 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
             printf("\n\n\t\tIngrese el nuevo ID del cliente:\n\t\t");
             fflush(stdin);
             gets(auxNumero);
+            cambios++;
         } while ((validarNumero(auxNumero) != 0));
-        modificarCliente.idCliente = atoi(auxNumero);
+        modificarCliente->idCliente = atoi(auxNumero);
     }
 
     printf("\n\n\t\tIngrese S para editar nombre, u otra letra para cancelar.\n\t\t");
@@ -581,8 +461,9 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
             printf("\n\n\t\tIngrese el nombre nuevo:\n\t\t");
             fflush(stdin);
             gets(auxPalabra);
+            cambios++;
         } while ((validarPalabra(auxPalabra) != 0));
-        strcpy(modificarCliente.Nombre, auxPalabra);
+        strcpy(modificarCliente->Nombre, auxPalabra);
     }
 
     printf("\n\n\t\tIngrese S para editar apellido, u otra letra para cancelar.\n\t\t");
@@ -596,8 +477,9 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
             printf("\n\n\t\tIngrese el apellido nuevo:\n\t\t");
             fflush(stdin);
             gets(auxPalabra);
+            cambios++;
         } while ((validarPalabra(auxPalabra) != 0));
-        strcpy(modificarCliente.Apellido, auxPalabra);
+        strcpy(modificarCliente->Apellido, auxPalabra);
     }
 
     printf("\n\n\t\tIngrese S para editar domicilio, u otra letra para cancelar.\n\t\t");
@@ -606,7 +488,7 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
 
     if (seguir == 's' || seguir == 'S')
     {
-        modificarCliente.domicilio = modificarCamposDomicilio(modificarCliente);
+        modificarCamposDomicilio(modificarCliente);
     }
 
     printf("\n\n\t\tIngrese S para editar el DNI cliente, u otra letra para cancelar.\n\t\t");
@@ -622,7 +504,7 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
             fflush(stdin);
             gets(auxNumero);
         } while ((validarNumero(auxNumero)) != 0);
-        modificarCliente.dni = atoi(auxNumero);
+        modificarCliente->dni = atoi(auxNumero);
     }
 
     printf("\n\n\t\tIngrese S para editar telefono, u otra letra para cancelar.\n\t\t");
@@ -637,7 +519,7 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
             fflush(stdin);
             gets(auxNumero);
         } while ((validarNumero(auxNumero)) != 0);
-        modificarCliente.telefono = atoi(auxNumero);
+        modificarCliente->telefono = atoi(auxNumero);
     }
 
     printf("\n\n\t\tIngrese S para editar mail, u otra letra para cancelar.\n\t\t");
@@ -653,25 +535,15 @@ stCliente modificarCamposDeCliente(stCliente modificarCliente)
             fflush(stdin);
             gets(auxPalabra);
         } while ((escribeMailCorrecto(auxPalabra) != 2));
-        strcpy(modificarCliente.Mail, auxPalabra);
+        strcpy(modificarCliente->Mail, auxPalabra);
     }
 
-    // printf("\n\n\t\tIngrese S para editar el total gastado, u otra letra para cancelar.\n\t\t");
-    // fflush(stdin);
-    // scanf("%c", &seguir);
-
-    // if (seguir == 's' || seguir == 'S')
-    // {
-    //     printf("\n\n\t\tCorrija el saldo:\n\t\t");
-    //     scanf("%f", &modificarCliente.totalGastado);
-    // }
-
-    return modificarCliente;
+    return cambios;
 }
 
-stDomicilio modificarCamposDomicilio(stCliente modificarCliente)
+int modificarCamposDomicilio(stCliente *modificarCliente)
 {
-
+    int cambios = 0;
     char seguir = 's';
     char auxPalabra[40], auxNumero[10];
 
@@ -686,8 +558,9 @@ stDomicilio modificarCamposDomicilio(stCliente modificarCliente)
             printf("\n\n\t\tIngrese la calle:\n\t\t");
             fflush(stdin);
             gets(auxPalabra);
+            cambios++;
         } while ((validarPalabra(auxPalabra) != 0));
-        strcpy(modificarCliente.domicilio.Calle, auxPalabra);
+        strcpy(modificarCliente->domicilio.Calle, auxPalabra);
     }
 
     printf("\n\n\t\tIngrese s para editar altura, u otra letra para cancelar\n\t\t");
@@ -701,8 +574,9 @@ stDomicilio modificarCamposDomicilio(stCliente modificarCliente)
             printf("\n\n\t\tIngrese la altura:\n\t\t");
             fflush(stdin);
             gets(auxNumero);
+            cambios++;
         } while ((validarNumero(auxNumero)) != 0);
-        modificarCliente.domicilio.altura = atoi(auxNumero);
+        modificarCliente->domicilio.altura = atoi(auxNumero);
     }
 
     printf("\n\n\t\tIngrese s para editar piso, u otra letra para cancelar.\n\t\t");
@@ -716,8 +590,9 @@ stDomicilio modificarCamposDomicilio(stCliente modificarCliente)
             printf("\n\n\t\tngrese el numero del piso:\n\t\t");
             fflush(stdin);
             gets(auxNumero);
+            cambios++;
         } while ((validarNumero(auxNumero)) != 0);
-        modificarCliente.domicilio.piso = atoi(auxNumero);
+        modificarCliente->domicilio.piso = atoi(auxNumero);
     }
 
     printf("\n\n\t\tIngrese s para editar dpto, u otra letra para cancelar.\n\t\t");
@@ -728,7 +603,8 @@ stDomicilio modificarCamposDomicilio(stCliente modificarCliente)
     {
         printf("\n\n\t\tIngrese el departamento:\n\t\t");
         fflush(stdin);
-        scanf("%c", &modificarCliente.domicilio.dpto);
+        scanf("%c", &modificarCliente->domicilio.dpto);
+        cambios++;
     }
 
     printf("\n\n\t\tIngrese s para editar localidad, u otra letra para cancelar.\n\t\t");
@@ -742,8 +618,9 @@ stDomicilio modificarCamposDomicilio(stCliente modificarCliente)
             printf("\n\n\t\tIngrese la localidad:\n\t\t");
             fflush(stdin);
             gets(auxPalabra);
+            cambios++;
         } while ((validarPalabra(auxPalabra) != 0));
-        strcpy(modificarCliente.domicilio.localidad, auxPalabra);
+        strcpy(modificarCliente->domicilio.localidad, auxPalabra);
     }
 
     printf("\n\n\t\tIngrese s para editar provincia, u otra letra para cancelar.\n\t\t");
@@ -757,10 +634,11 @@ stDomicilio modificarCamposDomicilio(stCliente modificarCliente)
             printf("\n\n\t\tIngrese la provincia:\n\t\t");
             fflush(stdin);
             gets(auxPalabra);
+            cambios++;
         } while ((validarPalabra(auxPalabra) != 0));
-        strcpy(modificarCliente.domicilio.provincia, auxPalabra);
+        strcpy(modificarCliente->domicilio.provincia, auxPalabra);
     }
-    return modificarCliente.domicilio;
+    return cambios;
 }
 
 ///////////////////////////////////////////LISTADOS CLIENTES//////////////////////////////////////////////////////////////////
@@ -1037,12 +915,6 @@ stCliente crearCliente(int id, int dni)
     return c;
 }
 
-void modificarCliente(stCliente *c)
-{
-    modificarCamposDeCliente(*c);
-    modificarCamposDomicilio(*c);
-}
-
 int bajaCliente(stCliente *c)
 {
 
@@ -1064,7 +936,31 @@ int bajaCliente(stCliente *c)
                 r = 1;
             }
         }
+        fclose(a);
     }
 
+    return r;
+}
+
+int guardarCliente(stCliente c)
+{
+    FILE *a = fopen(ArchivoClientes, "r+b");
+    int r = 0;
+    if (a)
+    {
+        stCliente aux;
+        while (fread(&aux, sizeof(stCliente), 1, a) > 0)
+        {
+            if (aux.dni == c.dni)
+            {
+                fseek(a, sizeof(stCliente) * (-1), SEEK_CUR);
+                fwrite(&c, sizeof(stCliente), 1, a);
+                r = 1;
+                break;
+            }
+        }
+
+        fclose(a);
+    }
     return r;
 }
