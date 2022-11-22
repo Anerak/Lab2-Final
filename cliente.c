@@ -232,7 +232,7 @@ int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos
 
 void mostrarClienteResumido(stCliente c)
 {
-    printf("ID: %i | DNI: %i | %s %s\n", c.idCliente, c.dni, c.Nombre, c.Apellido);
+    printf("DNI: %i | %s %s\n", c.dni, c.Nombre, c.Apellido);
     return;
 }
 

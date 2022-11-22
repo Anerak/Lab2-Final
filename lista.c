@@ -70,6 +70,16 @@ void mostrarLista(nodoPedido *l)
         seg = seg->siguiente;
     }
 }
+void mostrarListaAcotada(nodoPedido *l)
+{
+    nodoPedido *seg = l;
+
+    while (seg != NULL)
+    {
+        mostrarUnPedidoAcotado(seg->dato);
+        seg = seg->siguiente;
+    }
+}
 
 nodoPedido *buscarUltimo(nodoPedido *l)
 {
@@ -210,4 +220,60 @@ void modificarNodoPedido (nodoPedido * lista, int idPedido)
     }
 
 
+}
+
+
+////////////// LIQUIDAR
+
+float gastoAnual (nodoPedido *l, int anio)
+{
+    nodoPedido *seg = l;
+    float gastoAnual=0;
+
+    while (seg)
+    {
+        if(seg->dato.fecha.anio == anio)
+        {
+            gastoAnual+= seg->dato.costoPedido;
+        }
+
+        seg = seg->siguiente;
+    }
+
+    return gastoAnual;
+}
+
+int comprasAnual (nodoPedido *l, int anio)
+{
+    nodoPedido *seg = l;
+    int cantCompras=0;
+
+    while (seg)
+    {
+        if(seg->dato.fecha.anio == anio)
+        {
+            cantCompras++;
+        }
+
+        seg = seg->siguiente;
+    }
+
+    return cantCompras;
+}
+
+void liquidacionAnual (nodoPedido *l, int anio)
+{
+    nodoPedido *seg = l;
+    int cantCompras=0, gasto=0;
+
+    while (seg)
+    {
+        if(seg->dato.fecha.anio == anio)
+        {
+            mostrarUnPedidoAcotado(seg->dato);
+        }
+        seg = seg->siguiente;
+    }
+    printf("\n\n\tCantidad de compras realizadas el anio %i :     %i",anio,comprasAnual(l,anio));
+    printf("\n\tGasto total del anio %i :                      $%.2f\n\n",anio,gastoAnual(l,anio));
 }

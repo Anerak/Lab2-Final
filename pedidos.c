@@ -82,12 +82,36 @@ void mostrarUnPedido(stPedido A)
     printf("\t\t..........................................................\n");
 }
 
+void mostrarUnPedidoAcotado(stPedido A)
+{
+    printf("\t\t\tID: %i - Fecha: ",A.idPedido);
+    mostrarFechaAcotada(A.fecha);
+    printf("- Costo: %i - Estado:",A.costoPedido);
+    if(A.estadoDelPedido==1)
+    {
+        printf(" Activo -");
+        if (A.detalleEstado == 's')
+        {
+            printf("Procesando solicitud\n");
+        }
+        else if (A.detalleEstado == 'p')
+        {
+            printf("En preparacion\n");
+        }
+        else
+        {
+            printf("Enviado\n");
+        }
+    }else{
+        printf(" Anulado\n");
+    }
+
+}
 /////////////////////////////////////////MODIFICAR PEDIDOS////////////////////////////////////////////////////////////////////
 
 stPedido modificarUnpedido(stPedido pedido)
 {
     int i = 0;
-    float costo = 0;
     char seguir = 's', opcion = 's';
     char auxPalabra[40], auxNumero[10];
 
@@ -108,8 +132,7 @@ stPedido modificarUnpedido(stPedido pedido)
 
     if (seguir == 's' || seguir == 'S')
     {
-        float nuevoCosto = modificarArregloProductos(pedido.arregloDePedidos, pedido.cantidadProductos);
-        pedido.costoPedido = nuevoCosto;
+        pedido.costoPedido = modificarArregloProductos(pedido.arregloDePedidos, pedido.cantidadProductos);
     }
 
     printf("\n\n\t\tIngrese S para editar el detalle de estado, u otra letra para cancelar:\n\t\t");
@@ -124,4 +147,28 @@ stPedido modificarUnpedido(stPedido pedido)
     }
 
     return pedido;
+}
+
+void modificarArchivoPedido (stPedido pedido)
+{
+    FILE *a = fopen(ArchivoPedidos, "r+b");
+	stPedido p;
+	int flag=0;
+	printf("\nEntra a modificar\n");
+
+	if(a)
+    {
+        printf("\nAbre el archivo\n");
+        while( fread(&p,sizeof(stPedido),1,a) > 0 && flag==0)
+        {
+            if(p.idPedido == pedido.idPedido)
+            {
+                fseek(a,(sizeof(stPedido))*(-1),SEEK_CUR);
+                fwrite(&p,sizeof(stPedido),1,a);
+                flag=1;
+                printf("\nCopia el dato\n");
+            }
+        }
+        fclose(a);
+    }
 }

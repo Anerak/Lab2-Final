@@ -23,4 +23,5 @@ int modificarCantidadProductos (int cantidad);
 float modificarPrecioProducto (float precio);
 stProducto modificarUnProducto(stProducto auxProducto);                  // Modifica un Producto existente
 
+
 #endif

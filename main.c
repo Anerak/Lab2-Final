@@ -23,6 +23,7 @@ int main()
 	arbolito = array2arbol(arregloClientes, 0, validos - 1);
 
 	leerArchivoPedidos(arbolito);
+	nodoArbolCliente *buscado = buscarNodoArbolPorDni(arbolito, 30234987);
 
 	reporteCompletoArbol(arbolito);
 	system("pause");
@@ -30,7 +31,9 @@ int main()
 
 	frontModificarCliente(arbolito);
 
-	guardarNodosModificadosArbol(arbolito);
+	arbolito = borrarNodoArbol(arbolito, 38441203);
+
+	inOrden(arbolito);
 
 	system("pause");
 	return 0;
