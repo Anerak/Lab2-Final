@@ -117,6 +117,7 @@ int modificarCantidadProductos(int cantidad)
     if (seguir == 's' || seguir == 'S')
     {
         printf("\n\t\tIngrese la cantidad de productos de este modelo:\n\t\t");
+        fflush(stdin);
         scanf("%i", &cantidad);
     }
     return cantidad;
@@ -132,6 +133,7 @@ float modificarPrecioProducto(float precio)
     {
 
         printf("\n\n\t\tIngrese precio producto:\n\t\t");
+        fflush(stdin);
         scanf("%f", &precio);
     }
     return precio;
@@ -141,10 +143,13 @@ stProducto modificarUnProducto(stProducto producto) // Modifica un Producto exis
 {
     modificarNombreProducto(producto.Producto);
     modificarModeloProducto(producto.Modelo);
-    producto.cantidad = modificarCantidadProductos(producto.precio);
+    producto.cantidad = modificarCantidadProductos(producto.cantidad);
     producto.precio = modificarPrecioProducto(producto.precio);
 
     producto.precioFinal = (float)((producto.precio) * (producto.cantidad));
 
     return producto;
 }
+
+
+

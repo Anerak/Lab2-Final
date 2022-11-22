@@ -105,6 +105,11 @@ void mostrarFecha(stFecha A)
     printf(" %i ", A.anio);
 }
 
+void mostrarFechaAcotada(stFecha A)
+{
+    printf(" %i / %i / %i  ", A.dia,A.Mes,A.anio);
+}
+
 /////////////////////////////////////////MODIFICAR FECHA////////////////////////////////////////////////////////////////////
 
 stFecha modificarFechaPedido(stFecha fecha) // Auxiliar - Modifica fecha

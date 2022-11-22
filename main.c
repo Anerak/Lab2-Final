@@ -5,17 +5,11 @@
 #include ".\Headers\arbol.h"
 #include ".\Headers\lista.h"
 
-#include "./Headers/pedidos.h"
-#include "./Headers/cliente.h"
-
 int IDPEDIDO = 0;
 int IDCLIENTES = 0;
+
 int leerArchivoClientes(stCliente array[], int dimension);
 void leerArchivoPedidos(nodoArbolCliente *arbol);
-
-/////////////
-void insertarCliente(stCliente array[], int u, stCliente c);
-void ordenarArray(stCliente array[], int validos);
 nodoArbolCliente *array2arbol(stCliente array[], int base, int tope);
 
 int main()
@@ -32,17 +26,13 @@ int main()
 	arbolito = array2arbol(arregloClientes, 0, validos - 1);
 
 	leerArchivoPedidos(arbolito);
+	nodoArbolCliente* buscado= buscarNodoArbolPorDni(arbolito,30234987);
 
-	// inOrden(arbolito);
+	liquidacionAnual(buscado->pedidos,2022);
 
-	// arbolito = altaClienteArbol(arbolito, ID_CLIENTES++);
 
-	arbolito = borrarNodoArbol(arbolito, 38441203);
 
-	inOrden(arbolito);
 
-	// mostrarUnPedido(buscado->pedidos->dato);
-	system("pause");
 	return 0;
 }
 
@@ -101,15 +91,15 @@ void leerArchivoPedidos(nodoArbolCliente *arbol)
 	{
 		while (fread(&p, sizeof(stPedido), 1, a) > 0)
 		{
-			nodoArbol = buscarNodoArbolPorDni(arbol, p.dniCliente);
-			if (nodoArbol)
-			{
-				if (!nodoArbol->pedidos)
-				{
-					nodoArbol->pedidos = inicLista();
-				}
-				nodoArbol->pedidos = insertarPedido(nodoArbol->pedidos, crearNodo(p));
-			}
+                nodoArbol = buscarNodoArbolPorDni(arbol, p.dniCliente);
+                    if (nodoArbol)
+                    {
+                        if (!nodoArbol->pedidos)
+                        {
+                            nodoArbol->pedidos = inicLista();
+                        }
+                        nodoArbol->pedidos = insertarPedido(nodoArbol->pedidos, crearNodo(p));
+                    }
 		}
 		fclose(a);
 	}

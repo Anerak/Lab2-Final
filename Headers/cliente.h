@@ -20,6 +20,7 @@ typedef struct
 
 ///////////////////////////////////////////FUNCIONES CLIENTES////////////////////////////////////////////////////////////////
 stCliente crearCliente(int id, int dni);
+void mostrarClienteResumido(stCliente c);
 void mostrarCliente(stCliente cliente);
 void modificarCliente(stCliente *c);
 int bajaCliente(stCliente *c);

@@ -68,62 +68,60 @@
 	"./Headers/utils.h"
 	"./Headers/pedidos.h"
 
-1669067676 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\arbol.c
+1669081085 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\arbol.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"./Headers/arbol.h"
 
-1669067768 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\arbol.h
+1669080603 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\arbol.h
 	"./cliente.h"
 	"./lista.h"
 
-1669064333 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\cliente.h
+1669073976 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\cliente.h
 	"utils.h"
 	"domicilio.h"
 
 1669069840 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\utils.h
 
-1669069840 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\fecha.h
+1669072109 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\fecha.h
 	"utils.h"
 
 1666824708 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\domicilio.h
 
-1669064333 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\lista.h
+1669083767 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\lista.h
 	<stdio.h>
 	<stdlib.h>
 	"pedidos.h"
 
-1669069621 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\pedidos.h
+1669080642 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\pedidos.h
 	"fecha.h"
 	"producto.h"
 	"cliente.h"
 
-1669068955 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\producto.h
+1669080642 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\producto.h
 	"utils.h"
 
-1669066374 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\cliente.c
+1669074986 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\cliente.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
 	<string.h>
 	"./Headers/cliente.h"
 
-1669062945 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\lista.c
+1669083790 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\lista.c
 	".\Headers\lista.h"
 	".\Headers\pedidos.h"
 
-1669067818 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\main.c
+1669083891 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\main.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
 	<string.h>
 	".\Headers\arbol.h"
 	".\Headers\lista.h"
-	"./Headers/pedidos.h"
-	"./Headers/cliente.h"
 
-1669069704 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\pedidos.c
+1669081859 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\pedidos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -140,9 +138,15 @@
 	"./Headers/utils.h"
 	"./Headers/pedidos.h"
 
-1669068884 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\producto.c
+1669080642 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\producto.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"./Headers/producto.h"
+
+1669072109 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\fecha.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"./Headers/fecha.h"
 

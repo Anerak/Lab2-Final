@@ -60,18 +60,6 @@ nodoArbolCliente *agregarNodoPorDni(nodoArbolCliente *t, stCliente dato)
     return t;
 }
 
-void preOrden(nodoArbolCliente *t)
-{
-    if (t)
-    {
-        mostrarCliente(t->dato);
-        printf("\n\t\t...............Pedidos para el cliente %s %s...............\n", t->dato.Nombre, t->dato.Apellido);
-        mostrarLista(t->pedidos);
-        preOrden(t->izq);
-        preOrden(t->der);
-    }
-}
-
 void inOrden(nodoArbolCliente *t)
 {
     if (t)
@@ -81,6 +69,16 @@ void inOrden(nodoArbolCliente *t)
         printf("\n\t\t...............Pedidos para el cliente %s %s...............\n", t->dato.Nombre, t->dato.Apellido);
         mostrarLista(t->pedidos);
         inOrden(t->der);
+    }
+}
+
+void mostrarClientesAcotado (nodoArbolCliente *t)
+{
+    if (t)
+    {
+        mostrarClientesAcotado(t->izq);
+        mostrarClienteResumido(t->dato);
+        mostrarClientesAcotado(t->der);
     }
 }
 
@@ -265,6 +263,20 @@ nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
     return t;
 }
 
+
+
+void resumenArbol(nodoArbolCliente *t)
+{
+    if (t)
+    {
+        resumenArbol(t->izq);
+        mostrarClienteResumido(t->dato);
+        printf("\n\t\t...............Pedidos para el cliente %s %s...............\n", t->dato.Nombre, t->dato.Apellido);
+        mostrarLista(t->pedidos);
+        resumenArbol(t->der);
+    }
+}
+
 void agregarPedido(nodoArbolCliente *arbol, int dni, int idPedido)
 {
     nodoArbolCliente *cliente = buscarNodoArbolPorDni(arbol, dni);
@@ -282,3 +294,50 @@ void agregarPedido(nodoArbolCliente *arbol, int dni, int idPedido)
         printf("\n\n\t\tEl pedido se adiciono al cliente.\n\n");
     }
 }
+
+
+void modificarPedido (nodoArbolCliente* arbolito)
+{
+    int dniCliente=0,idPedido=0;
+
+    printf("\n\n\tListado de clientes :\n");
+    mostrarClientesAcotado(arbolito);
+    printf("\n\n\tIngrese el DNI del cliente que desea modificar:\n\t");
+    scanf("%i",&dniCliente);
+
+    nodoArbolCliente* cliente= buscarNodoArbolPorDni(arbolito,dniCliente);
+    if(cliente)
+    {
+        printf("\n\n\tListado de pedidos del cliente:\n");
+        mostrarListaAcotada(cliente->pedidos);
+        printf("\n\n\tIngrese el ID del pedido que desea modificar:\n\t");
+        scanf("%i",&idPedido);
+        modificarNodoPedido(cliente->pedidos,idPedido);
+    }
+}
+
+void verificarModificaciones (nodoArbolCliente *t)
+{
+    nodoPedido * seg=NULL;
+
+    printf("\nEntra a verificar:\n");
+    if (t)
+    {
+        verificarModificaciones(t->izq);
+        if(t->pedidos)
+           {
+               seg=t->pedidos;
+               while(seg)
+               {
+                   if(seg->modificado==1)
+                   {
+                       printf("\nEntra a verificar y modificar:\n");
+                       modificarArchivoPedido (seg->dato);
+                   }
+                 seg=seg->siguiente;
+               }
+           }
+        verificarModificaciones(t->der);
+    }
+}
+

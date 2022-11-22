@@ -25,9 +25,11 @@ stPedido generarPedido();
 
 ///////////// MOSTRAR :
 void mostrarUnPedido(stPedido A);
+void mostrarUnPedidoAcotado(stPedido A);
 
 ///////////// PEDIDOS :
 stPedido modificarUnpedido(stPedido auxPedido);                          // Modifica un pedido completo
+void modificarArchivoPedido (stPedido pedido);
 
 
 

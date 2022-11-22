@@ -17,6 +17,7 @@ stFecha cargarFecha();
 ///////////// MOSTRAR :
 void mostrarMes(stFecha A);
 void mostrarFecha(stFecha A);
+void mostrarFechaAcotada(stFecha A);
 
 //////////// MODIFICAR :
 stFecha modificarFechaPedido(stFecha fecha);                        // Modifica fecha

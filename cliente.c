@@ -230,6 +230,12 @@ int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos
 
 ///////////////////////////////////////////////////MOSTRAR///////////////////////////////////////////////////////////////////
 
+void mostrarClienteResumido(stCliente c)
+{
+    printf("DNI: %i | %s %s\n",c.dni, c.Nombre, c.Apellido);
+    return;
+}
+
 void mostrarCliente(stCliente cliente)
 {
     printf("\n\n\t\t----------------------CLIENTE----------------------\n");
