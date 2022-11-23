@@ -179,7 +179,7 @@ nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n)
 
 /////////////////////////// ANULAR
 
-void anularPedido(nodoPedido *pedido) // devuelve  la posicion del pedido o -1 si no encontro el pedido
+void anularPedido(nodoPedido *pedido)
 {
     stPedido A;
 

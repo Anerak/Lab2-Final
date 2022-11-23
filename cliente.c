@@ -77,31 +77,11 @@ stDomicilio cargarDomicilio(stDomicilio domicilio)
     return domicilio;
 }
 
-int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos cargados al arreglo
-{
-    FILE *buffer = fopen(ArchivoClientes, "rb");
-
-    stCliente A;
-    int i = 0;
-
-    if (buffer != NULL)
-    {
-        while (((fread(&A, sizeof(stCliente), 1, buffer)) > 0) && i < dim)
-        {
-            nombreArreglo[i] = A;
-            i++;
-        }
-        fclose(buffer);
-    }
-
-    return i;
-}
-
 ///////////////////////////////////////////////////MOSTRAR///////////////////////////////////////////////////////////////////
 
 void mostrarClienteResumido(stCliente c)
 {
-    printf("DNI: %i | %s %s\n", c.dni, c.Nombre, c.Apellido);
+    printf("\t\tDNI: %i | %s %s\n", c.dni, c.Nombre, c.Apellido);
     return;
 }
 
@@ -492,4 +472,21 @@ int guardarCliente(stCliente c)
         fclose(a);
     }
     return r;
+}
+
+void mostrarClientesInactivos()
+{
+    FILE *a = fopen(ArchivoClientes, "rb");
+    if (a)
+    {
+        stCliente aux;
+        while (fread(&aux, sizeof(stCliente), 1, a) > 0)
+        {
+            if (aux.bajaCliente == 1)
+            {
+                mostrarClienteResumido(aux);
+            }
+        }
+        fclose(a);
+    }
 }

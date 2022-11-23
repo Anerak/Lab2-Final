@@ -19,31 +19,30 @@ typedef struct
 } stCliente;
 
 ///////////////////////////////////////////FUNCIONES CLIENTES////////////////////////////////////////////////////////////////
-stCliente crearCliente(int id, int dni);
-void mostrarClienteResumido(stCliente c);
-void mostrarCliente(stCliente cliente);
-void mostrarClienteResumido(stCliente c);
-int bajaCliente(stCliente *c);
-int guardarCliente(stCliente c);
 
 ///////////// CARGAR :
 stDomicilio cargarDomicilio(stDomicilio domicilio);
 
 ///////////// MOSTRAR :
+void mostrarClienteResumido(stCliente c);
+void mostrarCliente(stCliente cliente);
 void mostrarArchivoClientes();
 void mostrarArregloDeClientes(stCliente arrClientes[], int validos);
 
-////////////////////////////////////////////////MODIFACCIONES/////////////////////////////////////////////////////////////////
-
-//// CLIENTES :
+///////////// MODIFICAR:
 int modificarCliente(stCliente *modificarCliente);           // funcion que recibe cliente para devolverlo modificado
 int modificarCamposDomicilio(stCliente *stdomicilioCliente); // modifica domicilio
 
-///////////////////////////////////////////////
-
-// Arreglo Clientes:
-
-void ordenarSeleccion(stCliente array[], int validos);
+//////////// ARREGLO Clientes:
 int buscarPosMenor(stCliente array[], int pos, int validos);
+void ordenarSeleccion(stCliente array[], int validos);
+
+//////////// ARBOLES
+stCliente crearCliente(int id, int dni);
+int bajaCliente(stCliente *c);
+int guardarCliente(stCliente c);
+void mostrarClientesInactivos();
+
+///////////////////////////////////////////////
 
 #endif

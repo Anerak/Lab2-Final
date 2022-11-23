@@ -151,5 +151,3 @@ stProducto modificarUnProducto(stProducto producto) // Modifica un Producto exis
     return producto;
 }
 
-
-

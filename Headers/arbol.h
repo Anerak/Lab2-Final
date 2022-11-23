@@ -34,6 +34,7 @@ void guardarNodosModificadosArbol(nodoArbolCliente *t);
 
 void agregarPedido(nodoArbolCliente *arbol, int dni, int idPedido);
 void modificarPedido(nodoArbolCliente *arbolito);
+void darBajaPedido (nodoArbolCliente *arbolito);
 void verificarModificaciones(nodoArbolCliente *t);
 
 #endif

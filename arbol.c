@@ -61,18 +61,6 @@ nodoArbolCliente *agregarNodoPorDni(nodoArbolCliente *t, stCliente dato)
     return t;
 }
 
-void inOrden(nodoArbolCliente *t)
-{
-    if (t)
-    {
-        inOrden(t->izq);
-        mostrarCliente(t->dato);
-        printf("\n\t\t...............Pedidos para el cliente %s %s...............\n", t->dato.Nombre, t->dato.Apellido);
-        mostrarLista(t->pedidos);
-        inOrden(t->der);
-    }
-}
-
 void mostrarClientesAcotado(nodoArbolCliente *t)
 {
     if (t)
@@ -80,18 +68,6 @@ void mostrarClientesAcotado(nodoArbolCliente *t)
         mostrarClientesAcotado(t->izq);
         mostrarClienteResumido(t->dato);
         mostrarClientesAcotado(t->der);
-    }
-}
-
-void postOrden(nodoArbolCliente *t)
-{
-    if (t)
-    {
-        postOrden(t->izq);
-        postOrden(t->der);
-        mostrarCliente(t->dato);
-        printf("\n\t\t...............Pedidos para el cliente %s %s...............\n", t->dato.Nombre, t->dato.Apellido);
-        mostrarLista(t->pedidos);
     }
 }
 
@@ -266,22 +242,12 @@ nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
     return t;
 }
 
-void listadoClientesArbol(nodoArbolCliente *t)
-{
-    if (t)
-    {
-        listadoClientesArbol(t->izq);
-        mostrarClienteResumido(t->dato);
-        listadoClientesArbol(t->der);
-    }
-}
-
 void reporteCompletoArbol(nodoArbolCliente *t)
 {
     if (t)
     {
         reporteCompletoArbol(t->izq);
-        mostrarClienteResumido(t->dato);
+        mostrarCliente(t->dato);
         printf("\n\t\t...............Pedidos para el cliente %s %s...............\n", t->dato.Nombre, t->dato.Apellido);
         mostrarLista(t->pedidos);
         reporteCompletoArbol(t->der);
@@ -322,7 +288,28 @@ void guardarNodosModificadosArbol(nodoArbolCliente *t)
     }
 }
 
-void modificarPedido(nodoArbolCliente *arbolito)
+void modificarPedido(nodoArbolCliente *arbolito){
+
+    int dniCliente = 0, idPedido = 0;
+
+        printf("\n\n\tListado de clientes :\n");
+        mostrarClientesAcotado(arbolito);
+        printf("\n\n\tIngrese el DNI del cliente que desea modificar:\n\t");
+        scanf("%i", &dniCliente);
+
+        nodoArbolCliente *cliente = buscarNodoArbolPorDni(arbolito, dniCliente);
+        if (cliente)
+        {
+            printf("\n\n\tListado de pedidos del cliente:\n");
+            mostrarListaAcotada(cliente->pedidos);
+            printf("\n\n\tIngrese el ID del pedido que desea modificar:\n\t");
+            scanf("%i", &idPedido);
+            modificarNodoPedido(cliente->pedidos,idPedido);
+            printf("\n\n\n\t\tEl pedido fue anulado\n\n\n");
+        }
+}
+
+void darBajaPedido (nodoArbolCliente *arbolito)
 {
     int dniCliente = 0, idPedido = 0;
 
@@ -332,13 +319,15 @@ void modificarPedido(nodoArbolCliente *arbolito)
     scanf("%i", &dniCliente);
 
     nodoArbolCliente *cliente = buscarNodoArbolPorDni(arbolito, dniCliente);
+
     if (cliente)
     {
         printf("\n\n\tListado de pedidos del cliente:\n");
         mostrarListaAcotada(cliente->pedidos);
         printf("\n\n\tIngrese el ID del pedido que desea modificar:\n\t");
         scanf("%i", &idPedido);
-        modificarNodoPedido(cliente->pedidos, idPedido);
+        nodoPedido* aBorrar= borrarNodoPedido(cliente->pedidos,idPedido);
+        anularPedido (aBorrar);
     }
 }
 
@@ -346,7 +335,6 @@ void verificarModificaciones(nodoArbolCliente *t)
 {
     nodoPedido *seg = NULL;
 
-    printf("\nEntra a verificar:\n");
     if (t)
     {
         verificarModificaciones(t->izq);
@@ -357,7 +345,6 @@ void verificarModificaciones(nodoArbolCliente *t)
             {
                 if (seg->modificado == 1)
                 {
-                    printf("\nEntra a verificar y modificar:\n");
                     modificarArchivoPedido(seg->dato);
                 }
                 seg = seg->siguiente;

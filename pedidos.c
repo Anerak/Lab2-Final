@@ -169,3 +169,21 @@ void modificarArchivoPedido(stPedido pedido)
         fclose(a);
     }
 }
+
+void mostrarPedidosInactivos(int dni)
+{
+    FILE *a = fopen(ArchivoPedidos, "r+b");
+    stPedido p;
+
+    if (a)
+    {
+        while (fread(&p, sizeof(stPedido), 1, a) > 0)
+        {
+            if (p.dniCliente == dni && p.estadoDelPedido == 0)
+            {
+                mostrarUnPedido(p);
+            }
+        }
+        fclose(a);
+    }
+}
