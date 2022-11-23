@@ -225,7 +225,7 @@ float gastoAnual(nodoPedido *l, int anio)
 
     while (seg)
     {
-        if (seg->dato.fecha.anio == anio)
+        if (seg->dato.fecha.anio == anio && seg->dato.estadoDelPedido==1)
         {
             gastoAnual += seg->dato.costoPedido;
         }
@@ -243,7 +243,7 @@ int comprasAnual(nodoPedido *l, int anio)
 
     while (seg)
     {
-        if (seg->dato.fecha.anio == anio)
+        if (seg->dato.fecha.anio == anio && seg->dato.estadoDelPedido==1)
         {
             cantCompras++;
         }
@@ -261,7 +261,7 @@ void liquidacionAnual(nodoPedido *l, int anio)
 
     while (seg)
     {
-        if (seg->dato.fecha.anio == anio)
+        if (seg->dato.fecha.anio == anio && seg->dato.estadoDelPedido==1)
         {
             mostrarUnPedidoAcotado(seg->dato);
         }
@@ -280,7 +280,7 @@ float gastoMensual(nodoPedido *l, int mes)
 
     while (seg)
     {
-        if (seg->dato.fecha.Mes == mes)
+        if (seg->dato.fecha.Mes == mes && seg->dato.estadoDelPedido==1)
         {
             gastoMes += seg->dato.costoPedido;
         }
@@ -298,7 +298,7 @@ int comprasMensual(nodoPedido *l, int mes)
 
     while (seg)
     {
-        if (seg->dato.fecha.Mes == mes)
+        if (seg->dato.fecha.Mes == mes && seg->dato.estadoDelPedido==1)
         {
             cantCompras++;
         }
@@ -316,7 +316,7 @@ void liquidacionMensual(nodoPedido *l, int mes)
 
     while (seg)
     {
-        if (seg->dato.fecha.Mes == mes)
+        if (seg->dato.fecha.Mes == mes && seg->dato.estadoDelPedido==1)
         {
             mostrarUnPedidoAcotado(seg->dato);
         }

@@ -85,7 +85,7 @@ void mostrarUnPedidoAcotado(stPedido A)
 {
     printf("\t\t\tID: %i - Fecha: ", A.idPedido);
     mostrarFechaAcotada(A.fecha);
-    printf("- Costo: %i - Estado:", A.costoPedido);
+    printf("- Costo: $ %i - Estado:", A.costoPedido);
     if (A.estadoDelPedido == 1)
     {
         printf(" Activo -");

@@ -329,9 +329,12 @@ void darBajaPedido (nodoArbolCliente *arbolito)
         mostrarListaAcotada(cliente->pedidos);
         printf("\n\n\tIngrese el ID del pedido que desea modificar:\n\t");
         scanf("%i", &idPedido);
-        nodoPedido* aBorrar= borrarNodoPedido(cliente->pedidos,idPedido);
-        modificarArchivoPedido(aBorrar->dato);
+        nodoPedido* aBorrar= buscarPedidoID(cliente->pedidos,idPedido);
         anularPedido (aBorrar);
+        modificarArchivoPedido(aBorrar->dato);
+        cliente->pedidos=borrarNodoPedido(cliente->pedidos,idPedido);
+        printf("\n\n\t El pedido fue anulado\n\n");
+
     }
 }
 
