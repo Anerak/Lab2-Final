@@ -172,7 +172,7 @@ void mostrarArregloDeClientes(stCliente arrClientes[], int validos)
 }
 
 ///////////////////////////////////////////MODIFICAR CLIENTES////////////////////////////////////////////////////////////////
-// TODO: Something
+
 int modificarCliente(stCliente *modificarCliente)
 {
 
@@ -460,9 +460,7 @@ int bajaCliente(stCliente *c)
         {
             if (aux.dni == c->dni)
             {
-                printf("%d\n", ftell(a) / sizeof(stCliente));
                 fseek(a, (sizeof(stCliente)) * (-1), SEEK_CUR);
-                printf("%d\n", ftell(a) / sizeof(stCliente));
                 c->bajaCliente = 1;
                 fwrite(c, sizeof(stCliente), 1, a);
                 r = 1;
@@ -485,9 +483,7 @@ int guardarCliente(stCliente c)
         {
             if (aux.dni == c.dni)
             {
-                printf("%d", ftell(a));
-                fseek(a, (sizeof(stCliente) * 2) * (-1), SEEK_CUR);
-                printf("%d", ftell(a));
+                fseek(a, (sizeof(stCliente)) * (-1), SEEK_CUR);
                 fwrite(&c, sizeof(stCliente), 1, a);
                 r = 1;
             }

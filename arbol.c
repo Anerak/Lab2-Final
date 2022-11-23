@@ -236,7 +236,6 @@ nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
             if (t->izq != NULL)
             {
                 nodoArbolCliente *mostRight = NMD(t->izq);
-                bajaCliente(&t->dato);
                 t->dato = mostRight->dato;
                 t->pedidos = mostRight->pedidos;
                 t->izq = borrarNodoArbol(t->izq, mostRight->dato.dni);
@@ -244,7 +243,6 @@ nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
             else if (t->der != NULL)
             {
                 nodoArbolCliente *mostLeft = NMI(t->der);
-                bajaCliente(&t->dato);
                 t->dato = mostLeft->dato;
                 t->pedidos = mostLeft->pedidos;
                 t->der = borrarNodoArbol(t->der, mostLeft->dato.dni);

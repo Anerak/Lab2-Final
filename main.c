@@ -214,11 +214,8 @@ void frontEliminarCliente(nodoArbolCliente **t)
 
 	if (busqueda)
 	{
-		nodoArbolCliente *resultado = borrarNodoArbol(*t, dni);
-		if (resultado)
-		{
-			*t = resultado;
-		}
+		bajaCliente(&busqueda->dato);
+		*t = borrarNodoArbol(*t, dni);
 	}
 	else
 	{
