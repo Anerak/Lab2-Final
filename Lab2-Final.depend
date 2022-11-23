@@ -68,7 +68,7 @@
 	"./Headers/utils.h"
 	"./Headers/pedidos.h"
 
-1669180451 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\arbol.c
+1669232759 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\arbol.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -113,7 +113,7 @@
 	".\Headers\lista.h"
 	".\Headers\pedidos.h"
 
-1669179007 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\main.c
+1669229553 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\main.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>

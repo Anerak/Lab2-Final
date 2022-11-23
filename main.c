@@ -453,7 +453,7 @@ void frontMenuPedidos()
 	printf("\n\n\t\t\t 2) Agregar pedido");
 	printf("\n\n\t\t\t 3) Modificar pedido");
 	printf("\n\n\t\t\t 4) Anular pedido");
-	printf("\n\n\t\t\t 5) Guardar clientes");
+	printf("\n\n\t\t\t 5) Guardar pedidos");
 	printf("\n\n\t\t\t 6) Liquidar un periodo");
 	printf("\n\n\t\t\t 7) Mostrar pedidos inactivos\n\n\t\t");
 }

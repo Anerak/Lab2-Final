@@ -271,6 +271,8 @@ void agregarPedido(nodoArbolCliente *arbol, int dni, int idPedido)
         cliente->pedidos = insertarPedido(cliente->pedidos, pedido);
         guardarNuevoPedido(pedido->dato);
         printf("\n\n\t\tEl pedido se adiciono al cliente.\n\n");
+    }else{
+       printf("\n\n\t\tEl numero ingresado no corresponde a un cliente.\n\n\t");
     }
 }
 
@@ -307,7 +309,6 @@ void modificarPedido(nodoArbolCliente *arbolito){
             printf("\n\n\tIngrese el ID del pedido que desea modificar:\n\t");
             scanf("%i", &idPedido);
             modificarNodoPedido(cliente->pedidos,idPedido);
-            printf("\n\n\n\t\tEl pedido fue anulado\n\n\n");
         }
 }
 
@@ -329,6 +330,7 @@ void darBajaPedido (nodoArbolCliente *arbolito)
         printf("\n\n\tIngrese el ID del pedido que desea modificar:\n\t");
         scanf("%i", &idPedido);
         nodoPedido* aBorrar= borrarNodoPedido(cliente->pedidos,idPedido);
+        modificarArchivoPedido(aBorrar->dato);
         anularPedido (aBorrar);
     }
 }
