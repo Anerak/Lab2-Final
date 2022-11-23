@@ -31,5 +31,6 @@ stPedido modificarUnpedido(stPedido auxPedido); // Modifica un pedido completo
 void modificarArchivoPedido(stPedido pedido);
 
 void mostrarPedidosInactivos(int dni);
+void guardarNuevoPedido (stPedido p);
 
 #endif

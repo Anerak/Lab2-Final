@@ -436,7 +436,7 @@ int bajaCliente(stCliente *c)
 
     if (a)
     {
-        while (fread(&aux, sizeof(stCliente), 1, a) > 0 && !r)
+        while (!r && fread(&aux, sizeof(stCliente), 1, a) > 0 )
         {
             if (aux.dni == c->dni)
             {
@@ -459,7 +459,7 @@ int guardarCliente(stCliente c)
     if (a)
     {
         stCliente aux;
-        while (fread(&aux, sizeof(stCliente), 1, a) > 0 && !r)
+        while (!r && fread(&aux, sizeof(stCliente), 1, a) > 0 )
         {
             if (aux.dni == c.dni)
             {
@@ -487,6 +487,16 @@ void mostrarClientesInactivos()
                 mostrarClienteResumido(aux);
             }
         }
+        fclose(a);
+    }
+}
+
+void guardarNuevoCliente(stCliente c)
+{
+    FILE *a = fopen(ArchivoClientes, "a+b");
+    if (a)
+    {
+        fwrite(&c, sizeof(stCliente), 1, a);
         fclose(a);
     }
 }

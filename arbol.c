@@ -164,6 +164,8 @@ nodoArbolCliente *altaClienteArbol(nodoArbolCliente *t, int id)
 
     t = agregarNodoPorDni(t, c);
 
+    guardarNuevoCliente(c);
+
     return t;
 }
 
@@ -265,9 +267,9 @@ void agregarPedido(nodoArbolCliente *arbol, int dni, int idPedido)
         pedido->dato.idPedido = idPedido + 1;
         pedido->dato.dniCliente = dni;
         pedido->dato.idCliente = cliente->dato.idCliente;
+        pedido->modificado=1;
         cliente->pedidos = insertarPedido(cliente->pedidos, pedido);
-        cliente->modificado = 1;
-
+        guardarNuevoPedido(pedido->dato);
         printf("\n\n\t\tEl pedido se adiciono al cliente.\n\n");
     }
 }

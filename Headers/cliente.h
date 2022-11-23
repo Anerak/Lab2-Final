@@ -43,6 +43,8 @@ int bajaCliente(stCliente *c);
 int guardarCliente(stCliente c);
 void mostrarClientesInactivos();
 
+void guardarNuevoCliente(stCliente c);
+
 ///////////////////////////////////////////////
 
 #endif

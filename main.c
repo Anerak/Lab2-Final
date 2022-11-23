@@ -17,6 +17,7 @@ void frontElegirCliente(nodoArbolCliente *t);
 void mostrarModificados(nodoArbolCliente *t);
 void frontEliminarCliente(nodoArbolCliente **t);
 void frontPedidosInactivos (nodoArbolCliente *t);
+void frontLiquidacion (nodoArbolCliente * arbolito);
 
 int main()
 {
@@ -26,7 +27,7 @@ int main()
 	int validos = 0;
 	validos = leerArchivoClientes(arregloClientes, 500);
 	ordenarSeleccion(arregloClientes, validos);
-	arbolito = array2arbol(arregloClientes, 0, validos - 1);
+	arbolito = array2arbol(arregloClientes, 0, validos-1);
 	leerArchivoPedidos(arbolito);
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -269,6 +270,7 @@ int main()
                                 fflush(stdin);
                                 scanf("%i",&volverPedidos);
                             }while(volverPedidos==1);
+                            break;
 
 
                         case 5:
@@ -282,6 +284,14 @@ int main()
                             break;
 
                         case 6:
+
+                            system("cls");
+                            printf("\n\n\n\n\t\t\t\t Liquidacion por periodo:\n\n\n");
+                            frontLiquidacion (arbolito);
+                            system("pause");
+                            break;
+
+                        case 7:
 
                             system("cls");
                             printf("\n\n\n\n\t\t\t\t Listado de pedidos inactivos:\n\n\n");
@@ -432,7 +442,7 @@ void frontMenuCliente()
 	printf("\n\n\t\t\t 5) Modificar cliente");
 	printf("\n\n\t\t\t 6) Dar de baja a un cliente");
 	printf("\n\n\t\t\t 7) Guardar clientes");
-	printf("\n\n\t\t\t 8) Mostrar clientes inactivos");
+	printf("\n\n\t\t\t 8) Mostrar clientes inactivos\n\n\t\t");
 }
 
 void frontMenuPedidos()
@@ -444,7 +454,8 @@ void frontMenuPedidos()
 	printf("\n\n\t\t\t 3) Modificar pedido");
 	printf("\n\n\t\t\t 4) Anular pedido");
 	printf("\n\n\t\t\t 5) Guardar clientes");
-	printf("\n\n\t\t\t 6) Mostrar pedidos inactivos");
+	printf("\n\n\t\t\t 6) Liquidar un periodo");
+	printf("\n\n\t\t\t 7) Mostrar pedidos inactivos\n\n\t\t");
 }
 
 void frontModificarCliente(nodoArbolCliente *t)
@@ -503,4 +514,33 @@ void frontPedidosInactivos (nodoArbolCliente *t)
     mostrarPedidosInactivos(dni);
 }
 
+void frontLiquidacion (nodoArbolCliente * arbolito)
+{
+    int opcion=0, dni=0, anio=0, mes=0;
+    mostrarClientesAcotado(arbolito);
+    printf("\n\n\t\tIntroduzca el DNI del cliente que desea consultar:\n\t\t");
+	fflush(stdin);
+	scanf("%d", &dni);
+	nodoArbolCliente * buscado= buscarNodoArbolPorDni(arbolito,dni);
+
+    printf("\n\n\t\t Ingrese el periodo que desea liquidar:\n");
+    printf("\n\t\t 1 - Anual");
+    printf("\n\t\t 2 - Mensual\n\t\t");
+    fflush(stdin);
+    scanf("%i",&opcion);
+
+    if(opcion==1)
+    {
+        printf("\n\n\t\tIngrese el año a liquidar:\n\t\t");
+        fflush(stdin);
+        scanf("%i",&anio);
+        liquidacionAnual(buscado->pedidos,anio);
+    }else if(opcion==2)
+    {
+        printf("\n\n\t\tIngrese el numero del mes a liquidar:\n\t\t");
+        fflush(stdin);
+        scanf("%i",&mes);
+        liquidacionMensual(buscado->pedidos,mes);
+    }
+}
 

@@ -68,7 +68,7 @@
 	"./Headers/utils.h"
 	"./Headers/pedidos.h"
 
-1669176108 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\arbol.c
+1669180451 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\arbol.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -78,7 +78,7 @@
 	"./cliente.h"
 	"./lista.h"
 
-1669176108 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\cliente.h
+1669177109 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\cliente.h
 	"utils.h"
 	"domicilio.h"
 
@@ -94,7 +94,7 @@
 	<stdlib.h>
 	"pedidos.h"
 
-1669176108 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\pedidos.h
+1669177109 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\pedidos.h
 	"fecha.h"
 	"producto.h"
 	"cliente.h"
@@ -102,7 +102,7 @@
 1669080642 c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\headers\producto.h
 	"utils.h"
 
-1669176108 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\cliente.c
+1669180635 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\cliente.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
@@ -113,14 +113,14 @@
 	".\Headers\lista.h"
 	".\Headers\pedidos.h"
 
-1669176108 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\main.c
+1669179007 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\main.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
 	<string.h>
 	".\Headers\arbol.h"
 
-1669176108 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\pedidos.c
+1669177109 source:c:\users\54223\desktop\utn\2do cuatrimestre\programacion y laboratorio ii\tp final\lab2-final\pedidos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

@@ -187,3 +187,13 @@ void mostrarPedidosInactivos(int dni)
         fclose(a);
     }
 }
+
+void guardarNuevoPedido (stPedido p)
+{
+    FILE *a = fopen(ArchivoPedidos, "a+b");
+    if (a)
+    {
+        fwrite(&p, sizeof(stPedido), 1, a);
+        fclose(a);
+    }
+}
