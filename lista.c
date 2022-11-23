@@ -41,7 +41,7 @@ nodoPedido *agregarFinal(nodoPedido *l, nodoPedido *n)
     return l;
 }
 
-nodoPedido * nodoFinal(nodoPedido *l, nodoPedido *n)
+nodoPedido *nodoFinal(nodoPedido *l, nodoPedido *n)
 {
     if (l == NULL)
     {
@@ -92,14 +92,14 @@ nodoPedido *buscarUltimo(nodoPedido *l)
     return seg;
 }
 
-int verificarIDpedido (nodoPedido *l, stPedido dato)
+int verificarIDpedido(nodoPedido *l, stPedido dato)
 {
     int resultado = 0;
     if (l != NULL)
     {
         nodoPedido *seg = l;
 
-        while (seg && resultado ==0)
+        while (seg && resultado == 0)
         {
             if (seg->dato.idPedido == dato.idPedido)
             {
@@ -113,19 +113,19 @@ int verificarIDpedido (nodoPedido *l, stPedido dato)
     return resultado;
 }
 
-nodoPedido* buscarPedidoID (nodoPedido *lista, int idPedido)
+nodoPedido *buscarPedidoID(nodoPedido *lista, int idPedido)
 {
-    nodoPedido*buscado = NULL;
+    nodoPedido *buscado = NULL;
 
     if (lista)
     {
         nodoPedido *seg = lista;
 
-        while (seg && buscado==NULL)
+        while (seg && buscado == NULL)
         {
             if (seg->dato.idPedido == idPedido)
             {
-                buscado=seg;
+                buscado = seg;
             }
             seg = seg->siguiente;
         }
@@ -134,9 +134,9 @@ nodoPedido* buscarPedidoID (nodoPedido *lista, int idPedido)
     return buscado;
 }
 
-nodoPedido * borrarNodoPedido (nodoPedido *lista, int idPedido)
+nodoPedido *borrarNodoPedido(nodoPedido *lista, int idPedido)
 {
-   nodoPedido * aBorrar = NULL;
+    nodoPedido *aBorrar = NULL;
 
     if (lista)
     {
@@ -153,9 +153,7 @@ nodoPedido * borrarNodoPedido (nodoPedido *lista, int idPedido)
     }
 
     return lista;
-
 }
-
 
 nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n)
 {
@@ -179,62 +177,57 @@ nodoPedido *insertarPedido(nodoPedido *l, nodoPedido *n)
     return l;
 }
 
-
 /////////////////////////// ANULAR
 
-void anularPedido(nodoPedido* pedido) // devuelve  la posicion del pedido o -1 si no encontro el pedido
+void anularPedido(nodoPedido *pedido) // devuelve  la posicion del pedido o -1 si no encontro el pedido
 {
     stPedido A;
 
     if (pedido)
     {
-            if (pedido->dato.estadoDelPedido == 1)
-            {
-                pedido->dato.estadoDelPedido =0;
-                pedido->dato.costoPedido = 0;
-                pedido->modificado=1;
-            }
+        if (pedido->dato.estadoDelPedido == 1)
+        {
+            pedido->dato.estadoDelPedido = 0;
+            pedido->dato.costoPedido = 0;
+            pedido->modificado = 1;
+        }
     }
 }
-
 
 ////////////////////// MODIFICAR
 
-void modificarNodoPedido (nodoPedido * lista, int idPedido)
+void modificarNodoPedido(nodoPedido *lista, int idPedido)
 {
-    nodoPedido * modificado = buscarPedidoID(lista,idPedido);
+    nodoPedido *modificado = buscarPedidoID(lista, idPedido);
 
-    if(modificado)
+    if (modificado)
     {
-         if (modificado->dato.estadoDelPedido == 1)
-            {
-                modificado->dato=modificarUnpedido(modificado->dato); // retorna el pedido leido, ya modificado por la funcion
-                modificado->modificado= 1;
-                printf("\n\n\t\tEl pedido fue modificado\n\n");
-            }
-            else
-            {
+        if (modificado->dato.estadoDelPedido == 1)
+        {
+            modificado->dato = modificarUnpedido(modificado->dato); // retorna el pedido leido, ya modificado por la funcion
+            modificado->modificado = 1;
+            printf("\n\n\t\tEl pedido fue modificado\n\n");
+        }
+        else
+        {
 
-                printf("\n\n\t\t El pedido se encuentra en estado anulado\n");
-            }
+            printf("\n\n\t\t El pedido se encuentra en estado anulado\n");
+        }
     }
-
-
 }
-
 
 ////////////// LIQUIDAR
 
-float gastoAnual (nodoPedido *l, int anio)
+float gastoAnual(nodoPedido *l, int anio)
 {
     nodoPedido *seg = l;
-    float gastoAnual=0;
+    float gastoAnual = 0;
 
     while (seg)
     {
-        if(seg->dato.fecha.anio == anio)
+        if (seg->dato.fecha.anio == anio)
         {
-            gastoAnual+= seg->dato.costoPedido;
+            gastoAnual += seg->dato.costoPedido;
         }
 
         seg = seg->siguiente;
@@ -243,14 +236,14 @@ float gastoAnual (nodoPedido *l, int anio)
     return gastoAnual;
 }
 
-int comprasAnual (nodoPedido *l, int anio)
+int comprasAnual(nodoPedido *l, int anio)
 {
     nodoPedido *seg = l;
-    int cantCompras=0;
+    int cantCompras = 0;
 
     while (seg)
     {
-        if(seg->dato.fecha.anio == anio)
+        if (seg->dato.fecha.anio == anio)
         {
             cantCompras++;
         }
@@ -261,19 +254,74 @@ int comprasAnual (nodoPedido *l, int anio)
     return cantCompras;
 }
 
-void liquidacionAnual (nodoPedido *l, int anio)
+void liquidacionAnual(nodoPedido *l, int anio)
 {
     nodoPedido *seg = l;
-    int cantCompras=0, gasto=0;
+    int cantCompras = 0, gasto = 0;
 
     while (seg)
     {
-        if(seg->dato.fecha.anio == anio)
+        if (seg->dato.fecha.anio == anio)
         {
             mostrarUnPedidoAcotado(seg->dato);
         }
         seg = seg->siguiente;
     }
-    printf("\n\n\tCantidad de compras realizadas el anio %i :     %i",anio,comprasAnual(l,anio));
-    printf("\n\tGasto total del anio %i :                      $%.2f\n\n",anio,gastoAnual(l,anio));
+    printf("\n\n\tCantidad de compras realizadas el anio %i :     %i", anio, comprasAnual(l, anio));
+    printf("\n\tGasto total del anio %i :                      $%.2f\n\n", anio, gastoAnual(l, anio));
+}
+
+////////////// LIQUIDAR MENSUAL
+
+float gastoMensual(nodoPedido *l, int mes)
+{
+    nodoPedido *seg = l;
+    float gastoMes = 0;
+
+    while (seg)
+    {
+        if (seg->dato.fecha.Mes == mes)
+        {
+            gastoMes += seg->dato.costoPedido;
+        }
+
+        seg = seg->siguiente;
+    }
+
+    return gastoMes;
+}
+
+int comprasMensual(nodoPedido *l, int mes)
+{
+    nodoPedido *seg = l;
+    int cantCompras = 0;
+
+    while (seg)
+    {
+        if (seg->dato.fecha.Mes == mes)
+        {
+            cantCompras++;
+        }
+
+        seg = seg->siguiente;
+    }
+
+    return cantCompras;
+}
+
+void liquidacionMensual(nodoPedido *l, int mes)
+{
+    nodoPedido *seg = l;
+    int cantCompras = 0, gasto = 0;
+
+    while (seg)
+    {
+        if (seg->dato.fecha.Mes == mes)
+        {
+            mostrarUnPedidoAcotado(seg->dato);
+        }
+        seg = seg->siguiente;
+    }
+    printf("\n\n\tCantidad de compras realizadas el mes %i :     %i", mes, comprasAnual(l, mes));
+    printf("\n\tGasto total del mes %i :                      $%.2f\n\n", mes, gastoAnual(l, mes));
 }

@@ -11,29 +11,41 @@ int leerArchivoClientes(stCliente array[], int dimension);
 void leerArchivoPedidos(nodoArbolCliente *arbol);
 nodoArbolCliente *array2arbol(stCliente array[], int base, int tope);
 void frontModificarCliente(nodoArbolCliente *t);
-
+void frontInit();
+void frontMenuCliente();
+void frontApretarCero();
+void frontElegirCliente(nodoArbolCliente *t);
+void mostrarModificados(nodoArbolCliente *t);
+void frontEliminarCliente(nodoArbolCliente **t);
 int main()
 {
-
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	nodoArbolCliente *arbolito = inicArbol();
 	stCliente arregloClientes[500];
 	int validos = 0;
 	validos = leerArchivoClientes(arregloClientes, 500);
 	ordenarSeleccion(arregloClientes, validos);
 	arbolito = array2arbol(arregloClientes, 0, validos - 1);
-
 	leerArchivoPedidos(arbolito);
-	nodoArbolCliente *buscado = buscarNodoArbolPorDni(arbolito, 30234987);
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// frontModificarCliente(arbolito);
+	frontEliminarCliente(&arbolito);
 
-	reporteCompletoArbol(arbolito);
+	mostrarModificados(arbolito);
 	system("pause");
-	frontModificarCliente(arbolito);
+	guardarNodosModificadosArbol(arbolito);
 
-	arbolito = borrarNodoArbol(arbolito, 38441203);
+	frontInit();
+	system("pause");
+	system("cls");
 
-	inOrden(arbolito);
+	frontMenuCliente();
 
 	system("pause");
+	system("cls");
+	frontElegirCliente(arbolito);
+	system("pause");
+
 	return 0;
 }
 
@@ -47,7 +59,7 @@ nodoArbolCliente *array2arbol(stCliente array[], int base, int tope)
 	{
 		medio = (base + tope) / 2;
 
-		arbol = agregarNodo(arbol, array[medio]);
+		arbol = agregarNodoPorDni(arbol, array[medio]);
 
 		arbol->izq = array2arbol(array, base, medio - 1);
 		arbol->der = array2arbol(array, medio + 1, tope);
@@ -66,7 +78,7 @@ int leerArchivoClientes(stCliente array[], int dimension)
 	{
 		while (fread(&c, sizeof(stCliente), 1, a) > 0)
 		{
-			if (i < dimension)
+			if (i < dimension && c.bajaCliente == 0)
 			{
 				if (IDCLIENTES < c.idCliente)
 				{
@@ -81,6 +93,19 @@ int leerArchivoClientes(stCliente array[], int dimension)
 	}
 
 	return i;
+}
+
+void mostrarModificados(nodoArbolCliente *t)
+{
+	if (t)
+	{
+		mostrarModificados(t->izq);
+		if (t->modificado)
+		{
+			mostrarClienteResumido(t->dato);
+		}
+		mostrarModificados(t->der);
+	}
 }
 
 void leerArchivoPedidos(nodoArbolCliente *arbol)
@@ -111,7 +136,25 @@ void leerArchivoPedidos(nodoArbolCliente *arbol)
 	}
 }
 
-void frontMenuCliente(nodoArbolCliente *t)
+void frontInit()
+{
+	printf("Menu principal\n");
+	printf("1) Clientes\n");
+	printf("2) Pedidos\n");
+}
+
+void frontApretarCero()
+{
+	printf("\n0) Volver atras\n");
+}
+
+void frontElegirCliente(nodoArbolCliente *t)
+{
+	listadoClientesArbol(t);
+	printf("Ingrese el DNI del cliente que desea seleccionar: ");
+}
+
+void frontMenuCliente()
 {
 	printf("1) Mostrar listado resumido de clientes\n");
 	printf("2) Mostrar informe completo de clientes\n");
@@ -119,8 +162,19 @@ void frontMenuCliente(nodoArbolCliente *t)
 	printf("4) Agregar cliente\n");
 	printf("5) Modificar cliente\n");
 	printf("6) Dar de baja a un cliente\n");
-	printf("7) Guardar clientes");
-	printf("8) Mostrar clientes inactivos");
+	printf("7) Guardar clientes\n");
+	printf("8) Mostrar clientes inactivos\n");
+	frontApretarCero();
+}
+
+void frontMenuPedidos()
+{
+	printf("1) Listar pedidos\n");
+	printf("2) Agregar pedido\n");
+	printf("3) Modificar pedido\n");
+	printf("4) Anular pedido\n");
+	printf("5) Mostrar pedidos inactivos\n");
+	frontApretarCero();
 }
 
 void frontModificarCliente(nodoArbolCliente *t)
@@ -139,6 +193,31 @@ void frontModificarCliente(nodoArbolCliente *t)
 		if (modificarCliente(&busqueda->dato) > 0)
 		{
 			busqueda->modificado = 1;
+		}
+	}
+	else
+	{
+		printf("Cliente no encontrado.\n");
+	}
+}
+
+void frontEliminarCliente(nodoArbolCliente **t)
+{
+	// system("cls");
+	listadoClientesArbol(*t);
+	printf("Introduzca el DNI del cliente que desea dar de baja: ");
+	int dni = -1;
+	fflush(stdin);
+	scanf("%d", &dni);
+
+	nodoArbolCliente *busqueda = buscarNodoArbolPorDni(*t, dni);
+
+	if (busqueda)
+	{
+		nodoArbolCliente *resultado = borrarNodoArbol(*t, dni);
+		if (resultado)
+		{
+			*t = resultado;
 		}
 	}
 	else

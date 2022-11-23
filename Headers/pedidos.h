@@ -30,8 +30,4 @@ void mostrarUnPedidoAcotado(stPedido A);
 stPedido modificarUnpedido(stPedido auxPedido); // Modifica un pedido completo
 void modificarArchivoPedido(stPedido pedido);
 
-float gastoMensual(nodoPedido *l, int mes);
-int comprasMensual(nodoPedido *l, int mes);
-void liquidacionMensual(nodoPedido *l, int mes);
-
 #endif

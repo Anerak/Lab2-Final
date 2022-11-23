@@ -13,8 +13,6 @@ int validarNumero(char numeros[]);
 // retorna 0 si la palabra esta ok 1 si ingreso otro caracter
 int validarPalabra(char palabra[]);
 
-int buscarClientePorID(int IDcliente);
-
 // retorna mail correcto
 int escribeMailCorrecto(char palabra[]);
 
@@ -28,6 +26,5 @@ int validarCliente(int idCliente);
 
 // retorna cant de datos que hay en un archivo seleccionado indicando nombre y tama�o, o -1 si el archivo no existe
 int cantidadDeDatosEnArchivo(char nombreArchivo[], int tamanioArchivo);
-
 
 #endif

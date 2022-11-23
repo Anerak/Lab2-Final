@@ -154,11 +154,9 @@ void modificarArchivoPedido(stPedido pedido)
     FILE *a = fopen(ArchivoPedidos, "r+b");
     stPedido p;
     int flag = 0;
-    printf("\nEntra a modificar\n");
 
     if (a)
     {
-        printf("\nAbre el archivo\n");
         while (fread(&p, sizeof(stPedido), 1, a) > 0 && flag == 0)
         {
             if (p.idPedido == pedido.idPedido)
@@ -166,64 +164,8 @@ void modificarArchivoPedido(stPedido pedido)
                 fseek(a, (sizeof(stPedido)) * (-1), SEEK_CUR);
                 fwrite(&pedido, sizeof(stPedido), 1, a);
                 flag = 1;
-                printf("\nCopia el dato\n");
             }
         }
         fclose(a);
     }
-}
-
-////////////// LIQUIDAR MENSUAL
-
-float gastoMensual(nodoPedido *l, int mes)
-{
-    nodoPedido *seg = l;
-    float gastoMes = 0;
-
-    while (seg)
-    {
-        if (seg->dato.fecha.Mes == mes)
-        {
-            gastoMes += seg->dato.costoPedido;
-        }
-
-        seg = seg->siguiente;
-    }
-
-    return gastoMes;
-}
-
-int comprasMensual(nodoPedido *l, int mes)
-{
-    nodoPedido *seg = l;
-    int cantCompras = 0;
-
-    while (seg)
-    {
-        if (seg->dato.fecha.Mes == mes)
-        {
-            cantCompras++;
-        }
-
-        seg = seg->siguiente;
-    }
-
-    return cantCompras;
-}
-
-void liquidacionMensual(nodoPedido *l, int mes)
-{
-    nodoPedido *seg = l;
-    int cantCompras = 0, gasto = 0;
-
-    while (seg)
-    {
-        if (seg->dato.fecha.Mes == mes)
-        {
-            mostrarUnPedidoAcotado(seg->dato);
-        }
-        seg = seg->siguiente;
-    }
-    printf("\n\n\tCantidad de compras realizadas el mes %i :     %i", mes, comprasAnual(l, mes));
-    printf("\n\tGasto total del mes %i :                      $%.2f\n\n", mes, gastoAnual(l, mes));
 }

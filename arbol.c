@@ -52,7 +52,7 @@ nodoArbolCliente *agregarNodoPorDni(nodoArbolCliente *t, stCliente dato)
         {
             t->der = agregarNodoPorDni(t->der, dato);
         }
-        else
+        else if (t->dato.dni > dato.dni)
         {
             t->izq = agregarNodoPorDni(t->izq, dato);
         }
@@ -139,7 +139,7 @@ nodoArbolCliente *buscarNodoArbolPorDni(nodoArbolCliente *t, int dni)
             {
                 n = buscarNodoArbolPorDni(t->der, dni);
             }
-            else
+            else if (dni < t->dato.dni)
             {
                 n = buscarNodoArbolPorDni(t->izq, dni);
             }
@@ -236,16 +236,16 @@ nodoArbolCliente *borrarNodoArbol(nodoArbolCliente *t, int dni)
             if (t->izq != NULL)
             {
                 nodoArbolCliente *mostRight = NMD(t->izq);
-                t->dato = mostRight->dato;
                 bajaCliente(&t->dato);
+                t->dato = mostRight->dato;
                 t->pedidos = mostRight->pedidos;
                 t->izq = borrarNodoArbol(t->izq, mostRight->dato.dni);
             }
             else if (t->der != NULL)
             {
                 nodoArbolCliente *mostLeft = NMI(t->der);
-                t->dato = mostLeft->dato;
                 bajaCliente(&t->dato);
+                t->dato = mostLeft->dato;
                 t->pedidos = mostLeft->pedidos;
                 t->der = borrarNodoArbol(t->der, mostLeft->dato.dni);
             }

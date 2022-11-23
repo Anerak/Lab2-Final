@@ -6,58 +6,6 @@
 
 ///////////////////////////////////////////FUNCIONES DE CLIENTES////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////CARGA///////////////////////////////////////////////////////////////////
-
-int validacionDeAlta(long int dni) // recorriendo el archivo y verifica si existe
-{
-    int flag = 0;
-    stCliente aux;
-
-    FILE *archi = fopen(ArchivoClientes, "rb");
-
-    if (archi != NULL)
-    {
-        while (fread(&aux, sizeof(stCliente), 1, archi) > 0 && flag == 0)
-        {
-            if (aux.dni == dni)
-            {
-                printf("\n\n\t\tEl cliente ya se encuentra cargado en el archivo.\n\n\t\t"); // si ya exite corta la busqueda con el flag si no el cliente se puede agregar a la lista.
-                flag = 1;
-            }
-        }
-        fclose(archi);
-    }
-    else
-    {
-        printf("\n\n\t\tNo pudo abrirse el archivo.\n\n\t\t");
-    }
-
-    return flag;
-}
-
-int ultimoIDCliente()
-{
-    stCliente Aux;
-    int IDcliente = 0;
-
-    FILE *buffer = fopen(ArchivoClientes, "rb");
-
-    if (buffer != NULL)
-    {
-        fseek(buffer, sizeof(stCliente) * (-1), 2);
-        if ((fread(&Aux, sizeof(stCliente), 1, buffer)) > 0)
-        {
-            if (Aux.idCliente > IDcliente)
-            {
-                IDcliente = Aux.idCliente;
-            }
-        }
-        fclose(buffer);
-    }
-
-    return IDcliente;
-}
-
 stDomicilio cargarDomicilio(stDomicilio domicilio)
 {
     int depto = 0;
@@ -127,85 +75,6 @@ stDomicilio cargarDomicilio(stDomicilio domicilio)
     }
 
     return domicilio;
-}
-
-int altaDeCliente(stCliente clientenuevo) //
-{
-    stDomicilio domicilio;
-    int flag = -1, id = 0;
-    long int DniAux = 0;
-
-    char validarNum[dim];
-    char validarString[dim];
-
-    FILE *archi = fopen(ArchivoClientes, "ab");
-
-    if (archi != NULL)
-    {
-        printf("\n\n\t\tIngrese el DNI:\n\t\t");
-        fflush(stdin);
-        scanf("%li", &DniAux);
-
-        flag = validacionDeAlta(DniAux);
-
-        if (flag == 0)
-        {
-            clientenuevo.dni = DniAux;
-
-            id = ultimoIDCliente();
-            clientenuevo.idCliente = id + 1;
-            printf("\n\n\t\tID Cliente: 0000%i \n\n", clientenuevo.idCliente);
-
-            do
-            {
-                printf("\n\n\t\tIngrese el nombre  del cliente:\n\t\t");
-                fflush(stdin);
-                gets(validarString);
-            } while ((validarPalabra(validarString)) != 0);
-            strcpy(clientenuevo.Nombre, validarString);
-
-            do
-            {
-                printf("\n\n\t\tIngrese el apellido del cliente:\n\t\t");
-                fflush(stdin);
-                gets(validarString);
-            } while ((validarPalabra(validarString)) != 0);
-            strcpy(clientenuevo.Apellido, validarString);
-
-            domicilio = cargarDomicilio(domicilio);
-            clientenuevo.domicilio = domicilio;
-
-            do
-            {
-                printf("\n\n\t\tIngrese el numero de telefono del cliente:\n\t\t");
-                fflush(stdin);
-                scanf("%s", validarNum);
-            } while ((validarNumero(validarNum)) != 0);
-            clientenuevo.telefono = (atoi(validarNum));
-
-            do
-            {
-                printf("\n\n\t\tIngrese el mail del cliente:\n\t\t"); // se puede usar el @?
-                fflush(stdin);
-                gets(validarString);
-            } while ((escribeMailCorrecto(validarString)) != 2);
-            strcpy(clientenuevo.Mail, validarString);
-
-            clientenuevo.bajaCliente = 'a';
-            clientenuevo.totalGastado = 0;
-            clientenuevo.totalCompras = 0;
-
-            fwrite(&clientenuevo, sizeof(stCliente), 1, archi);
-
-            fclose(archi);
-        }
-    }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir.\n\n\t\t");
-    }
-
-    return flag; // si el cliente ya existe retorna 1
 }
 
 int cargarArregloDeClientes(stCliente nombreArreglo[dim]) // retorna los validos cargados al arreglo
@@ -302,117 +171,7 @@ void mostrarArregloDeClientes(stCliente arrClientes[], int validos)
     }
 }
 
-////////////////////////////////////////BUSQUEDA CLIENTES//////////////////////////////////////////////////////////////
-
-int buscarClientePorDNI(long int dni) // retorna la poscion en el archivo, si no lo encuentra -1
-{
-    int flag = -1;
-    stCliente aux;
-
-    FILE *archi = fopen(ArchivoClientes, "rb");
-
-    if (archi != NULL)
-    {
-        while (flag == -1 && fread(&aux, sizeof(stCliente), 1, archi) > 0)
-        {
-            if (aux.dni == dni)
-            {
-                flag = (ftell(archi)) / (sizeof(stCliente)); // da la posicion.
-                flag = flag - 1;                             // la posicion queda lista para buscar en fseek
-            }
-        }
-        fclose(archi);
-    }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir\n\n\t\t");
-    }
-
-    return flag;
-}
-
-int buscarClientePorID(int IDcliente) // retorna la posicion si lo encuentra, o -1 si no esta
-{
-    int flag = -1;
-    stCliente A;
-
-    FILE *buffer = fopen(ArchivoClientes, "rb");
-
-    if (buffer != NULL)
-    {
-        while (flag == -1 && fread(&A, sizeof(stCliente), 1, buffer) > 0)
-        {
-            if (A.idCliente == IDcliente)
-            {
-                flag = (ftell(buffer)) / (sizeof(stCliente)); // da la posicion.
-                flag = flag - 1;
-            }
-        }
-        fclose(buffer);
-    }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir\n\n\t\t");
-    }
-    return flag;
-}
-
-stCliente retornaClientePorPos(int pos)
-{
-    FILE *buffer = fopen(ArchivoClientes, "rb");
-    stCliente A;
-    stCliente Aux;
-
-    if (buffer != NULL)
-    {
-        fseek(buffer, ((sizeof(stCliente)) * (pos)), 0);
-        fread(&A, sizeof(stCliente), 1, buffer);
-        Aux = A;
-        fclose(buffer);
-    }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir\n\n\t\t");
-    }
-
-    return Aux;
-}
-
 ///////////////////////////////////////////MODIFICAR CLIENTES////////////////////////////////////////////////////////////////
-
-stCliente modificacionClientePorDni(long int dniCliente) // modificacion por DNI cliente
-{
-    stCliente auxCliente;
-    int pos = -1;
-
-    FILE *buff = fopen(ArchivoClientes, "r+b");
-
-    if (buff != NULL)
-    {
-        pos = buscarClientePorDNI(dniCliente);
-
-        if (pos >= 0)
-        {
-            fseek(buff, sizeof(stCliente) * (pos), SEEK_SET);
-            fread(&auxCliente, sizeof(stCliente), 1, buff);
-            modificarCliente(&auxCliente);
-            fseek(buff, sizeof(stCliente) * (-1), SEEK_CUR);
-
-            fwrite(&auxCliente, sizeof(stCliente), 1, buff);
-            fclose(buff);
-        }
-        else
-        {
-            printf("\n\n\t\tEl cliente que desea modificar no existe, ingrese otro DNI o verifique el numero.\n\n\t\t");
-        }
-    }
-    else
-    {
-        printf("\n\n\t\tNo pudo abrirse el archivo \n\n\t\t");
-    }
-
-    return auxCliente;
-}
 // TODO: Something
 int modificarCliente(stCliente *modificarCliente)
 {
@@ -609,203 +368,6 @@ int modificarCamposDomicilio(stCliente *modificarCliente)
     return cambios;
 }
 
-///////////////////////////////////////////LISTADOS CLIENTES//////////////////////////////////////////////////////////////////
-
-int pasarActivosArreglo(stCliente clientes[]) // pasar los clientes activos
-{
-    int i = 0;
-    stCliente aux;
-    FILE *archi = fopen(ArchivoClientes, "rb");
-
-    if (archi != NULL)
-    {
-        while (fread(&aux, sizeof(stCliente), 1, archi) > 0 && i < dim)
-        {
-            if (aux.bajaCliente == 0)
-            {
-                clientes[i] = aux;
-                i++;
-            }
-        }
-        fclose(archi);
-    }
-    else
-    {
-        printf("\n\n\t\tEl archivo no se pudo abrir\n\t\t");
-    }
-
-    return i;
-}
-
-void insertarClienteNombre(stCliente clientes[], int i, stCliente nuevo) // inserccion por nombre
-{
-
-    while (i >= 0 && strcmpi(clientes[i].Apellido, nuevo.Apellido) == 0 && strcmpi(clientes[i].Nombre, nuevo.Nombre) == 1) // cambie esta linea
-    {
-        clientes[i + 1] = clientes[i];
-        i--;
-    }
-    clientes[i + 1] = nuevo;
-}
-
-void insertarClienteApellido(stCliente clientes[], int i, stCliente nuevo)
-{
-
-    while (i >= 0 && strcmpi(clientes[i].Apellido, nuevo.Apellido) == 1) // cambie esta linea
-    {
-        clientes[i + 1] = clientes[i];
-        i--;
-    }
-    clientes[i + 1] = nuevo;
-}
-
-void ordenacionInsercion(stCliente clientes[], int validos) // ordenar por insercion nombre y apellido
-{
-    int i = 0;
-
-    while (i < validos - 1)
-    {
-        insertarClienteApellido(clientes, i, clientes[i + 1]);
-        i++;
-    }
-    i = 0;
-
-    while (i < validos - 1)
-    {
-        insertarClienteNombre(clientes, i, clientes[i + 1]);
-        i++;
-    }
-}
-
-int listarClientesInsercion(stCliente clientes[dim])
-{
-    int validos = 0;
-
-    validos = pasarActivosArreglo(clientes);
-    ordenacionInsercion(clientes, validos);
-
-    return validos;
-}
-
-int posicionMenor(stCliente clientes[], int pos, int validos) // por id
-{
-    int menor = clientes[pos].idCliente;
-    int posmenor = pos;
-    int i = pos + 1;
-
-    while (i < validos)
-    {
-        if (menor > clientes[i].idCliente)
-        {
-            menor = clientes[i].idCliente;
-            posmenor = i;
-        }
-        i++;
-    }
-    return posmenor;
-}
-
-void ordenamientoSeleccion(stCliente clientes[], int validos) // ordena el arreglo
-{
-    int posmenor;
-    stCliente aux;
-    int i = 0;
-
-    while (i < validos - 1)
-    {
-        posmenor = posicionMenor(clientes, i, validos);
-        aux = clientes[posmenor];
-        clientes[posmenor] = clientes[i];
-        clientes[i] = aux;
-        i++;
-    }
-}
-
-int listarClientesSeleccion(stCliente arregloClientes[dim])
-{
-    int validos = 0;
-
-    validos = pasarActivosArreglo(arregloClientes);
-    ordenamientoSeleccion(arregloClientes, validos);
-
-    return validos;
-}
-
-void insertarClientesPorMonto(stCliente arrClientes[], int pos, stCliente auxCliente) // Auxiliar - Inserte del mejor al peor cliente por compras
-{
-
-    while (pos >= 0 && arrClientes[pos].totalGastado < auxCliente.totalGastado)
-    {
-        arrClientes[pos + 1] = arrClientes[pos];
-        pos--;
-    }
-    arrClientes[pos + 1] = auxCliente;
-}
-
-void insertarClientesPorCompras(stCliente arrClientes[], int pos, stCliente auxCliente) // Auxiliar - Inserte del mejor al peor cliente por compras
-{
-
-    while (pos >= 0 && arrClientes[pos].totalCompras < auxCliente.totalCompras)
-    {
-        arrClientes[pos + 1] = arrClientes[pos];
-        pos--;
-    }
-    arrClientes[pos + 1] = auxCliente;
-}
-
-int topTenMejoresClientes(stCliente clientes[dim]) // Top TEN Mejores clientes
-{
-
-    int i = 0;
-    int validos = pasarActivosArreglo(clientes);
-
-    while (i < validos)
-    {
-        insertarClientesPorMonto(clientes, i, clientes[i + 1]);
-        i++;
-    }
-
-    i = 0;
-    while (i < validos)
-    {
-        insertarClientesPorCompras(clientes, i, clientes[i + 1]);
-        i++;
-    }
-
-    return validos;
-}
-
-stCliente peorCliente() // Retorna el peor cliente
-{
-    stCliente auxC, PCliente;
-    int menorCompra;
-
-    FILE *buff = fopen(ArchivoClientes, "rb");
-
-    if (buff != NULL)
-    {
-        fread(&auxC, sizeof(stCliente), 1, buff);
-        menorCompra = auxC.totalCompras;
-
-        while ((fread(&auxC, sizeof(stCliente), 1, buff)) > 0)
-        {
-            if (auxC.totalCompras < menorCompra)
-            {
-                menorCompra = auxC.totalCompras;
-                PCliente = auxC;
-                mostrarCliente(PCliente);
-            }
-        }
-        fclose(buff);
-    }
-    else
-    {
-        printf("\n\n\t\tNo pudo abrirse el archivo\n\n\t\t");
-    }
-
-    return PCliente;
-}
-
 //////////////////////////////////////////////////////////////////////////////////
 //////// Arreglos Clientes
 
@@ -898,7 +460,9 @@ int bajaCliente(stCliente *c)
         {
             if (aux.dni == c->dni)
             {
-                fseek(a, sizeof(stCliente) * (-1), SEEK_CUR);
+                printf("%d\n", ftell(a) / sizeof(stCliente));
+                fseek(a, (sizeof(stCliente)) * (-1), SEEK_CUR);
+                printf("%d\n", ftell(a) / sizeof(stCliente));
                 c->bajaCliente = 1;
                 fwrite(c, sizeof(stCliente), 1, a);
                 r = 1;
@@ -921,7 +485,9 @@ int guardarCliente(stCliente c)
         {
             if (aux.dni == c.dni)
             {
-                fseek(a, sizeof(stCliente) * (-1), SEEK_CUR);
+                printf("%d", ftell(a));
+                fseek(a, (sizeof(stCliente) * 2) * (-1), SEEK_CUR);
+                printf("%d", ftell(a));
                 fwrite(&c, sizeof(stCliente), 1, a);
                 r = 1;
             }
